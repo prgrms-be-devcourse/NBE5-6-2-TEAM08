@@ -1,0 +1,244 @@
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #f7f7f7;
+}
+
+.navbar {
+  width: 100vw;
+  height: 56px;
+  background: #ffeaf6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+.back-arrow {
+  font-size: 22px;
+  color: #ff4fa0;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.logo {
+  font-weight: bold;
+  color: #ff4fa0;
+  font-size: 18px;
+  background: #fff0fa;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+.navbar-right a {
+  color: #ff4fa0;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.profile-icon {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  background: url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') no-repeat center/cover;
+  border-radius: 50%;
+  margin-left: 8px;
+  border: 2px solid #fff0fa;
+}
+
+.main-container {
+  max-width: 1100px;
+  margin: 40px auto 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 650px;
+  box-shadow: none;
+  padding: 40px 0 40px 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.photo-btn {
+  background: #7b6ef6;
+  color: #fff;
+  border: none;
+  border-radius: 18px;
+  padding: 14px 48px;
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 32px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.photo-btn:hover {
+  background: #5a4fd6;
+}
+.category-area {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.category-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+  margin: 18px 0 10px 0;
+  align-self: flex-start;
+}
+.category-list, .region-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.category-btn, .region-btn {
+  border: none;
+  border-radius: 18px;
+  padding: 8px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: filter 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.category-btn.blue { background: #6ec1fa; }
+.category-btn.purple { background: #a18aff; }
+.category-btn.orange { background: #ffb366; color: #a65c00; }
+.region-btn.pink { background: #ff4fa0; }
+.category-btn:active, .region-btn:active, .category-btn.selected, .region-btn.selected {
+  filter: brightness(0.9) contrast(1.2);
+  box-shadow: 0 4px 16px rgba(255,79,160,0.08);
+}
+.mycourse-section {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 32px auto;
+}
+.mycourse-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  margin-left: 8px;
+}
+.mycourse-list {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+.mycourse-card {
+  background: #fff;
+  border: 2px solid #222;
+  border-radius: 8px;
+  width: 260px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 0 18px 0;
+  box-sizing: border-box;
+}
+.place-rank {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.place-img {
+  width: 200px;
+  height: 90px;
+  background: #bdbdbd;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+.place-info {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+.place-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #eee;
+}
+.place-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #222;
+}
+.mycourse-form {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 32px auto 0 auto;
+}
+.mycourse-form label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 4px;
+}
+.course-title-input {
+  width: 100%;
+  height: 38px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 0 12px;
+  margin-bottom: 10px;
+}
+.course-desc-input {
+  width: 100%;
+  min-height: 70px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 10px 12px;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+.save-btn {
+  background: #ff4fa0;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 16px 0;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: background 0.2s;
+}
+.save-btn:hover {
+  background: #e03e8c;
+}
+@media (max-width: 900px) {
+  .main-container {
+    max-width: 98vw;
+    padding: 10px 0;
+  }
+  .mycourse-list {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .mycourse-card {
+    width: 90vw;
+    min-width: 220px;
+  }
+  .mycourse-form {
+    max-width: 98vw;
+  }
+} 

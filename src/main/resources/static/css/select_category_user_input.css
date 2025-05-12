@@ -1,0 +1,194 @@
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #f7f7f7;
+}
+
+.navbar {
+  width: 100vw;
+  height: 56px;
+  background: #ffeaf6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+.back-arrow {
+  font-size: 22px;
+  color: #ff4fa0;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.logo {
+  font-weight: bold;
+  color: #ff4fa0;
+  font-size: 18px;
+  background: #fff0fa;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+.navbar-right a {
+  color: #ff4fa0;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.profile-icon {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  background: url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') no-repeat center/cover;
+  border-radius: 50%;
+  margin-left: 8px;
+  border: 2px solid #fff0fa;
+}
+
+.main-container {
+  max-width: 1100px;
+  margin: 40px auto 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 650px;
+  box-shadow: none;
+  padding: 40px 0 40px 0;
+  position: relative;
+}
+.back-btn {
+  position: absolute;
+  left: 40px;
+  top: 40px;
+  background: #ff4fa0;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.back-btn:hover {
+  background: #e03e8c;
+}
+.form-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+}
+.form-area h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 36px;
+  margin-top: 40px;
+}
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 600px;
+}
+.form-group label {
+  width: 90px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #222;
+  margin-right: 24px;
+  text-align: right;
+}
+.date-picker-wrap {
+  display: flex;
+  align-items: center;
+  border: 2px solid #222;
+  border-radius: 12px;
+  padding: 0 18px;
+  width: 260px;
+  height: 48px;
+  background: #fff;
+}
+#dateInput {
+  border: none;
+  outline: none;
+  font-size: 17px;
+  background: transparent;
+  width: 170px;
+  height: 40px;
+  margin-right: 10px;
+}
+.calendar-icon {
+  font-size: 22px;
+  color: #222;
+  cursor: pointer;
+}
+.category-list, .address-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.category-btn, .address-btn {
+  border: none;
+  border-radius: 18px;
+  padding: 8px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: filter 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.category-btn.pink, .address-btn.pink { background: #ff4fa0; }
+.category-btn.blue, .address-btn.blue { background: #6ec1fa; }
+.category-btn.purple, .address-btn.purple { background: #a18aff; }
+.category-btn.yellow, .address-btn.yellow { background: #ffe066; color: #a67c00; }
+.category-btn.orange, .address-btn.orange { background: #ffb366; color: #a65c00; }
+.category-btn.green, .address-btn.green { background: #6ee7b7; color: #1a7f5a; }
+.category-btn:active, .address-btn:active, .category-btn.selected, .address-btn.selected {
+  filter: brightness(0.9) contrast(1.2);
+  box-shadow: 0 4px 16px rgba(255,79,160,0.08);
+}
+.ai-btn {
+  margin-top: 36px;
+  background: #ff4fa0;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 16px 48px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(255,79,160,0.08);
+}
+.ai-btn:hover {
+  background: #e03e8c;
+}
+@media (max-width: 900px) {
+  .main-container {
+    max-width: 98vw;
+    padding: 10px 0;
+  }
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .form-group label {
+    margin-bottom: 8px;
+    text-align: left;
+  }
+  .back-btn {
+    left: 10px;
+    top: 10px;
+    padding: 10px 18px;
+    font-size: 15px;
+  }
+} 

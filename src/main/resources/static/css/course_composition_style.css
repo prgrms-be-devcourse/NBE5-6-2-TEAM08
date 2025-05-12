@@ -1,0 +1,201 @@
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #fff;
+}
+
+.navbar {
+  width: 100vw;
+  height: 56px;
+  background: #ffeaf6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+.back-arrow {
+  font-size: 22px;
+  color: #ff4fa0;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.logo {
+  font-weight: bold;
+  color: #ff4fa0;
+  font-size: 18px;
+  background: #fff0fa;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+.navbar-right a {
+  color: #ff4fa0;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.profile-icon {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  background: url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') no-repeat center/cover;
+  border-radius: 50%;
+  margin-left: 8px;
+  border: 2px solid #fff0fa;
+}
+
+.container {
+  display: flex;
+  height: calc(100vh - 56px);
+}
+.left-panel, .right-panel {
+  flex: 1;
+  padding: 32px 24px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  height: 100%;
+}
+.left-panel {
+  border-right: 2px solid #f2f2f2;
+}
+.search-bar {
+  display: flex;
+  margin-bottom: 24px;
+}
+#searchInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 4px 0 0 4px;
+  font-size: 15px;
+  outline: none;
+}
+#searchBtn {
+  background: #ff4fa0;
+  color: #fff;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  padding: 8px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.place-list {
+  max-height: 70vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: none;
+}
+.place-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eaeaea;
+  padding: 18px 0 10px 0;
+  font-size: 16px;
+}
+.add-btn {
+  background: #ff4fa0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.add-btn:hover {
+  background: #e03e8c;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+.course-list {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  margin-bottom: 24px;
+}
+.course-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+.course-info {
+  color: #222;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.course-title {
+  font-weight: 500;
+  font-size: 16px;
+}
+.delete-btn {
+  background: #e0e0e0;
+  color: #555;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 24px;
+  transition: background 0.2s, color 0.2s;
+  padding: 0;
+}
+.delete-btn:hover {
+  background: #888;
+  color: #fff;
+}
+.register-btn {
+  background: #ff4fa0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 32px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.register-btn:hover {
+  background: #e03e8c;
+}
+
+/* 스크롤바 스타일 */
+.left-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar, .place-list::-webkit-scrollbar, .course-list::-webkit-scrollbar {
+  width: 10px;
+  background: #f2f2f2;
+  border-radius: 8px;
+}
+.left-panel::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb, .place-list::-webkit-scrollbar-thumb, .course-list::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+  .left-panel, .right-panel {
+    padding: 18px 8px;
+  }
+} 

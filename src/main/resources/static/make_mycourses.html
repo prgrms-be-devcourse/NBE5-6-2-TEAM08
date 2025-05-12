@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DateNow - 내 데이트 코스 저장하기</title>
+  <link rel="stylesheet" href="css/make_mycourses.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-left">
+      <span class="back-arrow">&#8592;</span>
+      <span class="logo">DateNow</span>
+    </div>
+    <div class="navbar-right">
+      <a href="#">나의 코스 만들기</a>
+      <a href="#">마이페이지</a>
+      <a href="#">로그아웃</a>
+      <span class="profile-icon"></span>
+    </div>
+  </div>
+  <div class="main-container">
+    <button class="photo-btn">사진을 등록해주세요</button>
+    <div class="category-area">
+      <div class="category-label">카테고리</div>
+      <div class="category-list">
+        <button class="category-btn blue">산책</button>
+        <button class="category-btn purple">전시</button>
+        <button class="category-btn orange">맛집</button>
+      </div>
+      <div class="category-label">지역</div>
+      <div class="region-list">
+        <button class="region-btn pink">카페</button>
+      </div>
+    </div>
+    <div class="mycourse-section">
+      <div class="mycourse-title">나의 데이트 코스</div>
+      <div class="mycourse-list">
+        <div class="mycourse-card">
+          <div class="place-rank">1st Place</div>
+          <div class="place-img"></div>
+          <div class="place-info">
+            <img class="place-logo" src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="logo">
+            <span class="place-name">카카오프렌즈 강남점</span>
+          </div>
+        </div>
+        <div class="mycourse-card">
+          <div class="place-rank">2nd Place</div>
+          <div class="place-img"></div>
+          <div class="place-info">
+            <img class="place-logo" src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="logo">
+            <span class="place-name">카카오프렌즈 강남점</span>
+          </div>
+        </div>
+        <div class="mycourse-card">
+          <div class="place-rank">3rd Place</div>
+          <div class="place-img"></div>
+          <div class="place-info">
+            <img class="place-logo" src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="logo">
+            <span class="place-name">카카오프렌즈 잠실새내점</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form class="mycourse-form">
+      <label>나의 데이트 코스 제목을 입력해주세요.</label>
+      <input type="text" class="course-title-input" placeholder="제목을 입력해주세요">
+      <label>나의 데이트 코스 소개해주세요!</label>
+      <textarea class="course-desc-input" placeholder="글자 수 최소 30자, 최대 1000자 입력 가능합니다."></textarea>
+      <button type="submit" class="save-btn">내 데이트 코스에 저장</button>
+    </form>
+  </div>
+  <script src="js/make_mycourses.js"></script>
+</body>
+</html> 

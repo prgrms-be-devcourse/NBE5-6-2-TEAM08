@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DateNow - 추천 경로 만들기</title>
+  <link rel="stylesheet" href="css/select_category_user_input.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-left">
+      <span class="back-arrow">&#8592;</span>
+      <span class="logo">DateNow</span>
+    </div>
+    <div class="navbar-right">
+      <a href="#">나의 코스 만들기</a>
+      <a href="#">마이페이지</a>
+      <a href="#">로그아웃</a>
+      <span class="profile-icon"></span>
+    </div>
+  </div>
+  <div class="main-container">
+    <button class="back-btn">뒤로가기</button>
+    <div class="form-area">
+      <h2>추천 경로 만들기</h2>
+      <div class="form-group">
+        <label>날짜</label>
+        <div class="date-picker-wrap">
+          <input type="text" id="dateInput" placeholder="날짜 선택" readonly>
+          <span class="calendar-icon">&#128197;</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>카테고리</label>
+        <div class="category-list">
+          <button class="category-btn pink">카페</button>
+          <button class="category-btn blue">산책</button>
+          <button class="category-btn purple">전시</button>
+          <button class="category-btn yellow">영화</button>
+          <button class="category-btn orange">맛집</button>
+          <button class="category-btn green">액티비티</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>주소</label>
+        <div class="address-list">
+          <button class="address-btn pink">잠실동</button>
+          <button class="address-btn blue">신천동</button>
+          <button class="address-btn purple">방이동</button>
+          <button class="address-btn yellow">삼전동</button>
+          <button class="address-btn orange">석촌동</button>
+          <button class="address-btn green">가락동</button>
+        </div>
+      </div>
+      <button class="ai-btn">AI 추천코스 받아보기</button>
+    </div>
+  </div>
+  <script src="js/select_category_user_input.js"></script>
+</body>
+</html> 
