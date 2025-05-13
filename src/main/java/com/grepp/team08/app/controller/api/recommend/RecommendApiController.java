@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("api/ai/recommand")
+@RequestMapping("/llm/recommend")
 public class RecommendApiController {
 
     private final RecommendService recommendService;
@@ -30,7 +30,5 @@ public class RecommendApiController {
         List<PlaceDto> list = recommendService.recommendDateCourse(dto);
         return ResponseEntity.ok(ApiResponse.success(list));
     }
-
-
 
 }
