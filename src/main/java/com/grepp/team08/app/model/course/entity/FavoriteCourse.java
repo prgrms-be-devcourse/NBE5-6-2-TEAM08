@@ -1,6 +1,5 @@
-package com.grepp.team08.app.model.review.entity;
+package com.grepp.team08.app.model.course.entity;
 
-import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.infra.entity.BaseEntity;
 import jakarta.persistence.Entity;
@@ -18,10 +17,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Review extends BaseEntity {
+public class FavoriteCourse extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+    private Long favoriteCourseId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "recommend_course_id", nullable = false)
@@ -30,10 +29,5 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private Member id;
-
-    private String content;
-    private int star;
-
-
 
 }

@@ -1,13 +1,11 @@
-package com.grepp.team08.app.model.image.entity;
+package com.grepp.team08.app.model.place.entity;
 
+import com.grepp.team08.app.model.course.entity.Course;
 import com.grepp.team08.app.model.course.entity.EditorCourse;
-import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import com.grepp.team08.infra.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,31 +14,33 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Getter
-@Setter
-@ToString
-public class Image extends BaseEntity {
+@Getter @Setter @ToString
+public class Place extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageId;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "recommend_course_id", nullable = false)
-    private RecommendCourse recommendCourseId;
+    private Long placeId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "editor_course_id", nullable = false)
+    @JoinColumn(name = "course_id")
+    private Course courseId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "editor_course_id")
     private EditorCourse editorCourseId;
 
-    @Column(nullable = false, length = 255)
-    private String originFileName;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "region_id", nullable = false)
+    private Region regionId;
 
     @Column(nullable = false, length = 255)
-    private String renameFileName;
+    private String placeName;
 
     @Column(nullable = false, length = 255)
-    private String savePath;
+    private String address;
 
-    @Column(length = 255)
-    private String type;
+    @Column(nullable = false, length = 255)
+    private String placeUrl;
+
+    private double latitude;
+    private double longitude;
 
 }
