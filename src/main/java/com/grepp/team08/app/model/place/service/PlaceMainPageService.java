@@ -2,10 +2,12 @@ package com.grepp.team08.app.model.place.service;
 
 import com.grepp.team08.app.model.course.dto.CourseDto;
 import com.grepp.team08.app.model.course.dto.EditorCourseDto;
-import com.grepp.team08.app.model.course.entity.ApprovedCourses;
-import com.grepp.team08.app.model.course.entity.EditorCourses;
+import com.grepp.team08.app.model.course.entity.EditorCourse;
+import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import com.grepp.team08.app.model.course.repository.AdminCourseRepository;
 import com.grepp.team08.app.model.course.repository.CourseRepository;
+import com.grepp.team08.app.model.image.entity.Image;
+import com.grepp.team08.app.model.image.repository.ImageRepository;
 import com.grepp.team08.app.model.place.dto.mainpage.AdminUserTopListDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,19 +20,44 @@ public class PlaceMainPageService {
 
   private final AdminCourseRepository adminCourseRepository;
   private final CourseRepository courseRepository;
+  private final ImageRepository imageRepository;
 
   @Transactional
   public AdminUserTopListDto mainPagelist() {
 
-      List<EditorCourses> adminplace = adminCourseRepository.findRandom4();
-      List<ApprovedCourses> userplace = courseRepository.findRandom4();
+      List<EditorCourse> adminplace = adminCourseRepository.findTop4ByOrderByCreatedAtDesc();
+      List<RecommendCourse> userplace = courseRepository.findTop4ByOrderByCreatedAtDesc();
+
 
     List<EditorCourseDto> adminDto = adminplace.stream()
-        .map(EditorCourseDto::new)
+        .map(course -> {
+          Image img = imageRepository.findFirstByEditorCourseId(course)
+              .orElse(null);
+          if(img !=null){
+            String imageUrl = "/image/" + img.getRenameFileName();
+            return new EditorCourseDto(course, imageUrl);
+          }
+          else{
+            return new EditorCourseDto(course,"/image/bg_night.jpg");
+          }
+
+        })
         .toList();
 
+
     List<CourseDto> userDto = userplace.stream()
-        .map(CourseDto::new)
+        .map(course -> {
+          Image img = imageRepository.findFirstByRecommendCourseId(course)
+              .orElse(null);
+          if(img !=null){
+            String imageUrl = "/image/" + img.getRenameFileName();
+            return new CourseDto(course, imageUrl);
+          }
+          else{
+            return new CourseDto(course,"/image/bg_night.jpg");
+          }
+
+        })
         .toList();
 
     return new AdminUserTopListDto(adminDto,userDto);
@@ -39,20 +66,42 @@ public class PlaceMainPageService {
 
 
   }
-
+  @Transactional
   public List<EditorCourseDto> adminPageList() {
-    List<EditorCourses> adminPlace = adminCourseRepository.findAll();
+    List<EditorCourse> adminPlace = adminCourseRepository.findAll();
     List<EditorCourseDto> adminDto = adminPlace.stream()
-        .map(EditorCourseDto::new)
+        .map(course -> {
+          Image img = imageRepository.findFirstByEditorCourseId(course)
+              .orElse(null);
+          if(img !=null){
+            String imageUrl = "/image/" + img.getRenameFileName();
+            return new EditorCourseDto(course, imageUrl);
+          }
+          else{
+            return new EditorCourseDto(course,"/image/bg_night.jpg");
+          }
+
+        })
         .toList();
     return adminDto;
 
   }
-//
+  @Transactional
   public List<CourseDto> userPageList() {
-    List<ApprovedCourses> userPlace = courseRepository.findAll();
+    List<RecommendCourse> userPlace = courseRepository.findAll();
     List<CourseDto> courseDto = userPlace.stream()
-        .map(CourseDto::new)
+        .map(course -> {
+          Image img = imageRepository.findFirstByRecommendCourseId(course)
+              .orElse(null);
+          if(img !=null){
+            String imageUrl = "/image/" + img.getRenameFileName();
+            return new CourseDto(course, imageUrl);
+          }
+          else{
+            return new CourseDto(course,"/image/bg_night.jpg");
+          }
+
+        })
         .toList();
     return courseDto;
 

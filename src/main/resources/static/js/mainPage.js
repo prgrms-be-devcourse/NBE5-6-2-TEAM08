@@ -1,81 +1,47 @@
-// 에디터 픽 데이트 코스 카드 데이터
-const editorPickCards = [
-  {
-    title: "한강 피크닉 코스 ❤️",
-    author: "홍길동",
-    image: "https://via.placeholder.com/260x160?text=대표사진1",
-    avatar: "https://via.placeholder.com/32?text=프로필"
-  },
-  {
-    title: "한강 피크닉 코스 🤍",
-    author: "홍길동",
-    image: "https://via.placeholder.com/260x160?text=대표사진2",
-    avatar: "https://via.placeholder.com/32?text=프로필"
-  }
-];
-
-// 추천 데이트 코스 카드 데이터
-const recommendCards = [
-  {
-    title: "남산 야경 데이트",
-    author: "홍길동",
-    image: "https://via.placeholder.com/260x160?text=대표사진3",
-    avatar: "https://via.placeholder.com/32?text=프로필"
-  },
-  {
-    title: "한강 피크닉 코스",
-    author: "홍길동",
-    image: "https://via.placeholder.com/260x160?text=대표사진4",
-    avatar: "https://via.placeholder.com/32?text=프로필"
-  }
-];
-
-// 카드 리스트 렌더링 함수
-function renderCards(cardData, containerId) {
+function renderCards(cardData, containerId, type) {
   const cardList = document.getElementById(containerId);
   cardList.innerHTML = '';
 
   cardData.forEach(card => {
+    const title = card.title;
+    const author = type === 'admin' ? card.editorNickname : card.creatorNickname;
+    const imageUrl = card.imageurl || 'https://via.placeholder.com/260x160?text=No+Image';
+
+
     const cardDiv = document.createElement('div');
     cardDiv.className = 'course-card';
 
     cardDiv.innerHTML = `
-      <div class="card-image" style="background-image:url('${card.image}');"></div>
-      <div class="card-title">${card.title}</div>
+      <div class="card-image" style="background-image:url('${imageUrl}');"></div>
+      <div class="card-title">${title}</div>
       <div class="card-author">
-        <div class="author-avatar" style="background-image:url('${card.avatar}');"></div>
-        <div class="author-name">${card.author}</div>
+        <div class="author-avatar" style="background-image:url('/image/user.jpg');"></div>
+        <div class="author-name">${author}</div>
       </div>
     `;
     cardList.appendChild(cardDiv);
   });
 }
-
-// DOM 준비 시 각 섹션 렌더링
 document.addEventListener('DOMContentLoaded', function () {
-  renderCards(editorPickCards, 'editor-pick-list');
-  renderCards(recommendCards, 'recommend-list');
-});
+  fetch('/api')
+  .then(response => response.json())
+  .then(data => {
+    const adminCourses = data.adminlist;
+    const userCourses = data.userlist;
 
-// <div id="admin-courses"></div>
-// <div id="user-courses"></div>
-//
-// <script>
-//   fetch('/api/courses/top-list') // 서버에서 JSON 리턴하는 API 경로
-//   .then(response => response.json())
-//   .then(data => {
-//   const adminCourses = data.adminlist;
-//   const userCourses = data.userlist;
-//
-//   const adminDiv = document.getElementById('admin-courses');
-//   const userDiv = document.getElementById('user-courses');
-//
-//   adminCourses.forEach(course => {
-//   adminDiv.innerHTML += `<p>📘 ${course.title} - ${course.editor}</p>`;
-// });
-//
-//   userCourses.forEach(course => {
-//   userDiv.innerHTML += `<p>📗 ${course.title} - ${course.author}</p>`;
-// });
-// });
-// </script>
+    renderCards(adminCourses, 'editor-pick-list', 'admin');
+    renderCards(userCourses, 'recommend-list', 'user');
+  })
+  .catch(error => {
+    console.error('데이터 불러오기 실패:', error);
+  });
+  document.getElementById('editor-more').addEventListener('click', function (e) {
+    e.preventDefault();
+    window.location.href = '/editor-recommand-courses';
+  });
+
+  document.getElementById('user-more').addEventListener('click', function (e) {
+    e.preventDefault();
+    window.location.href = '/recommend-courses';
+  });
+});

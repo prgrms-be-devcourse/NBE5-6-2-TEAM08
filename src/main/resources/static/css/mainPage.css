@@ -57,6 +57,7 @@ body {
   max-width: 1440px;
   margin: 0 auto;
   padding: 40px 24px;
+
 }
 
 .recommend-section {
@@ -65,12 +66,15 @@ body {
   padding: 32px 24px;
   margin-left: 40px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+  align-items: center;
+  justify-content: center;
 }
 
 .section-title-row {
-  display: flex;
+
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   margin-bottom: 24px;
 }
 
@@ -86,12 +90,16 @@ body {
   font-weight: 100;
   color: #912095;
   text-decoration: none;
+  align-items: center;
 }
 
 .card-list {
   display: flex;
   gap: 32px;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .course-card {

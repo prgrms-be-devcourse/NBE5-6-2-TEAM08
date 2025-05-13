@@ -1,24 +1,25 @@
 package com.grepp.team08.app.model.course.dto;
 
-import com.grepp.team08.app.model.course.entity.ApprovedCourses;
+import com.grepp.team08.app.model.course.entity.FavoriteCourse;
+import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
 
 public class CourseDto {
-  private int courseId;
+  private Long courseId;
   private String title;
   private String description;
-  private LocalDateTime createdAt;
   private String creatorNickname;
+  private String imageurl;
 
-  public CourseDto(ApprovedCourses course) {
-    this.courseId = course.getRecommendId();
-    this.title = course.getMyCoursesId().getTitle();
-    this.description = course.getMyCoursesId().getDescription();
-    this.createdAt = course.getMyCoursesId().getCreatedAt();
-    this.creatorNickname = course.getId().getNickname();
+  public CourseDto(RecommendCourse course,String imageurl) {
+    this.courseId = course.getRecommendCourseId();
+    this.title = course.getCourseId().getTitle();
+    this.description = course.getCourseId().getDescription();
+    this.creatorNickname = course.getCourseId().getId().getNickname();
+    this.imageurl = imageurl;
   }
 
 }

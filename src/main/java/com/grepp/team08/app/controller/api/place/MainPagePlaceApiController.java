@@ -8,15 +8,18 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class MainPagePlaceApiController {
 
   private final PlaceMainPageService placeMainPageService;
 
-  @GetMapping("/api")
+  @GetMapping
   public ResponseEntity<?> mainPageList(){
 
     AdminUserTopListDto mainlist = placeMainPageService.mainPagelist();
@@ -38,6 +41,11 @@ public class MainPagePlaceApiController {
 
     return ResponseEntity.ok(adminList);
 
+  }
+  @GetMapping("/recommend-courses/{recommend_id}")
+  public ResponseEntity<?> recommendCourse(@PathVariable int recommend_id){
+
+    return ResponseEntity.ok("d");
   }
 
 

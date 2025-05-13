@@ -3,6 +3,7 @@ package com.grepp.team08.app.model.member.dto;
 
 import com.grepp.team08.app.model.auth.code.Role;
 import com.grepp.team08.app.model.member.entity.Member;
+import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
@@ -14,18 +15,18 @@ public class MemberDto {
   private String nickname;
   private String phone;
   private Role role;
-  private Boolean activated;
+  private LocalDateTime leavedAt;
 
 
   public MemberDto(Member member) {
     this.id = member.getId();
-    this.userid = member.getUserid();
+    this.userid = member.getUserId();
     this.email = member.getEmail();
     this.name = member.getName();
     this.nickname = member.getNickname();
     this.phone = member.getPhone();
     this.role = member.getRole();
-    this.activated = member.getActivated();
+    this.leavedAt = member.getLeavedAt();
   }
 
 
