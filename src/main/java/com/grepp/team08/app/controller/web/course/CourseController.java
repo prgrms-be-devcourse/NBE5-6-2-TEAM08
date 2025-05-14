@@ -30,4 +30,9 @@ public class CourseController {
         model.addAttribute("recommendId",recommand_id);
         return"editor_pick_detail";
     }
+    @GetMapping("/make_mycourses")
+    public String makeMyCourses() {
+        return "make_mycourses";
+    }
+
 }

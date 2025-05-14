@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DateNow - 내 데이트 코스 저장하기</title>
-  <link rel="stylesheet" href="../static/css/make_mycourses.css">
+  <link rel="stylesheet" href="/css/make_mycourses.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <div class="navbar">
@@ -20,7 +21,11 @@
     </div>
   </div>
   <div class="main-container">
-    <button class="photo-btn">사진을 등록해주세요</button>
+    <div class="photo-upload-section">
+      <input type="file" id="photoInput" accept="image/*" style="display: none;">
+      <button class="photo-btn">사진 추가하기</button>
+      <div id="fileList" class="file-list"></div>
+    </div>
     <div class="category-area">
       <div class="category-label">카테고리</div>
       <div class="category-list">
@@ -70,6 +75,6 @@
       <button type="submit" class="save-btn">내 데이트 코스에 저장</button>
     </form>
   </div>
-  <script src="../static/js/make_mycourses.js"></script>
+  <script src="/js/make_mycourses.js"></script>
 </body>
 </html> 
