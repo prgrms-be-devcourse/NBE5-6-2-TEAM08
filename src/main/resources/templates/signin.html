@@ -1,0 +1,159 @@
+  <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>DateNow</title>
+  <style>
+  /* 전체 배경 */
+  body {
+  margin: 0;
+  background-color: #FFF2F8;
+  font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  /* 중앙 컨테이너 */
+  .signin-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 80px 20px 40px;
+  text-align: center;
+  }
+
+  /* 로고 */
+  .logo {
+  font-size: 32px;
+  font-weight: bold;
+  color: #FF4DA1;
+  margin-bottom: 60px;
+  }
+
+  /* 필드 그룹 */
+  .field {
+  margin-bottom: 20px;
+  text-align: left;
+  }
+
+  .field label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  }
+
+  .field input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #E3E3E3;
+  border-radius: 22px;
+  font-size: 16px;
+  box-sizing: border-box;
+  }
+
+  .field input:focus {
+  border-color: #FF85BC;
+  outline: none;
+  }
+
+  /* 전역 오류 메시지 */
+  .error-global {
+  color: #D8000C;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: left;
+  }
+
+  /* 필드별 오류 */
+  .error-field {
+  color: #D8000C;
+  font-size: 12px;
+  margin-top: 4px;
+  }
+
+  /* 로그인 버튼 */
+  .btn-login {
+  width: 100%;
+  height: 50px;
+  background-color: #FF4DA1;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  }
+
+  .btn-login:disabled {
+  background-color: #FFC0D1;
+  }
+
+  /* 링크 영역 */
+  .links {
+  margin-top: 30px;
+  font-size: 14px;
+  color: #FF4DA1;
+  }
+
+  .links a {
+  color: #FF4DA1;
+  text-decoration: none;
+  margin: 0 4px;
+  }
+
+  .links span {
+  color: #FF4DA1;
+  }
+
+  </style>
+  <head>
+    <meta charset="UTF-8">
+    <title>DateNow. – 로그인</title>
+    <link rel="stylesheet" th:href="@{/css/signin.css}">
+  </head>
+<body>
+<div class="signin-container">
+  <h1 class="logo">💖 DateNow.</h1>
+
+  <form th:action="@{/member/signin}" th:object="${signinRequest}" method="post">
+
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+    <div class="field">
+      <label for="userId">아이디</label>
+      <input
+              type="text"
+              id="userId"
+              th:field="*{userId}"
+              placeholder="아이디를 입력하세요."
+      >
+      <p th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}" class="error-field"></p>
+    </div>
+
+    <div class="field">
+      <label for="password">비밀번호</label>
+      <input
+              type="password"
+              id="password"
+              th:field="*{password}"
+              placeholder="비밀번호를 입력하세요."
+      >
+      <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-field"></p>
+    </div>
+
+    <p th:if="${param.error}" class="error-global">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+
+    <label style="display: flex; align-items: center; text-align: left;">
+      <input type="checkbox" name="remember-me" style="margin-right: 6px;">
+      로그인 유지
+    </label>
+
+    <button type="submit" class="btn-login">로그인</button>
+  </form>
+
+  <div class="links">
+    <a th:href="@{/member/signup}">아직 회원이 아니신가요?</a>
+  </div>
+</div>
+</body>
+</html>
