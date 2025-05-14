@@ -41,7 +41,8 @@
       const card = document.createElement('div');
       card.className = 'course-card';
       card.onclick = () => {
-        window.location.href = 'course-detail.html?id=' + course.courseId;
+        window.location.href = `/editor-recommand-courses/${course.courseId}`;
+
       };
 
       card.innerHTML = `

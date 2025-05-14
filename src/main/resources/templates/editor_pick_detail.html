@@ -2,48 +2,87 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=600, initial-scale=1.0"/>
-  <title>에디터 픽 코스 상세</title>
-  <link rel="stylesheet" th:href="@{/css/make_mycourses}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>사용자 코스 상세페이지</title>
+  <link rel="stylesheet" th:href="@{/css/course_detail.css}" />
 </head>
 <body>
-<div class="detail-container">
-  <!-- 대표 이미지 -->
-  <div class="detail-image" style="background-image:url('https://via.placeholder.com/600x320?text=대표사진');"></div>
 
-  <!-- 제목 -->
-  <h1 class="detail-title">한강 피크닉 코스 ❤️</h1>
-
-  <!-- 작성자 정보 -->
-  <div class="detail-author">
-    <div class="author-avatar" style="background-image:url('https://via.placeholder.com/48?text=프로필');"></div>
-    <div class="author-info">
-      <div class="author-name">홍길동</div>
-      <div class="author-meta">2024-06-01 · 에디터 추천</div>
-    </div>
+<div class="navbar">
+  <div class="navbar-left">
+    <span class="back-arrow">&#8592;</span>
+    <span class="logo">DateNow</span>
   </div>
-
-  <!-- 설명 -->
-  <div class="detail-desc">
-    <p>
-      한강에서 즐기는 피크닉 데이트 코스입니다.<br>
-      돗자리와 간단한 간식, 그리고 좋은 사람과 함께라면 최고의 하루가 될 거예요!<br>
-      <br>
-      <strong>추천 포인트:</strong>
-    <ul>
-      <li>탁 트인 한강 전망</li>
-      <li>자전거 대여 가능</li>
-      <li>근처 맛집 정보 제공</li>
-    </ul>
-    </p>
-  </div>
-
-  <!-- 기타 정보(예: 위치, 태그 등) -->
-  <div class="detail-extra">
-    <span class="tag">#피크닉</span>
-    <span class="tag">#한강</span>
-    <span class="tag">#데이트</span>
+  <div class="navbar-right">
+    <a href="#">나의 코스 만들기</a>
+    <a href="#">마이페이지</a>
+    <a href="#">로그아웃</a>
+    <span class="profile-icon"></span>
   </div>
 </div>
+<div class="course-detail-container">
+  <div class="course-header">
+    <img id="thumbnail" src="" alt="코스 썸네일" class="course-thumbnail" />
+  </div>
+  <div class="course-info">
+    <h1 id="courseTitle" class="course-title"></h1>
+    <p id="courseInstructor" class="course-instructor"></p>
+    <p id="courseDate" class="course-date"></p>
+    <div id="imageGallery" class="image-gallery"></div>
+    <div class="course-description">
+      <p id="courseDescription" class="course-description-text"></p>
+    </div>
+    <div id="placeList" class="place-list"></div>
+
+  </div>
+</div>
+
+<script>
+  const recommendId = [[${recommendId}]];
+
+  fetch(`/api/recommend-courses/${recommendId}`)
+  .then(res => res.json())
+  .then(data => {
+    const imageUrl = data.imageUrl && data.imageUrl.length > 0
+        ? data.imageUrl[0]
+        : "/image/bg_night.jpg";
+    document.getElementById("thumbnail").src = imageUrl;
+
+    document.getElementById("courseTitle").innerText = data.title;
+    document.getElementById("courseInstructor").innerText = `작성자: ${data.nickname}`;
+    document.getElementById("courseDate").innerText = `등록일: ${data.createAt.split("T")[0]}`;
+    document.getElementById("courseDescription").innerText = data.description;
+    const imageGallery = document.getElementById("imageGallery");
+    imageGallery.innerHTML = ""; // 초기화
+
+    if (data.imageUrl && data.imageUrl.length > 0) {
+      data.imageUrl.forEach(url => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "장소 이미지";
+        img.className = "gallery-image";
+
+        imageGallery.appendChild(img);
+      });
+    }
+
+    const placeList = document.getElementById("placeList");
+    placeList.innerHTML = "";
+    data.places.forEach(place => {
+      const div = document.createElement("div");
+      div.className = "place-card";
+      div.innerHTML = `
+    <h3>${place.title}</h3>
+    <p>${place.address}</p>
+  `;
+      placeList.appendChild(div);
+    });
+
+  })
+  .catch(err => {
+    console.error("코스 정보를 불러오는 데 실패했습니다.", err);
+  });
+</script>
 </body>
 </html>
+

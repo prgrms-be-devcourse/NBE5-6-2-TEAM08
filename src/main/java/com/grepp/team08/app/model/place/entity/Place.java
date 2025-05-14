@@ -19,16 +19,16 @@ public class Place extends BaseEntity {
     @Id
     private Long placeId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "course_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "course_id", nullable = true)
     private Course courseId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "editor_course_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "editor_course_id",nullable = true)
     private EditorCourse editorCourseId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "region_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
     private Region regionId;
 
     @Column(nullable = false, length = 255)

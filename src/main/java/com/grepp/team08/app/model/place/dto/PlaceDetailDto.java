@@ -1,0 +1,20 @@
+package com.grepp.team08.app.model.place.dto;
+
+import com.grepp.team08.app.model.place.entity.Place;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Data
+@Getter
+@Setter
+public class PlaceDetailDto {
+  String title;
+  String address;
+
+
+  public PlaceDetailDto(Place place) {
+    this.address = place.getAddress();
+    this.title = place.getPlaceName();
+  }
+}
