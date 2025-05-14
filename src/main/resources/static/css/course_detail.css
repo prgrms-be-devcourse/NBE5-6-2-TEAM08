@@ -1,0 +1,75 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #f7f8fa;
+  margin: 0;
+  padding: 0;
+}
+
+.course-detail-container {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 32px;
+}
+
+.course-header {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.course-thumbnail {
+  width: 200px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.course-info {
+  flex: 1;
+}
+
+.course-title {
+  font-size: 2rem;
+  margin: 0 0 8px 0;
+}
+
+.course-instructor, .course-rating {
+  color: #666;
+  margin: 4px 0;
+}
+
+.enroll-btn {
+  margin-top: 16px;
+  padding: 12px 32px;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.enroll-btn:hover {
+  background: #2563eb;
+}
+
+.course-description, .course-curriculum {
+  margin-bottom: 24px;
+}
+
+.course-description h2, .course-curriculum h2 {
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.course-curriculum ul {
+  padding-left: 20px;
+}
+.course-curriculum li {
+  margin-bottom: 6px;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1440, initial-scale=1.0"/>
+  <title>유저 메인페이지</title>
+  <link rel="stylesheet" th:href="@{/css/mainPage.css}" />
+</head>
+<body>
+<div class="navbar">
+  <div class="navbar-left">
+    <span class="back-arrow">&#8592;</span>
+    <span class="logo">DateNow</span>
+  </div>
+  <div class="navbar-right">
+    <a href="#">나의 코스 만들기</a>
+    <a href="#">마이페이지</a>
+    <a href="#">로그아웃</a>
+    <span class="profile-icon"></span>
+  </div>
+</div>
+
+<div class="main-content">
+  <!-- 에디터 픽 데이트 코스 섹션 -->
+  <section class="recommend-section">
+    <div class="section-title-row">
+      <h2 class="section-title">에디터 픽 데이트 코스</h2>
+      <a th:href="@{/editor-recommand-courses}" class="more-link">더보기 &gt;</a>
+    </div>
+    <div class="card-list" id="editor-pick-list"></div>
+  </section>
+
+  <!-- 추천 데이트 코스 섹션 -->
+  <section class="recommend-section">
+    <div class="section-title-row">
+      <h2 class="section-title">추천 데이트 코스</h2>
+      <a th:href="@{/recommend-courses}" class="more-link">더보기 &gt;</a>
+    </div>
+    <div class="card-list" id="recommend-list"></div>
+  </section>
+</div>
+
+<!-- JS 스크립트 링크 -->
+<script th:src="@{/js/mainPage.js}"></script>
+</body>
+</html>

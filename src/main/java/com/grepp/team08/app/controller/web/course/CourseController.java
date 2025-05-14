@@ -10,5 +10,9 @@ public class CourseController {
     public String courseComposition() {
         return "course_composition";
     }
+    @GetMapping("/editor-recommand-courses")
+    public String editorCourse(){ return "course_list";}
 
+    @GetMapping("/recommend-courses")
+    public String usercourse(){return "course_list_user";}
 }

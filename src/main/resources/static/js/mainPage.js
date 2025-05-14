@@ -1,0 +1,47 @@
+function renderCards(cardData, containerId, type) {
+  const cardList = document.getElementById(containerId);
+  cardList.innerHTML = '';
+
+  cardData.forEach(card => {
+    const title = card.title;
+    const author = type === 'admin' ? card.editorNickname : card.creatorNickname;
+    const imageUrl = card.imageurl || 'https://via.placeholder.com/260x160?text=No+Image';
+
+
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'course-card';
+
+    cardDiv.innerHTML = `
+      <div class="card-image" style="background-image:url('${imageUrl}');"></div>
+      <div class="card-title">${title}</div>
+      <div class="card-author">
+        <div class="author-avatar" style="background-image:url('/image/user.jpg');"></div>
+        <div class="author-name">${author}</div>
+      </div>
+    `;
+    cardList.appendChild(cardDiv);
+  });
+}
+document.addEventListener('DOMContentLoaded', function () {
+  fetch('/api')
+  .then(response => response.json())
+  .then(data => {
+    const adminCourses = data.adminlist;
+    const userCourses = data.userlist;
+
+    renderCards(adminCourses, 'editor-pick-list', 'admin');
+    renderCards(userCourses, 'recommend-list', 'user');
+  })
+  .catch(error => {
+    console.error('데이터 불러오기 실패:', error);
+  });
+  document.getElementById('editor-more').addEventListener('click', function (e) {
+    e.preventDefault();
+    window.location.href = '/editor-recommand-courses';
+  });
+
+  document.getElementById('user-more').addEventListener('click', function (e) {
+    e.preventDefault();
+    window.location.href = '/recommend-courses';
+  });
+});
