@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CourseRepository extends JpaRepository<RecommendCourse,Long> {
 
-
   List<RecommendCourse> findTop4ByOrderByCreatedAtDesc();
+    // 코스 저장
+    static void save(){}
 }

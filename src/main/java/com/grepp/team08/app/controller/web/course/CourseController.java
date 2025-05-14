@@ -1,14 +1,23 @@
 package com.grepp.team08.app.controller.web.course;
 
 import org.bouncycastle.math.raw.Mod;
+import com.grepp.team08.app.model.course.entity.Course;
+import com.grepp.team08.app.model.course.repository.CourseRepository;
+import com.grepp.team08.app.model.course.service.CourseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class CourseController {
 
+    private final CourseService courseService;
+
+    // 코스 구성 페이지 이동
     @GetMapping("/course_composition")
     public String courseComposition() {
         return "course_composition";
@@ -30,4 +39,17 @@ public class CourseController {
         model.addAttribute("recommendId",recommand_id);
         return"editor_pick_detail";
     }
+    // 나의 데이트 코스 저장 페이지 이동
+    @GetMapping("/make_mycourses")
+    public String makeMyCourses() {
+        return "make_mycourses";
+    }
+
+    // 내 데이트 코스에 저장 post 요청
+    @PostMapping("/make_mycourses")
+    public String regist(Course course) {
+//        courseService.registCourses(course.getTitle());
+        return null;
+    }
+
 }
