@@ -18,13 +18,13 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public void registCourses(CourseDto dto) {
-        try {
-            Course course = new Course();
-            course.setTitle("nana");  // 확정 아님
-            courseRepository.save(course);  // 저장
-        } catch (Exception e) {
-            throw new RuntimeException("코스 저장 중 오류 발생", e);
-        }
-    }
+//    public void registCourses(CourseDto dto) {
+//        try {
+//            Course course = new Course();
+//            course.setTitle("nana");  // 확정 아님
+//            courseRepository.save(course);  // 저장
+//        } catch (Exception e) {
+//            throw new RuntimeException("코스 저장 중 오류 발생", e);
+//        }
+//    }
 }
