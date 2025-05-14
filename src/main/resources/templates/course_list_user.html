@@ -48,7 +48,10 @@
         <img src="${course.imageurl}" alt="${course.title} 썸네일" />
         <div class="course-card-content">
           <div class="course-title">${course.title}</div>
+          <div class="card-author">
+            <div class="author-avatar" style="background-image:url('/image/user.jpg');"></div>
           <div class="course-instructor">사용자 명: ${course.creatorNickname}</div>
+          </div>
           <div class="course-desc">${course.description}</div>
         </div>
       `;

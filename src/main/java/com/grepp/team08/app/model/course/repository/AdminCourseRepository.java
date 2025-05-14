@@ -11,4 +11,5 @@ public interface AdminCourseRepository extends JpaRepository<EditorCourse,Long> 
 
   List<EditorCourse> findTop4ByOrderByCreatedAtDesc();
 
+  List<EditorCourse> findAllByActivatedTrue();
 }

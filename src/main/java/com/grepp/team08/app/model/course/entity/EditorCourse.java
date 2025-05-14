@@ -23,5 +23,7 @@ public class EditorCourse extends BaseEntity {
     private Member id;
     private String title;
     private String description;
+    //소프트 delete때문에
+    private Boolean activated =true;
 
 }
