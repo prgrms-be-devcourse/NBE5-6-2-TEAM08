@@ -1,5 +1,6 @@
 package com.grepp.team08.app.controller.web.member;
 
+import com.grepp.team08.app.controller.web.member.payload.SigninRequest;
 import com.grepp.team08.app.controller.web.member.payload.SignupRequest;
 import com.grepp.team08.app.model.auth.code.Role;
 import com.grepp.team08.app.model.member.dto.MemberDto;
@@ -22,6 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @GetMapping("/signin")
+    public String signin(Model model){
+        model.addAttribute("signinRequest", new SigninRequest());
+        return "signin";
+    }
 
     @GetMapping("/signup")
     public String signupForm(Model model) {
