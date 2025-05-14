@@ -45,6 +45,7 @@ public class MainPagePlaceApiController {
   @GetMapping("/recommend-courses/{recommend_id}")
   public ResponseEntity<?> recommendCourse(@PathVariable int recommend_id){
 
+
     return ResponseEntity.ok("d");
   }
 
