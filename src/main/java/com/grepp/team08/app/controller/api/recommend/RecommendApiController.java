@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,16 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/llm/recommend")
+@Validated
 public class RecommendApiController {
 
     private final RecommendService recommendService;
 
     @PostMapping("/course")
-    public ResponseEntity<ApiResponse<List<PlaceDto>>> dateCourse(
-        @Valid @RequestBody RecommendDto dto) {
+    public ResponseEntity<List<PlaceDto>> dateCourse(
+        @Validated @RequestBody RecommendDto dto) {
 
-        List<PlaceDto> list = recommendService.recommendDateCourse(dto);
-        return ResponseEntity.ok(ApiResponse.success(list));
+        List<PlaceDto> places = recommendService.recommendDateCourse(dto);
+        return ResponseEntity.ok(places);
     }
 
 }

@@ -191,4 +191,63 @@ body {
     padding: 10px 18px;
     font-size: 15px;
   }
-} 
+}
+
+/* 1) Flex 로 가로 나열 + 줄바꿈 */
+.category-list,
+.address-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 2) 공통 버튼 스타일 */
+.category-btn,
+.address-btn {
+  padding: 8px 16px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  writing-mode: horizontal-tb;   /* 가로 텍스트 보장 */
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* 3) 선택 시 강조 */
+.category-btn.selected,
+.address-btn.selected {
+  border-color: #007bff;
+  background-color: #cce5ff;
+}
+
+/* 4) 개별 매핑 색상 (data-code / data-dong 으로 지정) */
+/* 카테고리 */
+.category-btn[data-code="음식점"]  { background-color: #ffadad; }
+.category-btn[data-code="카페"]    { background-color: #ffd6a5; }
+.category-btn[data-code="힐링"]    { background-color: #fdffb6; }
+.category-btn[data-code="자연"]    { background-color: #caffbf; }
+.category-btn[data-code="문화시설"]{ background-color: #9bf6ff; }
+.category-btn[data-code="실내"]    { background-color: #a0c4ff; }
+.category-btn[data-code="야경"]    { background-color: #bdb2ff; }
+.category-btn[data-code="드라이브"]{ background-color: #ffc6ff; }
+.category-btn[data-code="숙박"]    { background-color: #fffffc; }
+.category-btn[data-code="관광명소"]{ background-color: #d0f4de; }
+
+/* 동(주소) */
+/* 원하는 색으로 바꿔 사용하세요 */
+.address-btn[data-dong="압구정동"]{ background-color: #ffe066; }
+.address-btn[data-dong="신사동"]  { background-color: #fab1a0; }
+.address-btn[data-dong="청담동"]  { background-color: #ff7675; }
+.address-btn[data-dong="논현동"]  { background-color: #fd79a8; }
+.address-btn[data-dong="삼성동"]  { background-color: #74b9ff; }
+.address-btn[data-dong="역삼동"]  { background-color: #a29bfe; }
+.address-btn[data-dong="대치동"]  { background-color: #ffeaa7; }
+.address-btn[data-dong="도곡동"]  { background-color: #55efc4; }
+.address-btn[data-dong="개포동"]  { background-color: #81ecec; }
+.address-btn[data-dong="일원동"]  { background-color: #fdcb6e; }
+.address-btn[data-dong="수서동"]  { background-color: #e17055; }
+.address-btn[data-dong="자곡동"]  { background-color: #00b894; }
+.address-btn[data-dong="세곡동"]  { background-color: #0984e3; }
+.address-btn[data-dong="율현동"]  { background-color: #d63031; }
