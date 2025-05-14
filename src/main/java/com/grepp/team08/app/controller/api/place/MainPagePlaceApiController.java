@@ -1,7 +1,10 @@
 package com.grepp.team08.app.controller.api.place;
 
+import com.grepp.team08.app.model.course.dto.CourseDetailDto;
 import com.grepp.team08.app.model.course.dto.CourseDto;
 import com.grepp.team08.app.model.course.dto.EditorCourseDto;
+import com.grepp.team08.app.model.course.dto.EditorDetailCourseDto;
+import com.grepp.team08.app.model.course.entity.EditorCourse;
 import com.grepp.team08.app.model.place.dto.mainpage.AdminUserTopListDto;
 import com.grepp.team08.app.model.place.service.PlaceMainPageService;
 import java.util.List;
@@ -43,10 +46,18 @@ public class MainPagePlaceApiController {
 
   }
   @GetMapping("/recommend-courses/{recommend_id}")
-  public ResponseEntity<?> recommendCourse(@PathVariable int recommend_id){
+  public ResponseEntity<?> recommendCourse(@PathVariable Long recommend_id){
 
+    CourseDetailDto  course = placeMainPageService.userDetailPlace(recommend_id);
 
-    return ResponseEntity.ok("d");
+    return ResponseEntity.ok(course);
+  }
+  @GetMapping("/editor-recommand-courses/{recommand_id}")
+  public ResponseEntity<?> editorDetailCourse(@PathVariable Long recommand_id){
+
+    EditorDetailCourseDto course = placeMainPageService.editorDetailPlace(recommand_id);
+
+    return ResponseEntity.ok(course);
   }
 
 

@@ -6,10 +6,20 @@ function renderCards(cardData, containerId, type) {
     const title = card.title;
     const author = type === 'admin' ? card.editorNickname : card.creatorNickname;
     const imageUrl = card.imageurl || 'https://via.placeholder.com/260x160?text=No+Image';
-
+    const courseId = card.courseId;
 
     const cardDiv = document.createElement('div');
     cardDiv.className = 'course-card';
+    cardDiv.style.cursor = 'pointer';
+
+
+    cardDiv.addEventListener('click', () => {
+      if (type === 'admin') {
+        window.location.href = `/editor-recommand-courses/${courseId}`;
+      } else {
+        window.location.href = `/recommend-courses/${courseId}`;
+      }
+    });
 
     cardDiv.innerHTML = `
       <div class="card-image" style="background-image:url('${imageUrl}');"></div>
@@ -22,6 +32,7 @@ function renderCards(cardData, containerId, type) {
     cardList.appendChild(cardDiv);
   });
 }
+
 document.addEventListener('DOMContentLoaded', function () {
   fetch('/api')
   .then(response => response.json())

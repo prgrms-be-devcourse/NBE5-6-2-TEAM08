@@ -23,12 +23,12 @@ public class Image extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "recommend_course_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recommend_course_id",nullable = true)
     private RecommendCourse recommendCourseId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "editor_course_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "editor_course_id",nullable = true)
     private EditorCourse editorCourseId;
 
     @Column(nullable = false, length = 255)

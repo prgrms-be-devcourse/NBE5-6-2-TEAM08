@@ -21,4 +21,8 @@ public class BaseEntity {
     public void unActivated(){
         this.activated = false;
     }
+
+    public LocalDateTime getCreatedAt(){
+        return createdAt;
+    }
 }
