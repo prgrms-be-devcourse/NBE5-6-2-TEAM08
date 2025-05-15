@@ -1,4 +1,4 @@
-package com.grepp.team08.app.controller.web.course;
+package com.grepp.team08.app.controller.api.course;
 
 import com.grepp.team08.app.model.course.dto.MyDateCourseDto;
 import com.grepp.team08.app.model.course.service.CourseService;
