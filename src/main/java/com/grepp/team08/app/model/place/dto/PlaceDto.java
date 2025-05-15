@@ -1,9 +1,9 @@
 package com.grepp.team08.app.model.place.dto;
 
-public record PlaceDto(
-    String name,
-    String address,
-    String description
-) {
+import java.util.List;
 
-}
+public record PlaceDto(
+    String placeName,
+    String address,
+    String reason
+) {}
