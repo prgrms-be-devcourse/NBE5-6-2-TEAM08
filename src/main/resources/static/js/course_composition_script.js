@@ -418,6 +418,6 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.setItem('selectedPlaces', JSON.stringify(selectedPlaces));
 
         // make_mycourses 페이지로 이동
-        window.location.href = '/make_mycourses';
+        window.location.href = '/make-mycourses';
     });
 });

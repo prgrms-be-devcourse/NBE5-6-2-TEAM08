@@ -63,10 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const moodText = moods.map(code => moodDescriptions[code]).join("하고 ");
 
-    // 날짜를 세션에 저장
-    sessionStorage.setItem("selectedDate", date);
-
-    // 👉 코스 편집 페이지로 이동하면서 분위기 전달
-    window.location.href = `/course_composition?mood=${encodeURIComponent(moodText)}`;
+    // 코스 편집 페이지로 이동
+    window.location.href = `/course-composition?mood=${encodeURIComponent(moodText)}`;
   });
 });
