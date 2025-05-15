@@ -2,6 +2,7 @@ package com.grepp.team08.app.model.course.dto;
 
 import com.grepp.team08.app.model.course.entity.Course;
 import com.grepp.team08.app.model.member.entity.Member;
+import com.grepp.team08.app.model.place.dto.PlaceDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Data;
@@ -23,12 +24,5 @@ public class RegistMyCourseDto {
         course.setDescription(description);
         course.setId(id);
         return course;
-    }
-
-    @Data
-    public static class PlaceDto {
-        private String name;
-        private String address;
-        private Integer rank;
     }
 }
