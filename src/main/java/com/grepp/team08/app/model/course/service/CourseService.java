@@ -1,6 +1,6 @@
 package com.grepp.team08.app.model.course.service;
 
-import com.grepp.team08.app.model.course.dto.MyDateCourseDto;
+import com.grepp.team08.app.model.course.dto.CourseDto;
 import com.grepp.team08.app.model.course.entity.Course;
 import com.grepp.team08.app.model.course.repository.MyCourseRepository;
 import com.grepp.team08.app.model.member.entity.Member;

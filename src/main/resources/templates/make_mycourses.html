@@ -67,12 +67,12 @@
         </div>
       </div>
     </div>
-    <form class="mycourse-form">
+    <form class="mycourse-form" method="post" action="/make_mycourses">
       <label>나의 데이트 코스 제목을 입력해주세요.</label>
-      <input type="text" class="course-title-input" placeholder="제목을 입력해주세요">
+      <input type="text" name="title" class="course-title-input" placeholder="제목을 입력해주세요">
       <label>나의 데이트 코스 소개해주세요!</label>
       <textarea class="course-desc-input" placeholder="글자 수 최소 30자, 최대 1000자 입력 가능합니다."></textarea>
-      <button type="submit" class="save-btn" formmethod="post" formaction="/make_mycourses">내 데이트 코스에 저장</button>
+      <button type="submit" name="description" class="save-btn">내 데이트 코스에 저장</button>
     </form>
   </div>
   <script src="/js/make_mycourses.js"></script>
