@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>사용자 코스 상세페이지</title>
+  <title>관리자 코스 상세페이지</title>
   <link rel="stylesheet" th:href="@{/css/course_detail.css}" />
 </head>
 <body>
+
 <div th:replace="fragments/header :: header"></div>
 <div class="course-detail-container">
   <div class="course-header">
@@ -28,7 +29,7 @@
 <script>
   const recommendId = [[${recommendId}]];
 
-  fetch(`/api/recommend-courses/${recommendId}`)
+  fetch(`/api/editor-recommand-courses/${recommendId}`)
   .then(res => res.json())
   .then(data => {
     const imageUrl = data.imageUrl && data.imageUrl.length > 0
@@ -73,4 +74,3 @@
 </script>
 </body>
 </html>
-

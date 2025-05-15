@@ -1,6 +1,11 @@
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #f7f7f7;
+}
 
 .navbar {
-  width: 100vw;
+  width: 100%;
   height: 56px;
   background: #ffeaf6;
   display: flex;
@@ -8,9 +13,14 @@
   justify-content: space-between;
   padding: 0 32px;
   box-sizing: border-box;
-
 }
 .navbar-left {
+  display: flex;
+  align-items: center;
+}
+.logo-link {
+  text-decoration: none;   /* 밑줄 제거 */
+  color: inherit;          /* 파란색 제거 */
   display: flex;
   align-items: center;
 }
@@ -24,19 +34,16 @@
   font-weight: bold;
   color: #ff4fa0;
   font-size: 18px;
-  background: #ffeaf6;
+  background: #fff0fa;
   padding: 4px 12px;
   border-radius: 4px;
 }
 .navbar-right a {
-  display: flex;
-
   color: #ff4fa0;
   text-decoration: none;
   margin: 0 10px;
   font-size: 15px;
   font-weight: 500;
-  justify-content: center;
 }
 .profile-icon {
   display: inline-block;
