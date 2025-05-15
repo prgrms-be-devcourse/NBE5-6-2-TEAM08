@@ -4,46 +4,6 @@ body {
   background: #fff;
 }
 
-.navbar {
-  width: 100vw;
-  height: 56px;
-  background: #ffeaf6;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-  box-sizing: border-box;
-}
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-.back-arrow {
-  font-size: 22px;
-  color: #ff4fa0;
-  margin-right: 8px;
-  cursor: pointer;
-}
-.logo {
-  font-weight: bold;
-  color: #ff4fa0;
-  font-size: 18px;
-  background: #fff0fa;
-  padding: 4px 12px;
-  border-radius: 4px;
-}
-.navbar-right a {
-  color: #ff4fa0;
-  text-decoration: none;
-  margin: 0 10px;
-  font-size: 15px;
-  font-weight: 500;
-}
-body {
-  margin: 0;
-  font-family: 'Noto Sans KR', sans-serif;
-  background: #fff;
-}
 .profile-icon {
   display: inline-block;
   width: 28px;

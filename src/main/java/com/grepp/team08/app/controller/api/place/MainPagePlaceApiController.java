@@ -1,5 +1,6 @@
 package com.grepp.team08.app.controller.api.place;
 
+import com.grepp.team08.app.model.auth.domain.Principal;
 import com.grepp.team08.app.model.course.dto.CourseDetailDto;
 import com.grepp.team08.app.model.course.dto.CourseDto;
 import com.grepp.team08.app.model.course.dto.EditorCourseDto;
@@ -7,13 +8,21 @@ import com.grepp.team08.app.model.course.dto.EditorDetailCourseDto;
 import com.grepp.team08.app.model.course.entity.EditorCourse;
 import com.grepp.team08.app.model.place.dto.mainpage.AdminUserTopListDto;
 import com.grepp.team08.app.model.place.service.PlaceMainPageService;
+import com.grepp.team08.app.model.review.dto.RequestReviewDto;
+import com.grepp.team08.app.model.review.dto.ResponseReviewDto;
+import com.grepp.team08.app.model.review.service.ReviewService;
+import com.grepp.team08.infra.response.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,6 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainPagePlaceApiController {
 
   private final PlaceMainPageService placeMainPageService;
+  private final ReviewService reviewService;
+
 
   @GetMapping
   public ResponseEntity<?> mainPageList(){
@@ -60,10 +71,28 @@ public class MainPagePlaceApiController {
 
     return ResponseEntity.ok(course);
   }
-//  @PostMapping("/recommend-courses/{recommend_id}")
-//  public ResponseEntity<?> reviewUpload(@PathVariable Long recommend_id){
-//
-//  }
+
+  //리뷰 보여주기
+  @GetMapping("/recommend-courses/{recommendId}/reviews")
+  public ResponseEntity<?> reviewAll(@PathVariable Long recommendId){
+
+    List<ResponseReviewDto> reviewlist = reviewService.reviewlist(recommendId);
+
+    return ResponseEntity.ok(reviewlist);
+
+  }
+  @PostMapping("/recommend-courses/{recommend_id}")
+  public ResponseEntity<?> reviewUpload(@PathVariable Long recommend_id,@RequestBody RequestReviewDto dto,@AuthenticationPrincipal
+      Principal principal){
+
+
+    String userNum = principal.getUsername();
+
+    reviewService.reviewUpload(recommend_id,dto,userNum);
+
+    return ResponseEntity.ok(ApiResponse.success("리뷰 등록이 되었습니다"));
+
+  }
 
 
 }
