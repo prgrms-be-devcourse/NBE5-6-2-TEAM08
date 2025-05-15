@@ -5,17 +5,26 @@ import com.grepp.team08.app.model.course.entity.Course;
 import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import com.grepp.team08.app.model.course.repository.RecommendCourseRepository;
 import com.grepp.team08.app.model.course.repository.RegistMyCourseRepository;
+import com.grepp.team08.app.model.image.entity.Image;
+import com.grepp.team08.app.model.image.repository.ImageRepository;
 import com.grepp.team08.app.model.member.entity.Member;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.io.IOException;
+import java.util.UUID;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import com.grepp.team08.app.model.course.repository.MyCourseRepository;
 import com.grepp.team08.app.model.place.dto.PlaceSaveDto;
 import com.grepp.team08.app.model.place.entity.Place;
 import com.grepp.team08.app.model.place.repository.PlaceRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -27,6 +36,24 @@ public class CourseService {
     private final PlaceRepository placeRepository;
     private final RegistMyCourseRepository courseRepository;
     private final RecommendCourseRepository recommendCourseRepository;
+    private final ImageRepository imageRepository;
+
+    @Value("${file.upload.path}")
+    private String uploadPath;
+
+    @PostConstruct
+    public void init() {
+        // src/main/resources/static/image 디렉토리 사용
+        String projectRoot = System.getProperty("user.dir");
+        this.uploadPath = projectRoot + File.separator + "src" + File.separator + "main" + 
+                         File.separator + "resources" + File.separator + "static" + 
+                         File.separator + "image";
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+        log.info("File upload path initialized to: {}", uploadPath);
+    }
 
     public void saveCourse(MyDateCourseDto dto, Member member) {
         // Course 저장
@@ -51,24 +78,64 @@ public class CourseService {
     }
 
     public Course getCourseById(Long courseId) {
-        return courseRepository.findById(courseId)
-            .orElseThrow(() -> new EntityNotFoundException("Course not found with id: " + courseId));
+        log.info("Finding course with ID: {}", courseId);
+        Course course = courseRepository.findById(courseId)
+            .orElseThrow(() -> {
+                log.error("Course not found with id: {}", courseId);
+                return new EntityNotFoundException("Course not found with id: " + courseId);
+            });
+        log.info("Found course: {}", course);
+        return course;
     }
 
     public List<Course> getCoursesByMember(Member member) {
         return courseRepository.findAllByIdOrderByCreatedAtDesc(member);
     }
 
-    public void registToRecommendCourse(Long courseId) {
+    @Transactional
+    public void registToRecommendCourse(Long courseId, List<MultipartFile> images) {
         Course course = getCourseById(courseId);
 
-        // 이미 추천 코스로 등록되어 있는지 확인
+
+        // Check if course is already registered as a recommend course
         if (recommendCourseRepository.existsByCourseId(course)) {
-            throw new IllegalStateException("이미 추천 코스로 등록되어 있습니다.");
+            throw new IllegalStateException("이미 추천 코스로 등록된 코스입니다.");
         }
 
+
+        // 추천 코스 생성 및 저장
         RecommendCourse recommendCourse = new RecommendCourse();
         recommendCourse.setCourseId(course);
         recommendCourseRepository.save(recommendCourse);
+
+        // 이미지 처리
+        for (MultipartFile imageFile : images) {
+            try {
+                String originalFilename = imageFile.getOriginalFilename();
+                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                String newFileName = UUID.randomUUID().toString() + extension;
+                String savePath = uploadPath + File.separator + newFileName;
+                log.info("Saving file to: {}", savePath);
+
+                // 파일 저장
+                File destFile = new File(savePath);
+                imageFile.transferTo(destFile);
+
+                // 이미지 엔티티 저장 - 웹 접근 경로로 저장
+                Image image = new Image();
+                image.setEditorCourseId(null);
+                image.setRecommendCourseId(recommendCourse);
+                image.setOriginFileName(originalFilename);
+                image.setRenameFileName(newFileName);
+                // 웹에서 접근 가능한 경로로 저장
+                image.setSavePath("/image/" + newFileName);
+                image.setType(imageFile.getContentType());
+
+                imageRepository.save(image);
+            } catch (IOException e) {
+                log.error("Image upload failed", e);
+                throw new RuntimeException("이미지 저장에 실패했습니다: " + e.getMessage());
+            }
+        }
     }
 }

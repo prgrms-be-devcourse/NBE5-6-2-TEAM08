@@ -80,7 +80,9 @@ public class SecurityConfig {
                                   .requestMatchers(PUT, "/api/**").permitAll()
                                   .requestMatchers(GET, "/member/signup", "/member/signup/**", "/member/signin").permitAll()
                                   .requestMatchers(POST, "/member/signin", "/member/signup").permitAll()
-//                                .anyRequest().permitAll() // 모두 승인하려면 해당 줄 주석 해제, .anyRequest().authenticated()는 주석처리
+                                  .requestMatchers(GET, "/recommend-course-regist", "/").permitAll()
+                                  .requestMatchers(POST, "/recommend-course-regist").permitAll()  // POST 요청도 허용
+                                  //.anyRequest().permitAll() // 모두 승인하려면 해당 줄 주석 해제, .anyRequest().authenticated()는 주석처리
                                   .anyRequest().authenticated() //
             )
             .formLogin((form) -> form
