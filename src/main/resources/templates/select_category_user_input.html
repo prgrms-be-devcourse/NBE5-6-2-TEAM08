@@ -32,24 +32,13 @@
       </div>
       <div class="form-group">
         <label>카테고리</label>
-        <div class="category-list"
-             th:each="cat : ${categories}">
+        <div class="category-list" th:each="mood : ${moods}">
           <button class="category-btn"
-                  th:attr="data-code=${cat}"
-                  th:text="${cat}">카테고리명</button>
+                  th:attr="data-code=${mood.name()}"
+                  th:text="${mood.description}">분위기명</button>
         </div>
       </div>
 
-      <!-- 주소(동) 순회 -->
-      <div class="form-group">
-        <label>주소</label>
-        <div class="address-list"
-             th:each="reg : ${regions}">
-          <button class="address-btn"
-                  th:attr="data-dong=${reg}"
-                  th:text="${reg}">동명</button>
-        </div>
-      </div>
       <button class="ai-btn">AI 추천코스 받아보기</button>
       <!-- ↓ 여기에 결과가 렌더링 됩니다 -->
       <div id="results" class="results-list"></div>

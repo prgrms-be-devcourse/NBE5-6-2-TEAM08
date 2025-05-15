@@ -12,8 +12,7 @@ public class DataInitializer {
     private final DataInitializeService dataInitializeService;
 
     @EventListener(ApplicationReadyEvent.class)
-    public void initHotPlaceVector(){
-        dataInitializeService.initializeHotPlaceVector();
-        System.out.println("HotPlace 벡터 초기화 트리거됨 (ApplicationReadyEvent).");
+    public void init(){
+        dataInitializeService.initializeVector();
     }
 }

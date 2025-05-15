@@ -43,55 +43,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3) 주소(단일) 선택 로직
-  let selectedRegion = null;
-  document.querySelectorAll('.address-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      // 이전 선택 해제
-      document.querySelectorAll('.address-btn.selected')
-      .forEach(b => b.classList.remove('selected'));
-      // 새로 선택
-      selectedRegion = btn.dataset.dong;
-      btn.classList.add('selected');
-    });
-  });
-
-  const aiBtn = document.querySelector('.ai-btn');
-  const resultsContainer = document.getElementById('results');
-  aiBtn?.addEventListener('click', () => {
+  document.querySelector('.ai-btn')?.addEventListener('click', () => {
     if (selectedCats.size === 0) return alert('카테고리를 선택해주세요!');
-    if (!selectedRegion)         return alert('지역을 선택해주세요!');
 
-    const payload = {
-      categories: [...selectedCats],
-      dong: selectedRegion
+    const moods = [...selectedCats];
+    const moodDescriptions = {
+      ROMANTIC: "로맨틱한",
+      COZY: "아늑한",
+      TRENDY: "트렌디한",
+      COMFORTABLE: "편안한",
+      QUIET: "조용한",
+      LIVELY: "활기찬",
+      LUXURIOUS: "고급스러운",
+      UNIQUE: "독특한"
     };
 
-    fetch('/llm/recommend/course', {   // (3) 여 경로 꼭 확인
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(places => {                    // (4) 래퍼 없이 배열 반환 가정
-      resultsContainer.innerHTML = '';
-      places.forEach(place => {
-        const card = document.createElement('div');
-        card.className = 'place-item';
+    const moodText = moods.map(code => moodDescriptions[code]).join("하고 ");
 
-        card.innerHTML = `
-    <h4 class="cat">${place.categories}</h4>
-    <h3>${place.name}</h3>
-    <p class="address">${place.address}</p>
-    <p class="desc">${place.description}</p>
-  `;
-
-        resultsContainer.appendChild(card);
-      });
-    })
-    .catch(err => {
-      console.error(err);
-      alert('오류 발생: ' + err.message);
-    });
+    // 👉 코스 편집 페이지로 이동하면서 분위기 전달
+    window.location.href = `/course_composition?mood=${encodeURIComponent(moodText)}`;
   });
 });

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class CourseController {
 
     // 코스 구성 페이지 이동
     @GetMapping("/course_composition")
-    public String courseComposition() {
+    public String courseComposition(@RequestParam(required = false) String mood, Model model) {
         return "course_composition";
     }
 
