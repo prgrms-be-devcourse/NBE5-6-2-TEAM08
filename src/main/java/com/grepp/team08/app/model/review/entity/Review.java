@@ -11,13 +11,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+
 
 @Entity
 @Getter
 @Setter
-@ToString
+@NoArgsConstructor
 public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,11 @@ public class Review extends BaseEntity {
     private String content;
     private int star;
 
-
-
+    public Review(RecommendCourse recommendCourseId, Member id,String content,
+        int star) {
+        this.content = content;
+        this.id = id;
+        this.recommendCourseId = recommendCourseId;
+        this.star = star;
+    }
 }
