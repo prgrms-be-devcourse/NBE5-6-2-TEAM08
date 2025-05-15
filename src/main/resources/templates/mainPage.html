@@ -7,23 +7,7 @@
   <link rel="stylesheet" th:href="@{/css/mainPage.css}" />
 </head>
 <body>
-<div class="navbar">
-  <div class="navbar-left">
-    <span class="back-arrow">&#8592;</span>
-    <span class="logo">DateNow</span>
-  </div>
-  <div class="navbar-right">
-    <a href="#">나의 코스 만들기</a>
-    <a href="#">마이페이지</a>
-    <form th:action="@{/logout}" method="post" style="display:inline;">
-      <button type="submit" style="background:none; border:none; padding:0; font:inherit; color:inherit; cursor:pointer;">
-        로그아웃
-      </button>
-    </form>
-    <span class="profile-icon"></span>
-  </div>
-</div>
-
+<div th:replace="fragments/header :: header"></div>
 <div class="main-content">
   <!-- 에디터 픽 데이트 코스 섹션 -->
   <section class="recommend-section">
@@ -44,7 +28,9 @@
   </section>
 </div>
 
+
 <!-- JS 스크립트 링크 -->
 <script th:src="@{/js/mainPage.js}"></script>
 </body>
+
 </html>

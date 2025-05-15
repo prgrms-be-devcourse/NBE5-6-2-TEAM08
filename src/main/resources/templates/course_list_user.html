@@ -7,18 +7,7 @@
   <link rel="stylesheet" th:href="@{/css/course_list.css}" />
 </head>
 <body>
-<div class="navbar">
-  <div class="navbar-left">
-    <span class="back-arrow">&#8592;</span>
-    <span class="logo">DateNow</span>
-  </div>
-  <div class="navbar-right">
-    <a href="#">나의 코스 만들기</a>
-    <a href="#">마이페이지</a>
-    <a href="#">로그아웃</a>
-    <span class="profile-icon"></span>
-  </div>
-</div>
+<div th:replace="fragments/header :: header"></div>
 <div class="course-list-container">
   <h1>사용자픽 코스 목록</h1>
   <div class="course-list" id="courseList">
@@ -48,7 +37,10 @@
         <img src="${course.imageurl}" alt="${course.title} 썸네일" />
         <div class="course-card-content">
           <div class="course-title">${course.title}</div>
+          <div class="card-author">
+            <div class="author-avatar" style="background-image:url('/image/user.jpg');"></div>
           <div class="course-instructor">사용자 명: ${course.creatorNickname}</div>
+          </div>
           <div class="course-desc">${course.description}</div>
         </div>
       `;

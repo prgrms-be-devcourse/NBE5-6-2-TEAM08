@@ -77,7 +77,7 @@ public class PlaceMainPageService {
   }
   @Transactional
   public List<EditorCourseDto> adminPageList() {
-    List<EditorCourse> adminPlace = adminCourseRepository.findAll();
+    List<EditorCourse> adminPlace = adminCourseRepository.findAllByActivatedTrue();
     List<EditorCourseDto> adminDto = adminPlace.stream()
         .map(course -> {
           Image img = imageRepository.findFirstByEditorCourseId(course)
