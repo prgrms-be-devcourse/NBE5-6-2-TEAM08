@@ -1,5 +1,6 @@
 package com.grepp.team08.app.model.member.service;
 
+import com.grepp.team08.app.controller.web.member.payload.MemberUpdateRequest;
 import com.grepp.team08.app.model.auth.code.Role;
 import com.grepp.team08.app.model.member.dto.MemberDto;
 import com.grepp.team08.app.model.member.entity.Member;
@@ -49,5 +50,23 @@ public class MemberService {
 
     }
 
+    public Member findByUserId(String userId) {
+        return memberRepository.findByUserId(userId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+    }
 
+    @Transactional
+    public void updateMember(String userId, MemberUpdateRequest request) {
+        Member member = findByUserId(userId);
+
+        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+            member.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+        member.setPhone(request.getPhone());
+        member.setEmail(request.getEmail());
+        member.setNickname(request.getNickname());
+
+        log.info("변경된 회원 정보: {}", member);
+        memberRepository.save(member);
+    }
 }
