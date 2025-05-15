@@ -1,7 +1,9 @@
 package com.grepp.team08.app.controller.api.member;
 
+import com.grepp.team08.app.controller.web.member.payload.MemberUpdateRequest;
 import com.grepp.team08.app.controller.web.member.payload.SignupRequest;
 import com.grepp.team08.app.model.auth.code.Role;
+import com.grepp.team08.app.model.auth.domain.Principal;
 import com.grepp.team08.app.model.member.dto.MemberDto;
 import com.grepp.team08.app.model.member.repository.MemberRepository;
 import com.grepp.team08.app.model.member.service.MemberService;
@@ -13,11 +15,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,6 +66,18 @@ public class MemberApiController {
         return ResponseEntity
             .status(ResponseCode.OK.status())
             .body(ApiResponse.success(Map.of("message", "회원가입이 완료되었습니다.")));
+    }
+
+    @PutMapping("/edit/{user_id}")
+    public ResponseEntity<ApiResponse<?>> updateMember(
+        @PathVariable("user_id") String userId,
+        @RequestBody MemberUpdateRequest request) {
+        log.info("PUT 요청 도착: userId = {}", userId);
+
+        memberService.updateMember(userId, request);
+        return ResponseEntity
+            .status(ResponseCode.OK.status())
+            .body(ApiResponse.success(Map.of("message", "회원정보가 성공적으로 수정되었습니다.")));
     }
 
 }

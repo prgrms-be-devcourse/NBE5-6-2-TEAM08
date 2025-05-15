@@ -2,6 +2,7 @@ package com.grepp.team08.infra.config;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,9 +74,10 @@ public class SecurityConfig {
 //            .csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
             .authorizeHttpRequests(
                 (requests) -> requests
-                                  .requestMatchers(GET, "/assets/**", "/download/**").permitAll()
+                                  .requestMatchers(GET, "/css/**", "/js/**", "/images/**").permitAll()
                                   .requestMatchers(GET, "/api/**", "/api/ai/**").permitAll()
                                   .requestMatchers(POST, "/api/**").permitAll()
+                                  .requestMatchers(PUT, "/api/**").permitAll()
                                   .requestMatchers(GET, "/member/signup", "/member/signup/**", "/member/signin").permitAll()
                                   .requestMatchers(POST, "/member/signin", "/member/signup").permitAll()
 //                                .anyRequest().permitAll() // 모두 승인하려면 해당 줄 주석 해제, .anyRequest().authenticated()는 주석처리

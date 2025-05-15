@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelector('.ai-btn')?.addEventListener('click', () => {
+    const date = document.getElementById('dateInput')?.value;
+    if (!date) return alert('날짜를 선택해주세요.');
     if (selectedCats.size === 0) return alert('카테고리를 선택해주세요!');
 
     const moods = [...selectedCats];
@@ -60,7 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const moodText = moods.map(code => moodDescriptions[code]).join("하고 ");
 
+    // 날짜를 세션에 저장
+    sessionStorage.setItem("selectedDate", date);
+
     // 👉 코스 편집 페이지로 이동하면서 분위기 전달
-    window.location.href = `/course_composition?mood=${encodeURIComponent(moodText)}`;
+    window.location.href = `/course-composition?mood=${encodeURIComponent(moodText)}`;
   });
 });

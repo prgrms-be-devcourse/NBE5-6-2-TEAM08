@@ -9,6 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (moodText) {
         fetchRecommendations(moodText); // 2번 코드 호출
     }
+
+    const selectedDate = sessionStorage.getItem('selectedDate');
+    if (selectedDate) {
+        const dateText = document.getElementById('selectedDateText');
+        if (dateText) {
+            dateText.textContent = selectedDate;
+        }
+    }
 });
 
 function fetchRecommendations(moodText) {
@@ -392,24 +400,53 @@ document.addEventListener('DOMContentLoaded', function() {
         // 선택된 장소들의 정보를 가져옴
         const selectedPlaces = [];
         const courseItems = document.querySelectorAll('.course-item');
+        const title = document.getElementById('courseTitle')?.value.trim();
+        const description = document.getElementById('courseDescription')?.value.trim();
+        const date = sessionStorage.getItem('selectedDate');
+
+        if (!title || !description) {
+            alert("제목과 소개글을 모두 입력해주세요.");
+            return;
+        }
+
+        if (courseItems.length === 0) {
+            alert('최소 한 개 이상의 장소를 선택해주세요.');
+            return;
+        }
 
         courseItems.forEach((item, index) => {
             selectedPlaces.push({
-                name: item.querySelector('.place-info h4').textContent,
+                placeName: item.querySelector('.place-info h4').textContent,
                 address: item.querySelector('.place-info p').textContent,
                 rank: index + 1
             });
+        });
+
+        const payload = {
+            title,
+            description,
+            date,
+            places: selectedPlaces
+        };
+
+        fetch('/api/course/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.ok ? res.text() : Promise.reject(res))
+        .then(msg => {
+            // 코스 저장 성공 시 바로 메인 페이지로 이동
+            window.location.href = '/';
+        })
+        .catch(err => {
+            console.error('코스 저장 실패:', err);
+            alert('코스 저장 중 오류가 발생했습니다.');
         });
 
         if (selectedPlaces.length === 0) {
             alert('최소 한 개 이상의 장소를 선택해주세요.');
             return;
         }
-
-        // 선택된 장소들의 정보를 세션 스토리지에 저장
-        sessionStorage.setItem('selectedPlaces', JSON.stringify(selectedPlaces));
-
-        // make_mycourses 페이지로 이동
-        window.location.href = '/make_mycourses';
     });
 });

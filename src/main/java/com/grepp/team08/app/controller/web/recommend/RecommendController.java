@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RecommendController {
 
-    @GetMapping("/api/recommend-course")
+    @GetMapping("/recommend-course")
     public String recommend(Model model) {
         model.addAttribute("moods", Mood.values());
         return "select_category_user_input";
-//        return "course_composition";
     }
 }
