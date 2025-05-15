@@ -73,7 +73,7 @@ public class SecurityConfig {
 //            .csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
             .authorizeHttpRequests(
                 (requests) -> requests
-                                  .requestMatchers(GET, "/assets/**", "/download/**").permitAll()
+                                  .requestMatchers(GET, "/css/**", "/js/**", "/images/**").permitAll()
                                   .requestMatchers(GET, "/api/**", "/api/ai/**").permitAll()
                                   .requestMatchers(POST, "/api/**").permitAll()
                                   .requestMatchers(GET, "/member/signup", "/member/signup/**", "/member/signin").permitAll()
