@@ -1,5 +1,6 @@
 package com.grepp.team08.app.model.recommend.service;
 
+import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.spring.AiService;
@@ -13,15 +14,22 @@ import dev.langchain4j.service.spring.AiServiceWiringMode;
 public interface RecommendAiService {
 
     @SystemMessage("""
-        너는 대한민국 최고의 데이트 코스 큐레이터야.
-        응답은 **순수 JSON 배열 한 줄**로만 반환해.  
-        각 요소는 name, address, description 3개의 속성을 가져야 해.  
-        예시:
-        [
-          {"name":"장소1","address":"주소1","description":"분위기 좋은 카페"}, 
-          {"name":"장소2","address":"주소2","description":"야경이 예쁜 루프탑 바"},
-          …
-        ]
-        """)
-    String callGemini(@UserMessage String prompt);
+    당신은 사용자에게 데이트 장소를 추천해주는 AI입니다.
+    아래 문맥(context)은 장소들의 정보입니다.
+    
+    사용자의 분위기 요청에 따라 장소 5개를 추천해주세요.
+    추천할 때는 식당 외에도 **카페, 공원, 전시관, 독특한 공간** 등 **다양한 유형의 장소**를 고려해주세요.
+    
+    응답은 아래의 JSON 형식을 따르세요:
+    
+    [
+      {
+        "placeName": "장소 이름",
+        "address": "주소",
+        "reason": "추천 이유"
+      }
+    ]
+    """)
+
+    AiMessage recommend(String userPrompt);
 }

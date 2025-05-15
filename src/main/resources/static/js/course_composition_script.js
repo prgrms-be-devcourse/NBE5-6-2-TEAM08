@@ -1,3 +1,98 @@
+// AI 추천 코스 관련 로직
+function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const moodText = getQueryParam("mood");
+    if (moodText) {
+        fetchRecommendations(moodText); // 2번 코드 호출
+    }
+});
+
+function fetchRecommendations(moodText) {
+    const formData = new URLSearchParams();
+    formData.append("mood", moodText);
+
+    fetch('/api/recommend/course', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData
+    })
+    .then(res => res.text())
+    .then(result => {
+        // 마크다운 블럭 제거 (```json ~ ```)
+        result = result.trim();
+        if (result.startsWith("```json")) {
+            result = result.replace(/^```json\s*/, '').replace(/```$/, '').trim();
+        }
+
+        // JSON 파싱
+        const places = JSON.parse(result);
+        renderRecommendation(places);  // 3번 코드 호출
+    })
+    .catch(err => {
+        console.error("❌ 추천 호출 실패:", err);
+        alert("추천 코스를 불러오지 못했습니다.");
+    });
+}
+
+function renderRecommendation(places) {
+    const container = document.getElementById('recommendResults');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    places.forEach(place => {
+        const card = document.createElement('div');
+        card.className = 'recommend-card';
+
+        card.innerHTML = `
+      <h4>📍 ${place.placeName}</h4>
+      <p><strong>주소:</strong> ${place.address}</p>
+      <p><strong>이유:</strong> ${place.reason}</p>
+      <button class="add-btn" data-name="${place.placeName}" data-address="${place.address}">➕ 추가</button>
+    `;
+
+        container.appendChild(card);
+    });
+
+    // 각 버튼에 이벤트 연결
+    container.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const name = btn.dataset.name;
+            const address = btn.dataset.address;
+            addPlaceToCourse(name, address);  // → 아래에서 정의
+        });
+    });
+}
+
+function addPlaceToCourse(name, address) {
+    const courseList = document.getElementById('courseList');
+
+    const item = document.createElement('div');
+    item.className = 'course-item';
+
+    item.innerHTML = `
+    <div class="place-info">
+      <h4>${name}</h4>
+      <p>${address}</p>
+    </div>
+    <button class="delete-btn">✕</button>
+  `;
+
+    // 삭제 버튼 이벤트
+    item.querySelector('.delete-btn').addEventListener('click', () => {
+        item.remove();
+    });
+
+    courseList.appendChild(item);
+}
+
+// 여기까지 AI 추천 코스관련.
+
+
 // 마커를 담을 배열입니다
 var markers = [];
 

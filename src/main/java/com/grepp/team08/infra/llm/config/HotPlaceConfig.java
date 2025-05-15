@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class PlaceConfig {
+public class HotPlaceConfig {
 
+    // LangChain4j 에서 제공하는 로컬 실행 가능한 경량 임베딩 모델
     @Bean
     public EmbeddingModel embeddingModel() {
         return new AllMiniLmL6V2EmbeddingModel();
