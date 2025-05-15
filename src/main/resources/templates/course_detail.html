@@ -1,35 +1,35 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>관리자 코스 상세페이지</title>
+  <title>사용자 코스 상세페이지</title>
   <link rel="stylesheet" th:href="@{/css/course_detail.css}" />
 </head>
 <body>
-
 <div th:replace="fragments/header :: header"></div>
 <div class="course-detail-container">
   <div class="course-header">
     <img id="thumbnail" src="" alt="코스 썸네일" class="course-thumbnail" />
   </div>
-    <div class="course-info">
-      <h1 id="courseTitle" class="course-title"></h1>
-      <p id="courseInstructor" class="course-instructor"></p>
-      <p id="courseDate" class="course-date"></p>
-      <div id="imageGallery" class="image-gallery"></div>
-      <div class="course-description">
-        <p id="courseDescription" class="course-description-text"></p>
-      </div>
-      <div id="placeList" class="place-list"></div>
-
+  <div class="course-info">
+    <h1 id="courseTitle" class="course-title"></h1>
+    <p id="courseInstructor" class="course-instructor"></p>
+    <p id="courseDate" class="course-date"></p>
+    <div id="imageGallery" class="image-gallery"></div>
+    <div class="course-description">
+      <p id="courseDescription" class="course-description-text"></p>
     </div>
+    <div id="placeList" class="place-list"></div>
+
   </div>
+</div>
 
 <script>
   const recommendId = [[${recommendId}]];
 
-  fetch(`/api/editor-recommand-courses/${recommendId}`)
+  fetch(`/api/recommend-courses/${recommendId}`)
   .then(res => res.json())
   .then(data => {
     const imageUrl = data.imageUrl && data.imageUrl.length > 0
@@ -74,4 +74,5 @@
 </script>
 </body>
 </html>
+
 
