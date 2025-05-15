@@ -66,6 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.setItem("selectedDate", date);
 
     // 👉 코스 편집 페이지로 이동하면서 분위기 전달
-    window.location.href = `/course_composition?mood=${encodeURIComponent(moodText)}`;
+    window.location.href = `/course-composition?mood=${encodeURIComponent(moodText)}`;
   });
 });

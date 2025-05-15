@@ -39,6 +39,5 @@ public class CourseService {
 
             placeRepository.save(place);
         }
-
     }
 }

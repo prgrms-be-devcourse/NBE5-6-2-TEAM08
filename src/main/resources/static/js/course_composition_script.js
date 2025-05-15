@@ -429,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function() {
             places: selectedPlaces
         };
 
-        fetch('/api/mycourse/save', {
+        fetch('/api/course/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -448,11 +448,5 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('최소 한 개 이상의 장소를 선택해주세요.');
             return;
         }
-
-        // // 선택된 장소들의 정보를 세션 스토리지에 저장
-        // sessionStorage.setItem('selectedPlaces', JSON.stringify(selectedPlaces));
-        //
-        // // make_mycourses 페이지로 이동
-        // window.location.href = '/make_mycourses';
     });
 });
