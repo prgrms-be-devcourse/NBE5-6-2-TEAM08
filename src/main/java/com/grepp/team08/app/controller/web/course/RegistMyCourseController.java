@@ -21,34 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class RegistMyCourseController {
 
     private final CourseService courseService;
-    // 나의 데이트 코스 추천 코스 등록 페이지 이동
-    @GetMapping("/make-mycourses")
-    public String makeMyCourses(
-            @RequestParam(required = false) Long courseId, 
-            @AuthenticationPrincipal Member member,
-            Model model) {
-        
-        // courseId가 없으면 사용자의 코스 목록을 보여줌
-        if (courseId == null) {
-            List<Course> userCourses = courseService.getCoursesByMember(member);
-            model.addAttribute("courses", userCourses);
-            return "course_list_user"; // 사용자 코스 목록을 보여주는 페이지로 이동
-        }
 
-        // courseId가 있으면 해당 코스 상세 정보를 보여줌
-        try {
-            Course course = courseService.getCourseById(courseId);
-            // 본인의 코스인지 확인
-            if (!course.getId().equals(member)) {
-                return "redirect:/error";
-            }
-            model.addAttribute("course", course);
-            return "make_mycourses";
-        } catch (Exception e) {
-            return "redirect:/error";
-        }
-    }
 
+    // 나의 데이트 코스를 추천 코스 등록하는 페이지 이동 매핑
+    // 실제 요청을 보내는 POST 매핑은 api 컨트롤러에 있습니다.
     @GetMapping("/recommend-course-regist")
     public String recommend_course_regist(
             @RequestParam(required = false) Long courseId,
