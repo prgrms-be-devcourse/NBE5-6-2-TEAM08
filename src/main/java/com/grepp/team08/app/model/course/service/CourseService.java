@@ -13,7 +13,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.UUID;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import com.grepp.team08.app.model.course.repository.MyCourseRepository;
 import com.grepp.team08.app.model.place.dto.PlaceSaveDto;
@@ -38,7 +37,7 @@ public class CourseService {
     private final RecommendCourseRepository recommendCourseRepository;
     private final ImageRepository imageRepository;
 
-    @Value("${file.upload.path}")
+    @Value("${upload.path}")
     private String uploadPath;
 
     @PostConstruct
