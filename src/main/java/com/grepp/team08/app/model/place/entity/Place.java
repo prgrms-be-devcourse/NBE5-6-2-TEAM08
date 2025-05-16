@@ -30,9 +30,9 @@ public class Place extends BaseEntity {
     @JoinColumn(name = "editor_course_id",nullable = true)
     private EditorCourse editorCourseId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")
-    private Region regionId;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "region_id")
+//    private Region regionId;
 
     @Column(nullable = false, length = 255)
     private String placeName;

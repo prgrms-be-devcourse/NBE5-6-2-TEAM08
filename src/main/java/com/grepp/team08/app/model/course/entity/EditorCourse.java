@@ -19,7 +19,7 @@ public class EditorCourse extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long editorCourseId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "id")
     private Member member;
     private String title;
     private String description;
