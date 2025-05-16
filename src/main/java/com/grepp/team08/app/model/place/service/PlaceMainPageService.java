@@ -158,7 +158,7 @@ public class PlaceMainPageService {
         .orElseThrow(() -> new EntityNotFoundException("엔티티가 존재하지 않습니다."));
     EditorDetailCourseDto placeDetail = new EditorDetailCourseDto();
     placeDetail.setTitle(editorCourse.getTitle());
-    placeDetail.setNickname(editorCourse.getId().getNickname());
+    placeDetail.setNickname(editorCourse.getMember().getNickname());
     placeDetail.setCreateAt(editorCourse.getCreatedAt());
     placeDetail.setDescription(editorCourse.getDescription());
 

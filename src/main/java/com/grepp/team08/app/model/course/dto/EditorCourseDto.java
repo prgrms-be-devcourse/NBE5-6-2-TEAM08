@@ -16,7 +16,7 @@ public class EditorCourseDto {
     this.courseId = course.getEditorCourseId();
     this.title = course.getTitle();
     this.description = course.getDescription();
-    this.editorNickname = course.getId().getNickname();
+    this.editorNickname = course.getMember().getNickname();
     this.imageurl = imageurl;
   }
 

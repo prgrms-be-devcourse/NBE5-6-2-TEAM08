@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DateNow</title>
-  <link rel="stylesheet" th:href="@{/css/header.css}">
-  <link rel="stylesheet" th:href="@{/css/course_composition_style.css}">
+  <title>장소 검색 및 사진 업로드</title>
 
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/editor_course.css}">
 </head>
+
 <body>
+
+<!--이거 관리자 헤더로 바꿔야함. -->
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="selected-date-section" id="selectedDateBox" style="padding: 16px 24px; font-size: 14px; color: #666;">
-  <strong>선택한 날짜:</strong> <span id="selectedDateText"></span>
-</div>
 
 <div class="course-meta" style="margin-bottom: 20px;">
   <label style="font-weight: bold;">📌 데이트 코스 제목</label>
@@ -46,23 +46,36 @@
     </div>
   </div>
   <div class="right-panel">
-    <div class="ai-recommendations">
-      <h3>🌟 AI 추천 코스</h3>
-      <div id="recommendResults" class="recommend-results"></div>
-    </div>
-
-    <div class="course-section">
-      <h3>📝 내가 만든 코스</h3>
-      <div class="course-list" id="courseList">
-        <!-- 수동 추가된 코스 -->
-      </div>
-      <button class="register-btn">코스 등록</button>
+    <h3>📝 내가 만든 코스</h3>
+    <div class="course-list" id="courseList">
+      <!-- 선택된 장소들이 여기에 표시됩니다 -->
     </div>
   </div>
-
 </div>
-<!--kakaomap api를 사용하기 위한 스크립트 파일입니다.-->
+<div class="course-section">
+  <div class="upload-section">
+    <h4>📸 사진 추가</h4>
+    <div class="upload-container">
+      <div class="upload-box" id="upload-box">
+        <input type="file" id="file-input" name="images" accept="image/*" multiple>
+        <label for="file-input">
+          <div class="upload-text">
+            <i class="upload-icon">📁</i>
+            <p>클릭하여 사진을 업로드하거나<br>파일을 여기로 드래그하세요</p>
+          </div>
+        </label>
+      </div>
+      <div class="preview-container" id="preview-container">
+        <!-- 업로드된 이미지 미리보기가 여기에 표시됩니다 -->
+      </div>
+    </div>
+  </div>
+  <button class="register-btn" id="register-btn">코스 등록</button>
+</div>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4df49801aef047ffed0c3876739255e8&libraries=services"></script>
-<script th:src="@{/js/course_composition_script.js}"></script>
+<script th:src="@{/js/editor_course.js}"></script>
 </body>
 </html>
+
+

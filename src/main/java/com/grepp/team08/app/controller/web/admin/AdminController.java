@@ -15,5 +15,9 @@ public class AdminController {
   public String adminCourseSearch(){
     return "adminPageCourse";
   }
+  @GetMapping("/admin/editor-course")
+  public String editorCourse(){
+    return "editor_course";
+  }
 
 }
