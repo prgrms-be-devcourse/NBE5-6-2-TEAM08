@@ -1,5 +1,6 @@
 package com.grepp.team08.app.model.course.dto;
 
+import com.grepp.team08.app.model.course.entity.Course;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.place.dto.PlaceDto;
 import java.time.LocalDateTime;
