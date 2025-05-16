@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const date = document.getElementById('dateInput')?.value;
     if (!date) return alert('날짜를 선택해주세요.');
     if (selectedCats.size === 0) return alert('카테고리를 선택해주세요!');
+    if (!selectedRegion)         return alert('지역을 선택해주세요!');
 
     const moods = [...selectedCats];
     const moodDescriptions = {
