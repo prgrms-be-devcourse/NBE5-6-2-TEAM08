@@ -73,7 +73,7 @@
   <button class="register-btn" id="register-btn">코스 등록</button>
 </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4df49801aef047ffed0c3876739255e8&libraries=services"></script>
+<script th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey} + '&autoload=true&libraries=services'"></script>
 <script th:src="@{/js/editor_course.js}"></script>
 </body>
 </html>

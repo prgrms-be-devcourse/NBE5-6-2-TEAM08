@@ -44,9 +44,13 @@ public class MyCourseController {
     @PostMapping("/save")
     public ResponseEntity<String> saveCourseWithPlaces(
         @RequestBody MyDateCourseDto dto,
-        @AuthenticationPrincipal Member member // 현재 로그인 사용자 정보
+        @AuthenticationPrincipal Principal principal
     ) {
+        String userId = principal.getUsername();
+        Member member = memberService.findByUserId(userId);
+
         courseService.saveCourse(dto, member);
+
         return ResponseEntity.ok("코스 저장 성공");
     }
 }
