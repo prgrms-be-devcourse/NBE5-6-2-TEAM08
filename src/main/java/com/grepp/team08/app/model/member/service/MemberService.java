@@ -2,11 +2,16 @@ package com.grepp.team08.app.model.member.service;
 
 import com.grepp.team08.app.controller.web.member.payload.MemberUpdateRequest;
 import com.grepp.team08.app.model.auth.code.Role;
+import com.grepp.team08.app.model.course.dto.MyCourseResponse;
+import com.grepp.team08.app.model.course.entity.Course;
+import com.grepp.team08.app.model.course.repository.MyCourseRepository;
 import com.grepp.team08.app.model.member.dto.MemberDto;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.member.repository.MemberRepository;
 import com.grepp.team08.infra.error.CommonException;
 import com.grepp.team08.infra.response.ResponseCode;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final MyCourseRepository myCourseRepository;
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -68,5 +74,17 @@ public class MemberService {
 
         log.info("변경된 회원 정보: {}", member);
         memberRepository.save(member);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyCourseResponse> findMyCourses(Member member) {
+        log.info("🛠 [CourseService] member id: {}", member.getId());
+
+        List<Course> courses = myCourseRepository.findById(member);
+        log.info("🛠 [CourseService] Course 조회 결과: {}개", courses.size());
+
+        return courses.stream()
+            .map(c -> new MyCourseResponse(c.getCoursesId(), c.getTitle()))
+            .collect(Collectors.toList());
     }
 }
