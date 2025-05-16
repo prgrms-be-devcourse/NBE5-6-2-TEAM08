@@ -15,74 +15,58 @@ if (photoBtn) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const photoInput = document.getElementById('photoInput');
-    const fileList = document.getElementById('fileList');
-    const photoBtn = document.querySelector('.photo-btn');
-    let fileCounter = 0;
-
-    // 선택된 장소 정보 불러오기
+    // 세션 스토리지에서 선택된 장소들을 가져옴
     const selectedPlaces = JSON.parse(sessionStorage.getItem('selectedPlaces') || '[]');
+    
+    // 선택된 장소들을 화면에 표시
     const mycourseList = document.querySelector('.mycourse-list');
-    
-    // 기존 카드 제거
-    mycourseList.innerHTML = '';
-    
-    // 선택된 장소들로 카드 생성
-    selectedPlaces.forEach((place) => {
-        const card = document.createElement('div');
-        card.className = 'mycourse-card';
-        card.innerHTML = `
-            <div class="place-rank">${place.rank}st Place</div>
+    selectedPlaces.forEach((place, index) => {
+        const placeCard = document.createElement('div');
+        placeCard.className = 'mycourse-card';
+        placeCard.innerHTML = `
+            <div class="place-rank">${index + 1}st Place</div>
             <div class="place-img"></div>
             <div class="place-info">
-                <img class="place-logo" src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="logo">
                 <span class="place-name">${place.name}</span>
+                <p class="place-address">${place.address}</p>
             </div>
         `;
-        mycourseList.appendChild(card);
+        mycourseList.appendChild(placeCard);
     });
 
-    // 사진 추가 버튼 클릭 시 파일 선택창 열기
-    photoBtn.addEventListener('click', function() {
-        photoInput.click();
-    });
+    // 폼 제출 시 처리
+    const courseForm = document.getElementById('courseForm');
+    if (courseForm) {
+        courseForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (confirm('이 코스를 추천 코스로 등록하시겠습니까?')) {
+                this.submit();
+            }
+        });
+    }
 
-    photoInput.addEventListener('change', function(e) {
-        if (this.files && this.files[0]) {
-            const file = this.files[0];
-            const fileId = `file-${fileCounter++}`;
-            
-            // 파일 항목 생성
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
-            fileItem.id = fileId;
-            
-            // 파일 이름
-            const fileName = document.createElement('span');
-            fileName.className = 'file-name';
-            fileName.textContent = file.name;
-            
-            // 삭제 버튼
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
-            
-            // 삭제 버튼 클릭 이벤트
-            deleteBtn.addEventListener('click', function() {
-                document.getElementById(fileId).remove();
-            });
-            
-            // 요소들을 조합
-            fileItem.appendChild(fileName);
-            fileItem.appendChild(deleteBtn);
-            fileList.appendChild(fileItem);
-            
-            alert('사진이 추가되었습니다.');
-            
-            // 입력 필드 초기화 (다음 파일 선택을 위해)
-            this.value = '';
-        }
-    });
+    // 파일 업로드 관련 코드
+    const photoInput = document.getElementById('photoInput');
+    const fileList = document.getElementById('fileList');
+
+    if (photoBtn && photoInput && fileList) {
+        photoBtn.addEventListener('click', function() {
+            photoInput.click();
+        });
+
+        photoInput.addEventListener('change', function(e) {
+            const files = e.target.files;
+            fileList.innerHTML = '';
+
+            for (let file of files) {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.textContent = file.name;
+                fileList.appendChild(fileItem);
+            }
+        });
+    }
 });
 
 // 카테고리/지역 버튼 토글

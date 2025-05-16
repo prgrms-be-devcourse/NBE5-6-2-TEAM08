@@ -40,39 +40,17 @@
     </div>
     <div class="mycourse-section">
       <div class="mycourse-title">나의 데이트 코스</div>
+      <div class="course-info">
+        <h2 th:text="${course.title}">코스 제목</h2>
+        <p th:text="${course.description}">코스 설명</p>
+      </div>
       <div class="mycourse-list">
-        <div class="mycourse-card">
-          <div class="place-rank">1st Place</div>
-          <div class="place-img"></div>
-          <div class="place-info">
-            <img class="place-logo" src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="logo">
-            <span class="place-name">카카오프렌즈 강남점</span>
-          </div>
-        </div>
-        <div class="mycourse-card">
-          <div class="place-rank">2nd Place</div>
-          <div class="place-img"></div>
-          <div class="place-info">
-            <img class="place-logo" src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="logo">
-            <span class="place-name">카카오프렌즈 강남점</span>
-          </div>
-        </div>
-        <div class="mycourse-card">
-          <div class="place-rank">3rd Place</div>
-          <div class="place-img"></div>
-          <div class="place-info">
-            <img class="place-logo" src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="logo">
-            <span class="place-name">카카오프렌즈 잠실새내점</span>
-          </div>
-        </div>
+
       </div>
     </div>
-    <form class="mycourse-form">
-      <label>나의 데이트 코스 제목을 입력해주세요.</label>
-      <input type="text" class="course-title-input" placeholder="제목을 입력해주세요">
-      <label>나의 데이트 코스 소개해주세요!</label>
-      <textarea class="course-desc-input" placeholder="글자 수 최소 30자, 최대 1000자 입력 가능합니다."></textarea>
-      <button type="submit" class="save-btn" formmethod="post" formaction="/make_mycourses">내 데이트 코스에 저장</button>
+    <form class="mycourse-form" action="/make-mycourses" method="post" id="courseForm">
+      <input type="hidden" name="courseId" th:value="${course.coursesId}">
+      <button type="submit" class="save-btn">추천 코스로 등록</button>
     </form>
   </div>
   <script src="/js/make_mycourses.js"></script>
