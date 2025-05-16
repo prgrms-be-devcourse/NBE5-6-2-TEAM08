@@ -1,6 +1,6 @@
 package com.grepp.team08.app.controller.web.course;
 
-import com.grepp.team08.app.model.course.dto.RegistMyCourseDto;
+
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
