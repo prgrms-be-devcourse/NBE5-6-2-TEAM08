@@ -14,15 +14,10 @@
 <!--이거 관리자 헤더로 바꿔야함. -->
 <div th:replace="~{fragments/header :: header}"></div>
 
-
+<br>
 <div class="course-meta" style="margin-bottom: 20px;">
-  <label style="font-weight: bold;">📌 데이트 코스 제목</label>
-  <input id="courseTitle" type="text" placeholder="예: 로맨틱한 강남 데이트"
-         style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;" />
-
-  <label style="font-weight: bold;">📝 소개글</label>
-  <textarea id="courseDescription" placeholder="이 데이트 코스에 대한 설명을 작성해주세요."
-            rows="3" style="width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;"></textarea>
+  <label>📌 데이트 코스의 제목을 정해주세요!</label>
+  <input id="courseTitle" type="text" placeholder="예: 로맨틱한 강남 데이트"/>
 </div>
 
 <div class="container">
@@ -70,7 +65,12 @@
       </div>
     </div>
   </div>
-  <button class="register-btn" id="register-btn">코스 등록</button>
+</div>
+
+<div class="course-meta" style="margin-bottom: 20px;">
+  <label>📝 소개글</label>
+  <textarea id="courseDescription" placeholder="이 데이트 코스에 대한 설명을 작성해주세요."></textarea>
+  <button class="register-btn">코스 등록</button>
 </div>
 
 <script th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey} + '&autoload=true&libraries=services'"></script>

@@ -11,18 +11,15 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
+<br>
+
 <div class="selected-date-section" id="selectedDateBox" style="padding: 16px 24px; font-size: 14px; color: #666;">
   <strong>선택한 날짜:</strong> <span id="selectedDateText"></span>
 </div>
 
 <div class="course-meta" style="margin-bottom: 20px;">
-  <label style="font-weight: bold;">📌 데이트 코스 제목</label>
-  <input id="courseTitle" type="text" placeholder="예: 로맨틱한 강남 데이트"
-         style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;" />
-
-  <label style="font-weight: bold;">📝 소개글</label>
-  <textarea id="courseDescription" placeholder="이 데이트 코스에 대한 설명을 작성해주세요."
-            rows="3" style="width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;"></textarea>
+  <label>📌 데이트 코스의 제목을 정해주세요!</label>
+  <input id="courseTitle" type="text" placeholder="예: 로맨틱한 강남 데이트"/>
 </div>
 
 <div class="container">
@@ -47,23 +44,29 @@
   </div>
   <div class="right-panel">
     <div class="ai-recommendations">
-      <h3>🌟 AI 추천 코스</h3>
-      <div id="recommendResults" class="recommend-results"></div>
+    <h3>🌟 AI 추천 코스</h3>
+    <div id="recommendResults" class="recommend-results"></div>
     </div>
 
     <div class="course-section">
-      <h3>📝 내가 만든 코스</h3>
-      <div class="course-list" id="courseList">
-        <!-- 수동 추가된 코스 -->
-      </div>
-      <button class="register-btn">코스 등록</button>
+    <h3>📝 내가 만든 코스</h3>
+    <div class="course-list" id="courseList">
+      <!-- 수동 추가된 코스 -->
+    </div>
     </div>
   </div>
-
 </div>
+<div class="course-meta" style="margin-bottom: 20px;">
+  <label>📝 소개글</label>
+  <textarea id="courseDescription" placeholder="이 데이트 코스에 대한 설명을 작성해주세요."></textarea>
+  <button class="register-btn">코스 등록</button>
+</div>
+
+
 <!--kakaomap api를 사용하기 위한 스크립트 파일입니다.-->
 
 <script th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey} + '&autoload=true&libraries=services'"></script>
 <script th:src="@{/js/course_composition_script.js}"></script>
 </body>
+
 </html>
