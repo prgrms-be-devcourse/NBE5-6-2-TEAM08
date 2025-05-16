@@ -1,15 +1,13 @@
 package com.grepp.team08.app.controller.web.course;
 
 
-import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -18,9 +16,13 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    // 코스 구성 페이지 이동
+    @Value("${kakao.api.key}")
+    private String kakaoApiKey;
+
+    // 코스 구성 페이지 이동 + 카카오 api key 전달
     @GetMapping("/course-composition")
     public String courseComposition(@RequestParam(required = false) String mood, Model model) {
+        model.addAttribute("kakaoApiKey", kakaoApiKey);
         return "course_composition";
     }
 

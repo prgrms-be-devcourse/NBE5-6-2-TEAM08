@@ -31,6 +31,7 @@ public class PlaceMainPageService {
   private final PlaceRepository placeRepository;
 
 
+
   @Transactional
   public AdminUserTopListDto mainPagelist() {
 
@@ -43,7 +44,7 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByEditorCourseId(course)
               .orElse(null);
           if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
+            String imageUrl = "/images/editor/" + img.getRenameFileName();
             return new EditorCourseDto(course, imageUrl);
           }
           else{
@@ -59,7 +60,7 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByRecommendCourseId(course)
               .orElse(null);
           if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
+            String imageUrl = "/images/editor/" + img.getRenameFileName();
             return new CourseDto(course, imageUrl);
           }
           else{
@@ -83,7 +84,7 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByEditorCourseId(course)
               .orElse(null);
           if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
+            String imageUrl = "/images/editor/" + img.getRenameFileName();
             return new EditorCourseDto(course, imageUrl);
           }
           else{
@@ -103,7 +104,7 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByRecommendCourseId(course)
               .orElse(null);
           if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
+            String imageUrl = "/images/editor/" + img.getRenameFileName();
             return new CourseDto(course, imageUrl);
           }
           else{
@@ -137,7 +138,7 @@ public class PlaceMainPageService {
     List<String> imageUrl = image.stream()
         .map(img -> {
           if(img != null){
-            return "/image/"+img.getRenameFileName();
+            return "/images/editor/"+img.getRenameFileName();
           }
           else {
             return  "/image/bg_night.jpg";
@@ -172,7 +173,7 @@ public class PlaceMainPageService {
     List<String> imageUrl = image.stream()
         .map(img -> {
           if(img != null){
-            return "/image/"+img.getRenameFileName();
+            return "/images/editor/"+img.getRenameFileName();
           }
           else {
             return  "/image/bg_night.jpg";
