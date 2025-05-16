@@ -45,6 +45,17 @@ body {
   font-size: 15px;
   font-weight: 500;
 }
+
+.navbar-right .logout-button {
+  all: unset;
+  color: #ff4fa0;
+  cursor: pointer;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
 .profile-icon {
   display: inline-block;
   width: 28px;

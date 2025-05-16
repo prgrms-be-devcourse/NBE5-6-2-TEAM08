@@ -1,5 +1,6 @@
 package com.grepp.team08.app.model.course.service;
 
+import com.grepp.team08.app.model.course.dto.MyCourseResponse;
 import com.grepp.team08.app.model.course.dto.MyDateCourseDto;
 import com.grepp.team08.app.model.course.entity.Course;
 import com.grepp.team08.app.model.course.entity.RecommendCourse;
@@ -10,9 +11,10 @@ import com.grepp.team08.app.model.image.repository.ImageRepository;
 import com.grepp.team08.app.model.member.entity.Member;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import com.grepp.team08.app.model.course.repository.MyCourseRepository;
 import com.grepp.team08.app.model.place.dto.PlaceSaveDto;
@@ -22,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
@@ -136,5 +139,13 @@ public class CourseService {
                 throw new RuntimeException("이미지 저장에 실패했습니다: " + e.getMessage());
             }
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyCourseResponse> findMyCourses(Member member) {
+        List<Course> courses = myCourseRepository.findById(member);
+        return courses.stream()
+            .map(course -> new MyCourseResponse(course.getCoursesId(), course.getTitle()))
+            .collect(Collectors.toList());
     }
 }
