@@ -60,7 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
       UNIQUE: "독특한"
     };
 
-    const moodText = moods.map(code => moodDescriptions[code]).join("하고 ");
+    const moodText = (() => {
+      const descs = moods.map(code => moodDescriptions[code]);
+      if (descs.length === 1) return descs[0];
+      if (descs.length === 2) return descs.join(" 그리고 ");
+      return descs.slice(0, -1).join(", ") + " 그리고 " + descs.at(-1);
+    })();
 
     // 날짜를 세션에 저장
     sessionStorage.setItem("selectedDate", date);
