@@ -1,84 +1,174 @@
+/* 전체 페이지 컨테이너 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
 
-.detail-container {
-  max-width: 600px;
+.course-detail-container {
+  max-width: 960px;
   margin: 40px auto;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-  padding: 32px 24px;
+  padding: 0 20px;
 }
 
-.detail-image {
+/* 썸네일 */
+.course-header {
+  margin-bottom: 30px;
+  margin-top: 0;
+  height: 240px; /* ✅ 항상 고정 높이 */
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.course-thumbnail {
   width: 100%;
-  height: 320px;
-  background: #d9d9d9;
-  border-radius: 16px;
-  background-size: cover;
-  background-position: center;
-  margin-bottom: 24px;
+  height: 100%;
+  object-fit: cover; /* ✅ 사진 일부 잘리더라도 꽉 채움 */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
-.detail-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #912095;
-  margin: 0 0 16px 0;
+/* 코스 정보 */
+.course-info {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.detail-author {
+.course-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #ff4d88;
+}
+
+.course-meta-row {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  flex-wrap: nowrap;
+  margin-bottom: 16px;
 }
 
-.author-avatar {
-  width: 48px;
-  height: 48px;
-  background: #d9d9d9;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  margin-right: 16px;
+
+.course-instructor {
+  font-size: 16px;
+  color: #ff4d88;
+  background-color: #fff0f5;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(255, 79, 136, 0.12);
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  white-space: nowrap;
 }
 
-.author-info {
+.course-instructor::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 30px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #fff0f5;
+}
+
+.course-date {
+  font-size: 14px;
+  color: #666;
+  background-color: #f1f1f1;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  width: fit-content;
+  white-space: nowrap;
+}
+
+
+
+/* 이미지 갤러리 */
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.gallery-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 설명 */
+.course-description {
+  margin-bottom: 20px;
+  background-color: #fff0f5;
+  padding: 16px 20px;
+  border-left: 6px solid #ff4d88;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(255, 79, 162, 0.08);
+}
+
+.course-description-text {
+  line-height: 1.8;
+  font-size: 16px;
+  color: #444;
+  font-style: italic;
+}
+
+/* 장소 리스트 */
+.place-list {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
 }
 
-.author-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #4d4d4d;
+.place-card {
+  background-color: #ffffff;
+  border: 1px solid #eee;
+  padding: 18px 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.author-meta {
-  font-size: 0.95rem;
-  color: #999;
+.place-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.detail-desc {
-  font-size: 1.1rem;
+.place-card h3 {
+  margin: 0;
+  font-size: 17px;
   color: #333;
-  margin-bottom: 24px;
 }
 
-.detail-desc ul {
-  margin: 8px 0 0 20px;
-  padding: 0;
-  color: #912095;
+.place-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #777;
 }
 
-.detail-extra {
-  margin-top: 16px;
-}
-
-.tag {
-  display: inline-block;
-  background: #ffe8f1;
-  color: #912095;
-  border-radius: 8px;
-  padding: 4px 12px;
-  font-size: 0.95rem;
-  margin-right: 8px;
-}
