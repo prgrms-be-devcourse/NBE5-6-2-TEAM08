@@ -15,4 +15,6 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
   List<Place> findAllByCourseId(Course course);
 
   List<Place> findAllByEditorCourseId(EditorCourse editorCourse);
+
+  List<Place> findByCourseId(Course course);
 }

@@ -1,6 +1,7 @@
 package com.grepp.team08.app.controller.api.course;
 
 import com.grepp.team08.app.model.auth.domain.Principal;
+import com.grepp.team08.app.model.course.dto.CourseDetailDto;
 import com.grepp.team08.app.model.course.dto.MyCourseResponse;
 import com.grepp.team08.app.model.course.dto.MyDateCourseDto;
 import com.grepp.team08.app.model.course.service.CourseService;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +41,11 @@ public class MyCourseController {
         List<MyCourseResponse> courses = courseService.findMyCourses(member);
         log.info("조회된 코스 수: {}", courses.size());
         return ResponseEntity.ok(ApiResponse.success(courses));
+    }
+
+    @GetMapping("/mycourse/{id}")
+    public CourseDetailDto getCourseDetail(@PathVariable Long courseId) {
+        return courseService.getCourseDetail(courseId);
     }
 
     @PostMapping("/save")
