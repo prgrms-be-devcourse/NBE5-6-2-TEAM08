@@ -155,22 +155,25 @@ public class CourseService {
             .collect(Collectors.toList());
     }
 
-
+    @Transactional(readOnly = true)
     public CourseDetailDto getCourseDetail(Long courseId) {
         Course course = getCourseById(courseId);
+
         CourseDetailDto dto = modelMapper.map(course, CourseDetailDto.class);
 
         List<Place> places = placeRepository.findByCourseId(course);
         List<PlaceDetailDto> placeDtos = places.stream()
-            .map(place -> new PlaceDetailDto(place.getPlaceName(), place.getAddress()))
-            .toList();
-
+                .map(place -> {
+                    return new PlaceDetailDto(place.getPlaceName(), place.getAddress());
+                })
+                .toList();
         dto.setPlaces(placeDtos);
 
         List<Image> images = imageRepository.findByRecommendCourseId_CourseId(course);
+
         List<String> imageUrls = images.stream()
-            .map(Image::getSavePath)
-            .toList();
+                .map(Image::getSavePath)
+                .toList();
         dto.setImageUrl(imageUrls);
 
         return dto;

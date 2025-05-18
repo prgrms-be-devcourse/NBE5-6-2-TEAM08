@@ -44,7 +44,7 @@ public class MyCourseController {
     }
 
     @GetMapping("/mycourse/{id}")
-    public CourseDetailDto getCourseDetail(@PathVariable Long courseId) {
+    public CourseDetailDto getCourseDetail(@PathVariable("id") Long courseId) {
         return courseService.getCourseDetail(courseId);
     }
 
