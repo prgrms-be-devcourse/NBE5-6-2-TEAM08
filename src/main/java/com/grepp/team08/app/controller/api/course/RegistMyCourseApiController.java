@@ -1,6 +1,7 @@
 package com.grepp.team08.app.controller.api.course;
 
 import com.grepp.team08.app.model.course.service.CourseService;
+import com.grepp.team08.app.model.image.service.ImageService;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.infra.response.ApiResponse;
 import com.grepp.team08.infra.response.ResponseCode;
@@ -20,23 +21,55 @@ import java.util.List;
 public class RegistMyCourseApiController {
 
     private final CourseService courseService;
+    private final ImageService imageService;
 
-    @PostMapping(value = "/recommend-course-regist", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/images")
+    public ResponseEntity<List<String>> uploadImages(
+        @RequestParam("images") List<MultipartFile> images) {
+        try {
+            if (images == null || images.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            // 파일 타입 및 크기 로깅
+            for (MultipartFile file : images) {
+
+                if (file.isEmpty()) {
+                    return ResponseEntity.badRequest().build();
+                }
+
+                String contentType = file.getContentType();
+                if (contentType == null || !contentType.startsWith("image/")) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+
+            List<String> urls = imageService.upload(images);
+            return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(urls);
+        } catch (Exception e) {
+            log.error("이미지 업로드 실패", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/recommend-course-regist")
     public ResponseEntity<?> recommendCourseRegist(
-        @RequestParam("images") List<MultipartFile> images,
+        @RequestParam("imageUrls") List<String> imageUrls,
         @RequestParam("courseId") Long courseId,
         @AuthenticationPrincipal Member member
     ) {
-        
         try {
-            // 이미지 유효성 검사
-            if (images == null || images.isEmpty()) {
+            log.info("추천 코스 등록 시작 - courseId: {}, 이미지 개수: {}", courseId, imageUrls.size());
+            
+            if (imageUrls == null || imageUrls.isEmpty()) {
                 return ResponseEntity.badRequest()
                     .body(ApiResponse.error(ResponseCode.BAD_REQUEST, "최소 1장의 이미지가 필요합니다."));
             }
 
-            courseService.registToRecommendCourse(courseId, images);
-            
+            courseService.registToRecommendCourse(courseId, imageUrls);
+
             return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ApiResponse.success("코스가 성공적으로 등록되었습니다."));
