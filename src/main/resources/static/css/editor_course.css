@@ -49,6 +49,36 @@ body {
   border: 2px solid #fff0fa;
 }
 
+.course-meta {
+  margin-bottom: 20px;
+  width: 100%;              /* ✅ 부모 기준으로 꽉 차게 */
+  box-sizing: border-box;
+  padding: 0 16px;  /* ✅ 좌우 여백 추가 */
+}
+
+.course-meta label {
+  font-weight: bold;
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.course-meta input,
+.course-meta textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.course-meta textarea {
+  height: 200px;
+}
+
 .container {
   display: flex;
   height: calc(100vh - 56px);
@@ -188,6 +218,8 @@ body {
   align-self: flex-end;
   margin-top: 8px;
   transition: background 0.2s;
+  display: block;
+  margin-left: auto;
 }
 .register-btn:hover {
   background: #e03e8c;

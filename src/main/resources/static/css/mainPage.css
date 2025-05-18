@@ -1,104 +1,153 @@
-
-
+/* 메인 페이지 스타일 */
 .main-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
   max-width: 1440px;
   margin: 0 auto;
   padding: 40px 24px;
-
+  gap: 32px;
+  /*flex-wrap: wrap;*/
+  flex-wrap: nowrap; /* 반응형 깨짐 방지*/
 }
 
 .recommend-section {
   background: #fff5fa;
-  border-radius: 18px;
-  padding: 32px 24px;
-  margin-left: 40px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+  border-radius: 20px;
+  padding: 36px 28px;
+  box-shadow: 0 4px 24px rgba(255, 79, 160, 0.05);
+  width: 640px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-}
-
-.section-title-row {
-
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: 24px;
+  justify-content: flex-start;
 }
 
 .section-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #912095;
+  font-size: 26px;
+  font-weight: 600;
+  color: #7d2082;
+  margin: 0 0 8px;
+  letter-spacing: -0.3px;
+  font-family: 'SUIT', 'Noto Sans KR', sans-serif;
+  width: 100%;
+  text-align: left;
+}
+
+.section-title-row {
+  display: block;
+  width: 100%;
+  margin-bottom: 28px;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.section-subtitle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.section-subtitle-row h2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #140a0e;
   margin: 0;
+  flex: 1;
+  text-align: left;
 }
 
 .more-link {
   font-size: 13px;
-  font-weight: 100;
-  color: #912095;
+  font-weight: 500;
+  color: #fff;
+  background-color: #912095;
+  padding: 6px 14px;
+  border-radius: 20px;
   text-decoration: none;
-  align-items: center;
+  transition: background-color 0.2s;
+  margin-left: 16px;
+  white-space: nowrap;
 }
 
-.card-list {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
+.more-link:hover {
+  background-color: #7a0f7f;
+}
 
+
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 28px;
+  width: 100%;
+  justify-items: center;
 }
 
 .course-card {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   width: 260px;
-  padding: 0 0 16px 0;
+  padding-bottom: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
 
 .card-image {
-  width: 260px;
+  width: 100%;
   height: 160px;
-  background: #d9d9d9;
+  background-color: #f0f0f0;
   border-radius: 16px 16px 0 0;
-  margin-bottom: 16px;
   background-size: cover;
   background-position: center;
 }
 
 .card-title {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 500;
   color: #333;
-  margin-bottom: 12px;
+  margin: 16px 12px 10px;
   text-align: left;
-  width: 90%;
+  width: calc(100% - 24px);
 }
 
 .card-author {
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 90%;
+  gap: 10px;
+  padding: 0 12px;
+  margin-top: auto;
+  margin-bottom: 12px;
+  width: calc(100% - 24px);
+  box-sizing: border-box;
+  justify-content: flex-start;
 }
 
 .author-avatar {
   width: 32px;
   height: 32px;
-  background: #d9d9d9;
+  background: #ddd;
   border-radius: 50%;
   background-size: cover;
   background-position: center;
+  border: 2px solid #fff0fa;
 }
 
 .author-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: #4d4d4d;
 }

@@ -57,11 +57,17 @@ function renderRecommendation(places) {
         card.className = 'recommend-card';
 
         card.innerHTML = `
-      <h4>📍 ${place.placeName}</h4>
-      <p><strong>주소:</strong> ${place.address}</p>
-      <p><strong>이유:</strong> ${place.reason}</p>
-      <button class="add-btn" data-name="${place.placeName}" data-address="${place.address}">➕ 추가</button>
-    `;
+  <h4>📍 ${place.placeName}</h4>
+  <p><strong>주소:</strong> ${place.address}</p>
+  <p><strong>이유:</strong> ${place.reason}</p>
+  <button class="add-btn" data-name="${place.placeName}" data-address="${place.address}" style="background-color: #ff9eaa; cursor: pointer;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    <span style="margin-left: 6px;">장소 추가</span>
+  </button>
+`;
 
         container.appendChild(card);
     });
@@ -101,23 +107,32 @@ function addPlaceToCourse(name, address) {
         <h4>${name}</h4>
         <p>${address}</p>
       </div>
-      <button class="delete-btn">✕</button>
+      <button class="delete-btn">×</button>
     `;
 
     // 삭제 버튼 이벤트
     item.querySelector('.delete-btn').addEventListener('click', () => {
         item.remove();
+
         // 👉 삭제하면 다시 버튼 활성화
         const allButtons = document.querySelectorAll('.add-btn');
         allButtons.forEach(btn => {
             if (btn.dataset.name === name && btn.dataset.address === address) {
                 btn.disabled = false;
-                btn.textContent = "➕ 추가";
-                btn.style.backgroundColor = "#ff4fa0"; // 다시 원래 색으로
+                btn.style.backgroundColor = "#ff9eaa";
                 btn.style.cursor = "pointer";
+
+                btn.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span style="margin-left: 6px;">장소 추가</span>
+            `;
             }
         });
     });
+
 
     courseList.appendChild(item);
 
@@ -126,7 +141,7 @@ function addPlaceToCourse(name, address) {
     allButtons.forEach(btn => {
         if (btn.dataset.name === name && btn.dataset.address === address) {
             btn.disabled = true;
-            btn.textContent = "✅ 추가됨";
+            btn.textContent = "추가됨";
             btn.style.backgroundColor = "#ccc";
             btn.style.cursor = "not-allowed";
         }
