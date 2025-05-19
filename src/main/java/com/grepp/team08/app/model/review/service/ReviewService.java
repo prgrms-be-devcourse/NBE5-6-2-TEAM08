@@ -43,12 +43,20 @@ public class ReviewService {
       RecommendCourse recommendCourse = courseRepository.findById(recommendId)
           .orElseThrow(()->new EntityNotFoundException("해당 코스를 찾을수 없습니다"));
 
-      List<Review> reviews = reviewRepository.findAllByRecommendCourseId(recommendCourse);
+      List<Review> reviews = reviewRepository.findAllByRecommendCourseIdAndActivatedTrue(recommendCourse);
     List<ResponseReviewDto> reviewDtoList = reviews.stream()
         .map(ResponseReviewDto::new)
         .toList();
 
     return reviewDtoList;
 
+  }
+
+  @Transactional
+  public void reviewDelete( Long reviewId) {
+    Review review = reviewRepository.findById(reviewId)
+        .orElseThrow(()-> new EntityNotFoundException("해당 리뷰가 존재하지 않습니다"));
+    review.setActivated(false);
+    reviewRepository.save(review);
   }
 }

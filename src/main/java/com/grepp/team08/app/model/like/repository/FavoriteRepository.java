@@ -20,9 +20,10 @@ public interface FavoriteRepository extends JpaRepository<FavoriteCourse,Long> {
 
   boolean existsByMemberAndEditorCourseAndActivatedTrue(Member member, EditorCourse editorCourse);
 
-  List<FavoriteCourse> findAllByEditorCourse(EditorCourse course);
-
   int countByEditorCourse(EditorCourse course);
 
-  int countByRecommendCourse(RecommendCourse recommendCourse);
+
+  int countByEditorCourseAndActivatedTrue(EditorCourse course);
+
+  int countByRecommendCourseAndActivatedTrue(RecommendCourse course);
 }

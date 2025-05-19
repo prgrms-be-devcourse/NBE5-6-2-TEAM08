@@ -2,6 +2,7 @@ package com.grepp.team08.app.controller.web.course;
 
 import com.grepp.team08.app.model.like.entity.FavoriteCourse;
 import com.grepp.team08.app.model.like.service.FavoriteService;
+import com.grepp.team08.app.model.member.service.MemberService;
 import java.security.Principal;
 import org.bouncycastle.math.raw.Mod;
 import com.grepp.team08.app.model.course.entity.Course;
@@ -23,6 +24,7 @@ public class CourseController {
 
     private final CourseService courseService;
     private final FavoriteService favoriteService;
+    private final MemberService memberService;
 
     @Value("${kakao.api.key}")
     private String kakaoApiKey;
@@ -48,7 +50,8 @@ public class CourseController {
             String userId = principal.getName();
             isLiked = favoriteService.isLiked(userId, recommend_id); // 찜 여부 확인
         }
-
+        String nickname = memberService.getNicknameByUserId(principal.getName());
+        model.addAttribute("loginNickname", nickname);
         model.addAttribute("isLiked", isLiked);
         return "course_detail";
     }

@@ -11,8 +11,14 @@
       <span class="logo">💖 DateNow</span>
     </a>
     <div class="navbar-right">
-      <a th:href="@{/recommend-course}">나의 코스 만들기</a>
-      <a th:href="@{/mypage}">마이페이지</a>
+      <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+        <a th:href="@{/admin/editor-course}">관리자 코스 만들기</a>
+        <a th:href="@{/admin/users}">관리자 대시보드</a>
+      </div>
+      <div th:if="${#authorization.expression('hasRole(''USER'')')}">
+        <a th:href="@{/recommend-course}">나의 코스 만들기</a>
+        <a th:href="@{/mypage}">마이페이지</a>
+      </div>
       <form th:action="@{/logout}" method="post" style="display:inline;">
         <button type="submit" class="logout-button">로그아웃</button>
       </form>
