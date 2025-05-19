@@ -11,56 +11,56 @@ import com.grepp.team08.app.model.member.repository.AdminRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+
 public class AdminService {
 
-  private final AdminRepository adminRepository;
-  private final AdminCourseRepository adminCourseRepository;
-  private final ImageRepository imageRepository;
+    private final AdminRepository adminRepository;
+    private final AdminCourseRepository adminCourseRepository;
+    private final ImageRepository imageRepository;
 
-  @Transactional
-  public List<AdminSearchUserDto> userAllSearch() {
+    @Transactional
+    public List<AdminSearchUserDto> userAllSearch() {
 
-    List<Member> userAll = adminRepository.findAll();
-     List<AdminSearchUserDto> userDtos = userAll.stream()
-        .map(AdminSearchUserDto::new)
-        .toList();
+        List<Member> userAll = adminRepository.findAll();
+        List<AdminSearchUserDto> userDtos = userAll.stream()
+            .map(AdminSearchUserDto::new)
+            .toList();
 
-     return userDtos;
-  }
+        return userDtos;
+    }
 
-  @Transactional
-  public List<EditorCourseDto> adminAllCourse() {
-    List<EditorCourse> adminPlace = adminCourseRepository.findAllByActivatedTrue();
-    List<EditorCourseDto> adminDto = adminPlace.stream()
-        .map(course -> {
-          Image img = imageRepository.findFirstByEditorCourseId(course)
-              .orElse(null);
-          if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
-            return new EditorCourseDto(course, imageUrl);
-          }
-          else{
-            return new EditorCourseDto(course,"/image/bg_night.jpg");
-          }
+    @Value("${upload.path}")
+    private String imageAccessPath;
 
-        })
-        .toList();
-    return adminDto;
+    @Transactional
+    public List<EditorCourseDto> adminAllCourse() {
+        List<EditorCourse> adminPlace = adminCourseRepository.findAllByActivatedTrue();
 
+        return adminPlace.stream()
+            .map(course -> {
+                Image img = imageRepository.findFirstByEditorCourseId(course).orElse(null);
 
-  }
+                String imageUrl = (img != null)
+                    ? imageAccessPath + img.getRenameFileName() // ✅ 설정된 웹 경로 + 파일명
+                    : imageAccessPath + "bg_night.jpg";         // 기본 이미지도 동일하게
 
-  @Transactional
-  public void adminRecommandDelete(Long recommandId) {
+                return new EditorCourseDto(course, imageUrl);
+            })
+            .toList();
+    }
 
-    EditorCourse editorCourse = adminCourseRepository.findById(recommandId)
-        .orElseThrow(()->new EntityNotFoundException("해당 코스를 찾을수 없습니다"));
-    editorCourse.setActivated(false);
+    @Transactional
+    public void adminRecommandDelete(Long recommandId) {
 
-  }
+        EditorCourse editorCourse = adminCourseRepository.findById(recommandId)
+            .orElseThrow(()->new EntityNotFoundException("해당 코스를 찾을수 없습니다"));
+        editorCourse.setActivated(false);
+
+    }
 }

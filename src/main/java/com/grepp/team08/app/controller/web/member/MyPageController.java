@@ -16,21 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MyPageController {
     private final MemberService memberService;
 
-    @GetMapping("/main")
-    public String mypage(Model model, @AuthenticationPrincipal Principal principal) {
-        setMemberInfo(model, principal);
-        return "mypage_main";
-    }
-
-    @GetMapping("/edit")
-    public String mypageEdit(Model model, @AuthenticationPrincipal Principal principal) {
-        setMemberInfo(model, principal);
-        return "mypage_edit";
-    }
-
     private void setMemberInfo(Model model, Principal principal) {
         String userId = principal.getUsername();
         Member member = memberService.findByUserId(userId);
         model.addAttribute("member", member);
     }
+
+    @GetMapping
+    public String mypageMain(Model model, @AuthenticationPrincipal Principal principal) {
+        setMemberInfo(model, principal);
+        return "mypage";
+    }
+
 }

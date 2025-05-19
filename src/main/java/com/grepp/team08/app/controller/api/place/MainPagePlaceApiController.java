@@ -15,7 +15,6 @@ import com.grepp.team08.app.model.review.service.ReviewService;
 import com.grepp.team08.infra.response.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +34,7 @@ public class MainPagePlaceApiController {
   private final PlaceMainPageService placeMainPageService;
   private final ReviewService reviewService;
   private final FavoriteService favoriteService;
+
 
 
   @GetMapping
@@ -97,6 +97,7 @@ public class MainPagePlaceApiController {
 
   }
 
+
   //찜하기 사용자
   @PostMapping("/users/{recommend_id}/likes")
   public ResponseEntity<?> likeCourse(@PathVariable Long recommend_id,@AuthenticationPrincipal Principal principal){
@@ -119,7 +120,6 @@ public class MainPagePlaceApiController {
 
 
   }
-
 
 
 

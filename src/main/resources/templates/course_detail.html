@@ -57,6 +57,26 @@
   <h3>리뷰 목록</h3>
   <div id="reviewList" class="review-list"></div>
 </div>
+<div class="review-form">
+  <h3>리뷰 작성</h3>
+  <textarea id="reviewContent" placeholder="리뷰를 입력하세요"></textarea>
+  <br />
+  <label>별점:
+    <select id="reviewStar">
+      <option value="1">1점</option>
+      <option value="2">2점</option>
+      <option value="3">3점</option>
+      <option value="4">4점</option>
+      <option value="5" selected>5점</option>
+    </select>
+  </label>
+  <br />
+  <button onclick="submitReview()">리뷰 등록</button>
+</div>
+<div class="review-list-container">
+  <h3>리뷰 목록</h3>
+  <div id="reviewList" class="review-list"></div>
+</div>
 
 <script>
   const recommendId = [[${recommendId}]];
@@ -105,6 +125,7 @@
   });
 
 
+
   function toggleLike(button) {
     const recommendId = button.dataset.recommendId;
 
@@ -124,6 +145,7 @@
       }
     });
   }
+
 
 
   function submitReview() {

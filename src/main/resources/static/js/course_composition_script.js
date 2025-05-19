@@ -57,11 +57,17 @@ function renderRecommendation(places) {
         card.className = 'recommend-card';
 
         card.innerHTML = `
-      <h4>📍 ${place.placeName}</h4>
-      <p><strong>주소:</strong> ${place.address}</p>
-      <p><strong>이유:</strong> ${place.reason}</p>
-      <button class="add-btn" data-name="${place.placeName}" data-address="${place.address}">➕ 추가</button>
-    `;
+  <h4>📍 ${place.placeName}</h4>
+  <p><strong>주소:</strong> ${place.address}</p>
+  <p><strong>이유:</strong> ${place.reason}</p>
+  <button class="add-btn" data-name="${place.placeName}" data-address="${place.address}" style="background-color: #ff9eaa; cursor: pointer;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    <span style="margin-left: 6px;">장소 추가</span>
+  </button>
+`;
 
         container.appendChild(card);
     });
@@ -76,26 +82,70 @@ function renderRecommendation(places) {
     });
 }
 
+// 내 데이트 코스 카트에 추가하는 로직
 function addPlaceToCourse(name, address) {
     const courseList = document.getElementById('courseList');
 
+    // 중복 확인: 이미 같은 장소와 주소가 있는지 검사. 근데 좀 아쉽네 위치 정보로 하면 좋을거같기도
+    const existingItems = courseList.querySelectorAll('.course-item');
+    for (const item of existingItems) {
+        const existingName = item.querySelector('h4').textContent.trim();
+        const existingAddress = item.querySelector('p').textContent.trim();
+
+        if (existingName === name && existingAddress === address) {
+            alert('이미 추가된 장소입니다.');
+            return;
+        }
+    }
+
+    // 항목 추가
     const item = document.createElement('div');
     item.className = 'course-item';
 
     item.innerHTML = `
-    <div class="place-info">
-      <h4>${name}</h4>
-      <p>${address}</p>
-    </div>
-    <button class="delete-btn">✕</button>
-  `;
+      <div class="place-info">
+        <h4>${name}</h4>
+        <p>${address}</p>
+      </div>
+      <button class="delete-btn">×</button>
+    `;
 
     // 삭제 버튼 이벤트
     item.querySelector('.delete-btn').addEventListener('click', () => {
         item.remove();
+
+        // 👉 삭제하면 다시 버튼 활성화
+        const allButtons = document.querySelectorAll('.add-btn');
+        allButtons.forEach(btn => {
+            if (btn.dataset.name === name && btn.dataset.address === address) {
+                btn.disabled = false;
+                btn.style.backgroundColor = "#ff9eaa";
+                btn.style.cursor = "pointer";
+
+                btn.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span style="margin-left: 6px;">장소 추가</span>
+            `;
+            }
+        });
     });
 
+
     courseList.appendChild(item);
+
+    // 👉 추가된 후 버튼 비활성화 처리
+    const allButtons = document.querySelectorAll('.add-btn');
+    allButtons.forEach(btn => {
+        if (btn.dataset.name === name && btn.dataset.address === address) {
+            btn.disabled = true;
+            btn.textContent = "추가됨";
+            btn.style.backgroundColor = "#ccc";
+            btn.style.cursor = "not-allowed";
+        }
+    });
 }
 
 // 여기까지 AI 추천 코스관련.
@@ -437,6 +487,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.ok ? res.text() : Promise.reject(res))
         .then(msg => {
             // 코스 저장 성공 시 바로 메인 페이지로 이동
+            alert('나의 데이트 코스가 등록되었습니다!');
             window.location.href = '/';
         })
         .catch(err => {

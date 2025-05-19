@@ -1,311 +1,25 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DateNow</title>
-
+  <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/course_composition_style.css}">
-  <!--kakakomap api에 쓰는 css 파일입니다.-->
-  <style>
-    .map_wrap {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
 
-    #menu_wrap {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 300px;
-        margin: 10px;
-        padding: 15px;
-        overflow-y: auto;
-        background: rgba(255, 255, 255, 0.95);
-        z-index: 1;
-        font-size: 14px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    #menu_wrap .option {
-        padding: 15px;
-        border-bottom: 1px solid #eee;
-    }
-
-    #menu_wrap .option form {
-        display: flex;
-        gap: 10px;
-    }
-
-    #menu_wrap .option input {
-        flex: 1;
-        padding: 12px 20px;
-        border: 2px solid #ff9eaa;
-        border-radius: 8px;
-        font-size: 14px;
-        outline: none;
-        transition: all 0.3s ease;
-    }
-
-    #menu_wrap .option input:focus {
-        border-color: #ff9eaa;
-        box-shadow: 0 0 0 3px rgba(255, 158, 170, 0.1);
-    }
-
-    #menu_wrap .option button {
-        padding: 10px 20px;
-        background-color: #ff9eaa;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    #menu_wrap .option button:hover {
-        background-color: #ffb3bd;
-    }
-
-    #placesList {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
-
-    #placesList .item {
-        padding: 15px;
-        margin-bottom: 10px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        transition: all 0.2s ease;
-    }
-
-    #placesList .item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    #placesList .item .info {
-        margin-bottom: 10px;
-    }
-
-    #placesList .item h5 {
-        margin: 0 0 8px 0;
-        font-size: 15px;
-        font-weight: 600;
-        color: #333;
-    }
-
-    #placesList .item span {
-        display: block;
-        margin: 5px 0;
-        color: #666;
-        font-size: 13px;
-    }
-
-    #placesList .item .tel {
-        color: #888;
-        font-size: 12px;
-    }
-
-    #placesList .item .add-btn {
-        width: 100%;
-        padding: 8px 16px;
-        background-color: #ff9eaa;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 13px;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-    }
-
-    #placesList .item .add-btn:hover {
-        background-color: #ffb3bd;
-        transform: translateY(-1px);
-    }
-
-    #pagination {
-        margin: 15px auto;
-        text-align: center;
-    }
-
-    #pagination a {
-        display: inline-block;
-        margin: 0 3px;
-        padding: 6px 12px;
-        border-radius: 4px;
-        color: #666;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-
-    #pagination a:hover {
-        background-color: #ff4757;
-        color: white;
-    }
-
-    #pagination a.on {
-        background-color: #ff4757;
-        color: white;
-        font-weight: bold;
-    }
-
-    .course-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 15px;
-        margin: 10px 0;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .place-info {
-        flex-grow: 1;
-    }
-
-    .place-info h4 {
-        margin: 0 0 5px 0;
-        color: #333;
-        font-size: 15px;
-    }
-
-    .place-info p {
-        margin: 0;
-        color: #666;
-        font-size: 13px;
-    }
-
-    .delete-btn {
-        background-color: #ff9eaa;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-left: 10px;
-        font-size: 14px;
-    }
-
-    .delete-btn:hover {
-        background-color: #ffb3bd;
-        transform: scale(1.1);
-    }
-
-  /*  ai 추천 코스 부분*/
-    .recommendation-section {
-      padding: 20px 30px;
-      background-color: #fff8fa;
-      border-bottom: 1px solid #ffe0e9;
-    }
-
-    .recommendation-section h2 {
-      font-size: 18px;
-      color: #ff4d88;
-      margin-bottom: 12px;
-    }
-
-    .recommend-results .recommend-card {
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-bottom: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    .recommend-card h4 {
-      margin: 0 0 6px;
-      font-size: 15px;
-      color: #333;
-    }
-
-    .recommend-card p {
-      margin: 3px 0;
-      color: #555;
-      font-size: 13px;
-    }
-
-    .right-panel {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 20px;
-      width: 40%;
-      box-sizing: border-box;
-      overflow-y: auto;
-      max-height: 100vh;
-    }
-
-    .ai-recommendations,
-    .course-section {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-
-    .ai-recommendations h3,
-    .course-section h3 {
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: #ff4d88;
-    }
-
-    .recommend-results .recommend-card {
-      background: #fdfdfd;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 10px;
-      font-size: 13px;
-    }
-
-  </style>
 </head>
 <body>
-<div class="navbar">
-  <div class="navbar-left">
-    <span class="back-arrow">&#8592;</span>
-    <span class="logo">DateNow</span>
-  </div>
-  <div class="navbar-right">
-    <a href="#">나의 코스 만들기</a>
-    <a href="#">마이페이지</a>
-    <a href="#">로그아웃</a>
-    <span class="profile-icon"></span>
-  </div>
-</div>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<br>
+
 <div class="selected-date-section" id="selectedDateBox" style="padding: 16px 24px; font-size: 14px; color: #666;">
   <strong>선택한 날짜:</strong> <span id="selectedDateText"></span>
 </div>
 
 <div class="course-meta" style="margin-bottom: 20px;">
-  <label style="font-weight: bold;">📌 데이트 코스 제목</label>
-  <input id="courseTitle" type="text" placeholder="예: 로맨틱한 강남 데이트"
-         style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;" />
-
-  <label style="font-weight: bold;">📝 소개글</label>
-  <textarea id="courseDescription" placeholder="이 데이트 코스에 대한 설명을 작성해주세요."
-            rows="3" style="width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;"></textarea>
+  <label>📌 데이트 코스의 제목을 정해주세요!</label>
+  <input id="courseTitle" type="text" placeholder="예: 로맨틱한 강남 데이트"/>
 </div>
 
 <div class="container">
@@ -317,7 +31,7 @@
         <div class="option">
           <div>
             <form onsubmit="searchPlaces(); return false;">
-              <input type="text" value="이태원 맛집" id="keyword" size="15">
+              <input type="text" value="강남역" id="keyword" size="15">
               <button type="submit">검색</button>
             </form>
           </div>
@@ -330,22 +44,29 @@
   </div>
   <div class="right-panel">
     <div class="ai-recommendations">
-      <h3>🌟 AI 추천 코스</h3>
-      <div id="recommendResults" class="recommend-results"></div>
+    <h3>🌟 AI 추천 코스</h3>
+    <div id="recommendResults" class="recommend-results"></div>
     </div>
 
     <div class="course-section">
-      <h3>📝 내가 만든 코스</h3>
-      <div class="course-list" id="courseList">
-        <!-- 수동 추가된 코스 -->
-      </div>
-      <button class="register-btn">코스 등록</button>
+    <h3>📝 내가 만든 코스</h3>
+    <div class="course-list" id="courseList">
+      <!-- 수동 추가된 코스 -->
+    </div>
     </div>
   </div>
-
 </div>
+<div class="course-meta" style="margin-bottom: 20px;">
+  <label>📝 소개글</label>
+  <textarea id="courseDescription" placeholder="이 데이트 코스에 대한 설명을 작성해주세요."></textarea>
+  <button class="register-btn">코스 등록</button>
+</div>
+
+
 <!--kakaomap api를 사용하기 위한 스크립트 파일입니다.-->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4df49801aef047ffed0c3876739255e8&libraries=services"></script>
+
+<script th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey} + '&autoload=true&libraries=services'"></script>
 <script th:src="@{/js/course_composition_script.js}"></script>
 </body>
+
 </html>

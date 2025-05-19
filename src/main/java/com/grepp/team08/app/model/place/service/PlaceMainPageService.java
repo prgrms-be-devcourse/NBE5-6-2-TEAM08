@@ -34,6 +34,7 @@ public class PlaceMainPageService {
   private final PlaceRepository placeRepository;
 
 
+
   @Transactional
   public AdminUserTopListDto mainPagelist() {
 
@@ -48,7 +49,7 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByEditorCourseId(course)
               .orElse(null);
           if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
+            String imageUrl = "/images/editor/" + img.getRenameFileName();
             return new EditorCourseDto(course, imageUrl);
           }
           else{
@@ -64,7 +65,7 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByRecommendCourseId(course)
               .orElse(null);
           if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
+            String imageUrl = "/images/editor/" + img.getRenameFileName();
             return new CourseDto(course, imageUrl);
           }
           else{
@@ -88,7 +89,7 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByEditorCourseId(course)
               .orElse(null);
           if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
+            String imageUrl = "/images/editor/" + img.getRenameFileName();
             return new EditorCourseDto(course, imageUrl);
           }
           else{
@@ -108,7 +109,7 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByRecommendCourseId(course)
               .orElse(null);
           if(img !=null){
-            String imageUrl = "/image/" + img.getRenameFileName();
+            String imageUrl = "/images/editor/" + img.getRenameFileName();
             return new CourseDto(course, imageUrl);
           }
           else{
@@ -143,7 +144,7 @@ public class PlaceMainPageService {
     List<String> imageUrl = image.stream()
         .map(img -> {
           if(img != null){
-            return "/image/"+img.getRenameFileName();
+            return "/images/editor/"+img.getRenameFileName();
           }
           else {
             return  "/image/bg_night.jpg";
@@ -164,7 +165,7 @@ public class PlaceMainPageService {
         .orElseThrow(() -> new EntityNotFoundException("엔티티가 존재하지 않습니다."));
     EditorDetailCourseDto placeDetail = new EditorDetailCourseDto();
     placeDetail.setTitle(editorCourse.getTitle());
-    placeDetail.setNickname(editorCourse.getId().getNickname());
+    placeDetail.setNickname(editorCourse.getMember().getNickname());
     placeDetail.setCreateAt(editorCourse.getCreatedAt());
     placeDetail.setDescription(editorCourse.getDescription());
 
@@ -178,7 +179,7 @@ public class PlaceMainPageService {
     List<String> imageUrl = image.stream()
         .map(img -> {
           if(img != null){
-            return "/image/"+img.getRenameFileName();
+            return "/images/editor/"+img.getRenameFileName();
           }
           else {
             return  "/image/bg_night.jpg";

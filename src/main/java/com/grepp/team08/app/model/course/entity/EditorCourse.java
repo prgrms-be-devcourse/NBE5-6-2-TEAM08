@@ -12,7 +12,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString
+//@ToString
 public class EditorCourse extends BaseEntity {
 
     @Id
@@ -20,7 +20,7 @@ public class EditorCourse extends BaseEntity {
     private Long editorCourseId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
-    private Member id;
+    private Member member;
     private String title;
     private String description;
     //소프트 delete때문에

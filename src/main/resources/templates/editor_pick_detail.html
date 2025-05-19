@@ -4,17 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>관리자 코스 상세페이지</title>
+
   <link rel="stylesheet" th:href="@{/css/course_detail.css}" />
+  <link rel="stylesheet" th:href="@{/css/editor_pick_detail.css}" />
   <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"></div>
+
+<div class="course-header">
+  <img id="thumbnail" src="" alt="코스 썸네일" class="course-thumbnail" />
+</div>
+
 <div class="course-detail-container">
-  <div class="course-header">
-    <img id="thumbnail" src="" alt="코스 썸네일" class="course-thumbnail" />
-  </div>
+
   <div class="course-info">
+
     <div class="title-button">
       <h1 id="courseTitle" class="course-title"></h1>
       <button
@@ -25,12 +31,15 @@
         <span th:text="${isLiked} ? '❤️' : '🩶'"></span>
       </button>
     </div>
+
     <p id="courseInstructor" class="course-instructor"></p>
     <p id="courseDate" class="course-date"></p>
+    <h1 id="courseTitle" class="course-title"></h1>
     <div id="imageGallery" class="image-gallery"></div>
     <div class="course-description">
       <p id="courseDescription" class="course-description-text"></p>
     </div>
+    <h1 id="placeTitle" class="course-title">데이트는 어디에서?</h1>
     <div id="placeList" class="place-list"></div>
 
   </div>
@@ -48,7 +57,7 @@
     document.getElementById("thumbnail").src = imageUrl;
 
     document.getElementById("courseTitle").innerText = data.title;
-    document.getElementById("courseInstructor").innerText = `작성자: ${data.nickname}`;
+    document.getElementById("courseInstructor").innerText = `${data.nickname} 에디터의 픽!`;
     document.getElementById("courseDate").innerText = `등록일: ${data.createAt.split("T")[0]}`;
     document.getElementById("courseDescription").innerText = data.description;
     const imageGallery = document.getElementById("imageGallery");

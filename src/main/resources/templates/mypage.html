@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1440, initial-scale=1.0"/>
+  <title>마이페이지</title>
+  <link rel="stylesheet" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" th:href="@{/css/mypage.css}"/>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+  <aside class="sidebar" th:fragment="sidebar">
+    <div class="user-info">
+      <p class="user-name" th:text="'사용자 이름: ' + ${member.name}"></p>
+      <p class="user-email" th:text="'이메일: ' + ${member.email}"></p>
+    </div>
+    <ul class="menu">
+      <li><a href="#" onclick="showSection('edit')">회원정보 수정</a></li>
+      <li><a href="#" onclick="showSection('mycourse')">내가 만든 데이트 코스</a></li>
+      <li>내가 찜한 코스</li>
+    </ul>
+    <div class="footer">회원탈퇴</div>
+  </aside>
+
+  <main class="main-content">
+    <!-- 회원정보 수정 영역 -->
+    <section id="edit-section" style="display: none;">
+      <h2>회원정보 수정</h2>
+      <div id="error-message" style="display:none; color:red;"></div>
+
+      <form id="editForm" th:data-userid="${member.userId}">
+        <div class="form-group">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" name="password" placeholder="비밀번호 입력"/>
+        </div>
+
+        <div class="form-group">
+          <label for="passwordConfirm">비밀번호 확인</label>
+          <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호 확인"/>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">전화번호</label>
+          <input type="text" id="phone" name="phone" th:value="${member.phone}"
+                 placeholder="010-0000-0000"/>
+        </div>
+
+        <div class="form-group">
+          <label for="email">이메일</label>
+          <input type="email" id="email" name="email" th:value="${member.email}"
+                 placeholder="example@example.com"/>
+        </div>
+
+        <div class="form-group">
+          <label for="nickname">닉네임</label>
+          <input type="text" id="nickname" name="nickname" th:value="${member.nickname}"
+                 placeholder="닉네임"/>
+        </div>
+
+        <div class="submit-wrap">
+          <button type="submit" class="submit-btn">수정하기</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 내가 만든 데이트 코스 영역 -->
+    <section id="mycourse-section" style="display: none;">
+      <h2>내가 만든 데이트 코스</h2>
+      <div id="mycourse-list" class="card-list"></div>
+    </section>
+
+    <!-- 내가 만든 데이트 코스 상세보기 영역 -->
+    <section id="mycourse-detail-section" style="display: none;">
+      <h2 id="course-title">코스 제목</h2>
+      <div class="place-container card-list"></div>
+      <div class="course-description">
+        <h3>소개글</h3>
+        <p id="course-description">코스 설명입니다.</p>
+      </div>
+
+      <button id="recommend-button" class="recommend-btn">추천 코스로 등록</button>
+    </section>
+  </main>
+
+  <script th:src="@{/js/mypage_edit.js}"></script>
+  <script th:src="@{/js/mycourse_list.js}"></script>
+  <script th:src="@{/js/mycourse_detail.js}"></script>
+
+  <script>
+    function showSection(section) {
+      const sections = ['edit-section', 'mycourse-section', 'mycourse-detail-section'];
+      sections.forEach(id => {
+        document.getElementById(id).style.display = 'none';
+      });
+
+      if (section === 'edit') {
+        document.getElementById('edit-section').style.display = 'block';
+      } else if (section === 'mycourse') {
+        document.getElementById('mycourse-section').style.display = 'block';
+      } else if (section === 'mycourse-detail') {
+        document.getElementById('mycourse-detail-section').style.display = 'block';
+      }
+    }
+  </script>
+</div>
+</body>
+</html>

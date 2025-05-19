@@ -145,6 +145,7 @@ body {
   margin: 0;
   font-size: 16px;
   color: #555;
+
 }
 .like-button{
   background-color: transparent;
@@ -153,6 +154,9 @@ body {
   outline: none;
   cursor: pointer;
   font-size: xx-large;
+
+
+}
 
 
 }
