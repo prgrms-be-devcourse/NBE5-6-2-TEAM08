@@ -1,6 +1,8 @@
 package com.grepp.team08.infra.config;
 
 import com.grepp.team08.app.controller.web.member.payload.SignupRequest;
+import com.grepp.team08.app.model.course.dto.CourseDetailDto;
+import com.grepp.team08.app.model.course.entity.Course;
 import com.grepp.team08.app.model.member.dto.MemberDto;
 import com.grepp.team08.app.model.member.entity.Member;
 import org.modelmapper.ModelMapper;
@@ -19,6 +21,9 @@ public class ModelMapperConfig {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         modelMapper.typeMap(SignupRequest.class, Member.class).addMappings(mapper -> {mapper.skip(Member::setId);});
         modelMapper.typeMap(MemberDto.class, Member.class).addMappings(mapper -> mapper.skip(Member::setId));
+        modelMapper.typeMap(Course.class, CourseDetailDto.class)
+            .addMapping(src -> src.getId().getNickname(), CourseDetailDto::setNickname);
+
         return modelMapper;
     }
     

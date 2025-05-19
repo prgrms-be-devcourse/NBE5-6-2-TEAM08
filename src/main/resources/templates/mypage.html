@@ -70,16 +70,38 @@
       <h2>내가 만든 데이트 코스</h2>
       <div id="mycourse-list" class="card-list"></div>
     </section>
+
+    <!-- 내가 만든 데이트 코스 상세보기 영역 -->
+    <section id="mycourse-detail-section" style="display: none;">
+      <h2 id="course-title">코스 제목</h2>
+      <div class="place-container card-list"></div>
+      <div class="course-description">
+        <h3>소개글</h3>
+        <p id="course-description">코스 설명입니다.</p>
+      </div>
+
+      <button id="recommend-button" class="recommend-btn">추천 코스로 등록</button>
+    </section>
   </main>
 
   <script th:src="@{/js/mypage_edit.js}"></script>
   <script th:src="@{/js/mycourse_list.js}"></script>
+  <script th:src="@{/js/mycourse_detail.js}"></script>
+
   <script>
     function showSection(section) {
-      document.getElementById('edit-section').style.display = (section === 'edit') ? 'block'
-          : 'none';
-      document.getElementById('mycourse-section').style.display = (section === 'mycourse') ? 'block'
-          : 'none';
+      const sections = ['edit-section', 'mycourse-section', 'mycourse-detail-section'];
+      sections.forEach(id => {
+        document.getElementById(id).style.display = 'none';
+      });
+
+      if (section === 'edit') {
+        document.getElementById('edit-section').style.display = 'block';
+      } else if (section === 'mycourse') {
+        document.getElementById('mycourse-section').style.display = 'block';
+      } else if (section === 'mycourse-detail') {
+        document.getElementById('mycourse-detail-section').style.display = 'block';
+      }
     }
   </script>
 </div>

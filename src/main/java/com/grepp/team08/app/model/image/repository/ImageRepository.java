@@ -1,5 +1,6 @@
 package com.grepp.team08.app.model.image.repository;
 
+import com.grepp.team08.app.model.course.entity.Course;
 import com.grepp.team08.app.model.course.entity.EditorCourse;
 import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import com.grepp.team08.app.model.image.entity.Image;
@@ -19,4 +20,6 @@ public interface ImageRepository extends JpaRepository<Image,Long> {
   List<Image> findAllByRecommendCourseId(RecommendCourse recommendCourse);
 
   List<Image> findAllByEditorCourseId(EditorCourse places);
+
+  List<Image> findByRecommendCourseId_CourseId(Course course);
 }

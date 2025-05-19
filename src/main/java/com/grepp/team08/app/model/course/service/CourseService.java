@@ -1,5 +1,6 @@
 package com.grepp.team08.app.model.course.service;
 
+import com.grepp.team08.app.model.course.dto.CourseDetailDto;
 import com.grepp.team08.app.model.course.dto.MyCourseResponse;
 import com.grepp.team08.app.model.course.dto.MyDateCourseDto;
 import com.grepp.team08.app.model.course.entity.Course;
@@ -9,9 +10,13 @@ import com.grepp.team08.app.model.course.repository.RegistMyCourseRepository;
 import com.grepp.team08.app.model.image.entity.Image;
 import com.grepp.team08.app.model.image.repository.ImageRepository;
 import com.grepp.team08.app.model.member.entity.Member;
+import com.grepp.team08.app.model.place.dto.PlaceDetailDto;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import com.grepp.team08.app.model.course.repository.MyCourseRepository;
@@ -19,6 +24,8 @@ import com.grepp.team08.app.model.place.dto.PlaceSaveDto;
 import com.grepp.team08.app.model.place.entity.Place;
 import com.grepp.team08.app.model.place.repository.PlaceRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -35,6 +42,7 @@ public class CourseService {
     private final RegistMyCourseRepository courseRepository;
     private final RecommendCourseRepository recommendCourseRepository;
     private final ImageRepository imageRepository;
+    private final ModelMapper modelMapper;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -128,5 +136,28 @@ public class CourseService {
 
     private String extractFileName(String path) {
         return path.substring(path.lastIndexOf('/') + 1);
+      
+    @Transactional(readOnly = true)
+    public CourseDetailDto getCourseDetail(Long courseId) {
+        Course course = getCourseById(courseId);
+
+        CourseDetailDto dto = modelMapper.map(course, CourseDetailDto.class);
+
+        List<Place> places = placeRepository.findByCourseId(course);
+        List<PlaceDetailDto> placeDtos = places.stream()
+                .map(place -> {
+                    return new PlaceDetailDto(place.getPlaceName(), place.getAddress());
+                })
+                .toList();
+        dto.setPlaces(placeDtos);
+
+        List<Image> images = imageRepository.findByRecommendCourseId_CourseId(course);
+
+        List<String> imageUrls = images.stream()
+                .map(Image::getSavePath)
+                .toList();
+        dto.setImageUrl(imageUrls);
+
+        return dto;
     }
 }
