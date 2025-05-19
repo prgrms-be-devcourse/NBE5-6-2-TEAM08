@@ -13,11 +13,11 @@ import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.place.dto.PlaceDetailDto;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import com.grepp.team08.app.model.course.repository.MyCourseRepository;
 import com.grepp.team08.app.model.place.dto.PlaceSaveDto;
@@ -29,8 +29,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 @RequiredArgsConstructor
@@ -101,7 +99,7 @@ public class CourseService {
     }
 
     @Transactional
-    public void registToRecommendCourse(Long courseId, List<MultipartFile> images) {
+    public void registToRecommendCourse(Long courseId, List<String> imageUrls) {
         Course course = getCourseById(courseId);
 
 
@@ -117,33 +115,14 @@ public class CourseService {
         recommendCourseRepository.save(recommendCourse);
 
         // 이미지 처리
-        for (MultipartFile imageFile : images) {
-            try {
-                String originalFilename = imageFile.getOriginalFilename();
-                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-                String newFileName = UUID.randomUUID().toString() + extension;
-                String savePath = uploadPath + File.separator + newFileName;
-                log.info("Saving file to: {}", savePath);
-
-                // 파일 저장
-                File destFile = new File(savePath);
-                imageFile.transferTo(destFile);
-
-                // 이미지 엔티티 저장 - 웹 접근 경로로 저장
-                Image image = new Image();
-                image.setEditorCourseId(null);
-                image.setRecommendCourseId(recommendCourse);
-                image.setOriginFileName(originalFilename);
-                image.setRenameFileName(newFileName);
-                // 웹에서 접근 가능한 경로로 저장
-                image.setSavePath("/image/" + newFileName);
-                image.setType(imageFile.getContentType());
-
-                imageRepository.save(image);
-            } catch (IOException e) {
-                log.error("Image upload failed", e);
-                throw new RuntimeException("이미지 저장에 실패했습니다: " + e.getMessage());
-            }
+        for (String imagePath : imageUrls) {
+            Image image = new Image();
+            image.setRecommendCourseId(recommendCourse); // EditorCourseId 대신 RecommendCourseId 설정
+            image.setOriginFileName(extractFileName(imagePath));
+            image.setRenameFileName(extractFileName(imagePath));
+            image.setSavePath(imagePath);
+            image.setType("image");
+            imageRepository.save(image);
         }
     }
 
@@ -155,6 +134,9 @@ public class CourseService {
             .collect(Collectors.toList());
     }
 
+    private String extractFileName(String path) {
+        return path.substring(path.lastIndexOf('/') + 1);
+      
     @Transactional(readOnly = true)
     public CourseDetailDto getCourseDetail(Long courseId) {
         Course course = getCourseById(courseId);

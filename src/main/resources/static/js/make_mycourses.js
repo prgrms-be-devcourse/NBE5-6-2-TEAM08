@@ -51,21 +51,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileList = document.getElementById('fileList');
 
     if (photoBtn && photoInput && fileList) {
-        photoBtn.addEventListener('click', function() {
-            photoInput.click();
-        });
+    photoBtn.addEventListener('click', function() {
+        photoInput.click();
+    });
 
-        photoInput.addEventListener('change', function(e) {
+    photoInput.addEventListener('change', function(e) {
             const files = e.target.files;
             fileList.innerHTML = '';
-
+            
             for (let file of files) {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
                 fileItem.textContent = file.name;
-                fileList.appendChild(fileItem);
-            }
-        });
+            fileList.appendChild(fileItem);
+        }
+    });
     }
 });
 

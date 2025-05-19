@@ -2,8 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageInput = document.getElementById('courseImages');
     const previewContainer = document.getElementById('imagePreviewContainer');
     const uploadBox = document.getElementById('uploadBox');
+    const submitButton = document.querySelector('.button-submit');
+    const cancelButton = document.querySelector('.button-cancel');
     const maxImages = 10;
     let currentImages = [];
+    let uploadedImageUrls = [];
     let isProcessing = false;
 
     // 업로드 박스 전체 영역 클릭 이벤트
@@ -17,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.stopPropagation();
     });
 
-    imageInput.addEventListener('change', function(e) {
+    imageInput.addEventListener('change', async function(e) {
         if (isProcessing) return;
         isProcessing = true;
 
@@ -39,93 +42,113 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const processFile = (file, index) => {
-            return new Promise((resolve) => {
-                if (!file.type.startsWith('image/')) {
-                    alert('이미지 파일만 업로드 가능합니다.');
-                    resolve();
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.createElement('div');
-                    preview.className = 'image-preview';
-                    preview.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview">
-                        <button type="button" class="remove-image">×</button>
-                    `;
-                    
-                    // 현재 이미지 배열에 추가
-                    currentImages.push({
-                        file: file,
-                        element: preview
-                    });
-
-                    // 업로드 박스 다음 위치에 삽입
-                    uploadBox.insertAdjacentElement('afterend', preview);
-
-                    preview.querySelector('.remove-image').addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const index = currentImages.findIndex(img => img.element === preview);
-                        if (index > -1) {
-                            currentImages.splice(index, 1);
-                        }
-                        preview.remove();
-                    });
-                    resolve();
-                };
-                reader.readAsDataURL(file);
-            });
-        };
-
-        Promise.all(files.map(processFile)).then(() => {
-            isProcessing = false;
-            imageInput.value = ''; // 입력 필드 초기화
-        });
-    });
-
-    document.querySelector('.button-submit').addEventListener('click', async function() {
         try {
+            // 이미지 업로드
             const formData = new FormData();
-            const courseId = document.getElementById('courseId').value;
-            
-            if (!courseId) {
-                throw new Error('코스 정보를 찾을 수 없습니다.');
-            }
-
-            if (currentImages.length === 0) {
-                throw new Error('최소 1장의 이미지를 추가해주세요.');
-            }
-
-            formData.append('courseId', courseId);
-            currentImages.forEach(img => {
-                formData.append('images', img.file);
+            files.forEach(file => {
+                console.log('파일 추가:', file.name, file.type, file.size);
+                formData.append('images', file);
             });
 
-            const response = await fetch('/api/course/recommend-course-regist', {
+            console.log('업로드 시작');
+            const response = await fetch('/api/course/images', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                // Content-Type 헤더를 명시적으로 설정하지 않음 (브라우저가 자동으로 설정)
+                headers: {
+                    'Accept': 'application/json'
+                }
             });
 
             if (!response.ok) {
-                if (response.status === 413) {
-                    throw new Error('파일 크기가 너무 큽니다. 각 이미지는 10MB 이하여야 합니다.');
-                }
-                const result = await response.json();
-                throw new Error(result.message || result.data || '등록에 실패했습니다.');
+                console.error('업로드 실패:', response.status, response.statusText);
+                const text = await response.text();
+                console.error('에러 응답:', text);
+                throw new Error('이미지 업로드에 실패했습니다.');
             }
 
-            const result = await response.json();
-            alert('추천 코스가 등록되었습니다.');
-            window.location.href = '/recommend-courses';
+            const urls = await response.json();
+            console.log('업로드 성공:', urls);
+            uploadedImageUrls = uploadedImageUrls.concat(urls);
+
+            // 미리보기 표시
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'image-preview';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'preview-image';
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '×';
+                    deleteBtn.className = 'remove-image';
+                    deleteBtn.onclick = function() {
+                        previewDiv.remove();
+                        const index = currentImages.indexOf(file);
+                        if (index > -1) {
+                            currentImages.splice(index, 1);
+                            uploadedImageUrls.splice(index, 1);
+                        }
+                    };
+                    
+                    previewDiv.appendChild(img);
+                    previewDiv.appendChild(deleteBtn);
+                    previewContainer.appendChild(previewDiv);
+                    currentImages.push(file);
+                };
+                reader.readAsDataURL(file);
+            });
         } catch (error) {
             console.error('Error:', error);
             alert(error.message);
+        } finally {
+            isProcessing = false;
+            imageInput.value = ''; // 입력 필드 초기화
         }
     });
 
-    document.querySelector('.button-cancel').addEventListener('click', function() {
+    // 코스 등록 버튼 클릭 이벤트
+    submitButton.addEventListener('click', async function() {
+        if (isProcessing) return;
+        isProcessing = true;
+
+        try {
+            if (uploadedImageUrls.length === 0) {
+                alert('최소 1장의 이미지를 업로드해주세요.');
+                isProcessing = false;
+                return;
+            }
+
+            const courseId = document.getElementById('courseId').value;
+            const params = new URLSearchParams();
+            params.append('courseId', courseId);
+            uploadedImageUrls.forEach(url => params.append('imageUrls', url));
+
+            const response = await fetch('/api/course/recommend-course-regist?' + params.toString(), {
+                method: 'POST'
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                alert('코스가 성공적으로 등록되었습니다.');
+                window.location.href = '/recommend-courses'; // 추천 코스 목록 페이지로 이동
+            } else {
+                throw new Error(result.message || '코스 등록에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert(error.message);
+        } finally {
+            isProcessing = false;
+        }
+    });
+
+    // 취소 버튼 클릭 이벤트
+    cancelButton.addEventListener('click', function() {
         window.history.back();
     });
 }); 
