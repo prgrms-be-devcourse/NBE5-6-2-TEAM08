@@ -53,7 +53,7 @@ public class CourseService {
         String projectRoot = System.getProperty("user.dir");
         this.uploadPath = projectRoot + File.separator + "src" + File.separator + "main" + 
                          File.separator + "resources" + File.separator + "static" + 
-                         File.separator + "image";
+                         File.separator + "images";
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
