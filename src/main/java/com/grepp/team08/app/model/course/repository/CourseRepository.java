@@ -30,10 +30,10 @@ public interface CourseRepository extends JpaRepository<RecommendCourse,Long> {
 
 
   @Query("""
-    SELECT rc FROM RecommendCourse rc
-    JOIN FETCH rc.courseId c
-    JOIN FETCH c.id
-    WHERE c.id.id = :id
+  SELECT rc FROM RecommendCourse rc
+  JOIN FETCH rc.courseId c
+  JOIN FETCH c.id
+  WHERE rc.recommendCourseId = :id
 """)
   Optional<RecommendCourse> findWithCourseAndMemberById(@Param("id") Long id);
 }
