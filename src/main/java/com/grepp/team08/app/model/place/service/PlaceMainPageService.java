@@ -16,8 +16,11 @@ import com.grepp.team08.app.model.place.dto.mainpage.AdminUserTopListDto;
 import com.grepp.team08.app.model.place.entity.Place;
 import com.grepp.team08.app.model.place.repository.PlaceRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +38,10 @@ public class PlaceMainPageService {
   @Transactional
   public AdminUserTopListDto mainPagelist() {
 
-      List<EditorCourse> adminplace = adminCourseRepository.findTop4ByOrderByCreatedAtDesc();
-      List<RecommendCourse> userplace = courseRepository.findTop4ByOrderByCreatedAtDesc();
+
+      Pageable pageable =  PageRequest.of(0, 4);
+      List<EditorCourse> adminplace = adminCourseRepository.findTop4ByOrderByCreatedAtDesc(pageable);
+      List<RecommendCourse> userplace = courseRepository.findTop4ByOrderByCreatedAtDesc(pageable);
 
 
     List<EditorCourseDto> adminDto = adminplace.stream()
@@ -98,7 +103,7 @@ public class PlaceMainPageService {
   }
   @Transactional
   public List<CourseDto> userPageList() {
-    List<RecommendCourse> userPlace = courseRepository.findAll();
+    List<RecommendCourse> userPlace = courseRepository.findAllWithCourseAndMember();
     List<CourseDto> courseDto = userPlace.stream()
         .map(course -> {
           Image img = imageRepository.findFirstByRecommendCourseId(course)
@@ -117,10 +122,11 @@ public class PlaceMainPageService {
 
   }
 
+
   @Transactional
   public CourseDetailDto userDetailPlace(Long recommendId) {
 
-    RecommendCourse recommendCourse = courseRepository.findById(recommendId)
+    RecommendCourse recommendCourse = courseRepository.findWithCourseAndMemberById(recommendId)
         .orElseThrow(() -> new EntityNotFoundException("엔티티가 존재하지 않습니다."));
     CourseDetailDto placeDetail = new CourseDetailDto();
     placeDetail.setTitle(recommendCourse.getCourseId().getTitle());
@@ -155,7 +161,7 @@ public class PlaceMainPageService {
 
   @Transactional
   public EditorDetailCourseDto editorDetailPlace(Long editorId) {
-    EditorCourse editorCourse = adminCourseRepository.findById(editorId)
+    EditorCourse editorCourse = adminCourseRepository.findWithMemberById(editorId)
         .orElseThrow(() -> new EntityNotFoundException("엔티티가 존재하지 않습니다."));
     EditorDetailCourseDto placeDetail = new EditorDetailCourseDto();
     placeDetail.setTitle(editorCourse.getTitle());

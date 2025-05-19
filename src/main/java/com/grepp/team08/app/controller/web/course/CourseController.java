@@ -1,5 +1,11 @@
 package com.grepp.team08.app.controller.web.course;
 
+import com.grepp.team08.app.model.like.entity.FavoriteCourse;
+import com.grepp.team08.app.model.like.service.FavoriteService;
+import java.security.Principal;
+import org.bouncycastle.math.raw.Mod;
+import com.grepp.team08.app.model.course.entity.Course;
+import com.grepp.team08.app.model.course.repository.CourseRepository;
 
 import com.grepp.team08.app.model.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CourseController {
 
     private final CourseService courseService;
+    private final FavoriteService favoriteService;
 
     @Value("${kakao.api.key}")
     private String kakaoApiKey;
@@ -33,13 +40,44 @@ public class CourseController {
     public String usercourse(){return "course_list_user";}
 
     @GetMapping("/recommend-courses/{recommend_id}")
-    public String detailUserCourse(@PathVariable Long recommend_id, Model model) {
+    public String detailUserCourse(@PathVariable Long recommend_id, Principal principal, Model model) {
         model.addAttribute("recommendId", recommend_id);
+        boolean isLiked = false;
+        if (principal != null) {
+            String userId = principal.getName();
+            isLiked = favoriteService.isLiked(userId, recommend_id); // 찜 여부 확인
+        }
+
+        model.addAttribute("isLiked", isLiked);
         return "course_detail";
     }
-    @GetMapping("/editor-recommand-courses/{recommand_id}")
-    public String detailEditorCourse(@PathVariable Long recommand_id, Model model){
-        model.addAttribute("recommendId",recommand_id);
+
+    @GetMapping("/editor-recommand-courses/{recommendId}")
+    public String detailEditorCourse(@PathVariable Long recommendId,Principal principal, Model model){
+        model.addAttribute("recommendId",recommendId);
+        boolean isLiked = false;
+        if(principal != null){
+            String userId = principal.getName();
+            isLiked = favoriteService.isEditorLiked(userId,recommendId);
+        }
+
+        model.addAttribute("isLiked",isLiked);
         return"editor_pick_detail";
     }
+
+
+    // 나의 데이트 코스 저장 페이지 이동
+    @GetMapping("/make-mycourses")
+    public String makeMyCourses() {
+        return "make_mycourses";
+    }
+
+    // 내 데이트 코스에 저장 post 요청
+    @PostMapping("/make-mycourses")
+    public String regist(Course course) {
+//        courseService.registCourses(course.getTitle());
+        return null;
+    }
+
+
 }

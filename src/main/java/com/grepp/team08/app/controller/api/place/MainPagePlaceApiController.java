@@ -6,6 +6,7 @@ import com.grepp.team08.app.model.course.dto.CourseDto;
 import com.grepp.team08.app.model.course.dto.EditorCourseDto;
 import com.grepp.team08.app.model.course.dto.EditorDetailCourseDto;
 import com.grepp.team08.app.model.course.entity.EditorCourse;
+import com.grepp.team08.app.model.like.service.FavoriteService;
 import com.grepp.team08.app.model.place.dto.mainpage.AdminUserTopListDto;
 import com.grepp.team08.app.model.place.service.PlaceMainPageService;
 import com.grepp.team08.app.model.review.dto.RequestReviewDto;
@@ -14,7 +15,6 @@ import com.grepp.team08.app.model.review.service.ReviewService;
 import com.grepp.team08.infra.response.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,6 +33,8 @@ public class MainPagePlaceApiController {
 
   private final PlaceMainPageService placeMainPageService;
   private final ReviewService reviewService;
+  private final FavoriteService favoriteService;
+
 
 
   @GetMapping
@@ -93,6 +96,32 @@ public class MainPagePlaceApiController {
     return ResponseEntity.ok(ApiResponse.success("리뷰 등록이 되었습니다"));
 
   }
+
+
+  //찜하기 사용자
+  @PostMapping("/users/{recommend_id}/likes")
+  public ResponseEntity<?> likeCourse(@PathVariable Long recommend_id,@AuthenticationPrincipal Principal principal){
+
+    String userId = principal.getUsername();
+
+    favoriteService.userFavoriteAdd(recommend_id, userId);
+
+    return ResponseEntity.ok(ApiResponse.success("유저 코스 찜하기"));
+  }
+  //찜하기 관리자꺼
+  @PostMapping("/admin/{recommend_id}/likes")
+  public ResponseEntity<?> likeAdminCourse(@PathVariable Long recommend_id,@AuthenticationPrincipal Principal principal){
+
+    String userId = principal.getUsername();
+
+    favoriteService.adminFavoriteAdd(recommend_id, userId);
+
+    return ResponseEntity.ok(ApiResponse.success("관리자 코스 찜하기"));
+
+
+  }
+
+
 
 
 }

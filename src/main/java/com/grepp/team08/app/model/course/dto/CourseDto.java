@@ -1,8 +1,6 @@
 package com.grepp.team08.app.model.course.dto;
 
-import com.grepp.team08.app.model.course.entity.FavoriteCourse;
 import com.grepp.team08.app.model.course.entity.RecommendCourse;
-import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
