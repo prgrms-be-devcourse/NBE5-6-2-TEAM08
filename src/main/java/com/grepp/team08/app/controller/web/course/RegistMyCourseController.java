@@ -2,18 +2,14 @@ package com.grepp.team08.app.controller.web.course;
 
 import com.grepp.team08.app.model.course.service.CourseService;
 import com.grepp.team08.app.model.member.entity.Member;
-import com.grepp.team08.app.model.course.entity.Course;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
+import com.grepp.team08.app.model.course.dto.CourseDetailDto;
 
 @Slf4j
 @Controller
@@ -39,10 +35,10 @@ public class RegistMyCourseController {
         }
         
         try {
-            Course course = courseService.getCourseById(courseId);
+            CourseDetailDto courseDetail = courseService.getCourseDetail(courseId);
             model.addAttribute("member", member);
             model.addAttribute("courseId", courseId);
-            model.addAttribute("course", course);
+            model.addAttribute("course", courseDetail);
             
             return "recommend_course_register";
         } catch (Exception e) {
