@@ -25,8 +25,8 @@
 
     <header class="header">
         <nav class="nav">
-            <a href="/" class="nav-back">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <a href="javascript:history.back()" class="nav-back">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </a>
@@ -36,48 +36,37 @@
 
     <main class="main">
         <section class="course-section">
-            <input type="hidden" id="courseId" th:value="${courseId}">
-            <h2 class="section-title">추천 코스 등록하기</h2>
-            <h3 class="section-subtitle">한강 피크닉 코스</h3>
-            
+            <h2 class="section-title" th:text="${course.title}">한강 피크닉 코스</h2>
             <div class="place-grid">
-                <div class="place-card" th:each="i : ${#numbers.sequence(1, 3)}">
-                    <div class="place-image-container">
-                        <input type="file" class="place-image-input" accept="image/*" hidden>
-                        <div class="place-image-placeholder">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span th:text="'PLACE ' + ${i}">PLACE</span>
-                        </div>
-                    </div>
+                <div class="place-card" th:each="place : ${places}">
+                    <h3 class="place-name" th:text="${place.title}">장소명</h3>
+                    <p class="place-address" th:text="${place.address}">주소</p>
                 </div>
-            </div>
-
-            <div class="image-upload-section">
-                <p class="upload-info">데이트 코스를 소개하는 사진을 넣어주세요! (최소 1장, 최대 10장)</p>
-                <p class="upload-format">* jpeg / png 파일만 업로드 가능합니다.</p>
-                <div class="image-grid">
-                    <div class="image-upload-box" id="uploadBox">
-                        <input type="file" id="courseImages" multiple accept="image/*" hidden>
-                        <label for="courseImages" class="image-upload-label">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span class="upload-text">사진 추가</span>
-                        </label>
-                    </div>
-                    <div id="imagePreviewContainer" class="image-preview-container"></div>
-                </div>
-            </div>
-
-            <div class="button-container">
-                <button type="button" class="button button-cancel">취소하기</button>
-                <button type="button" class="button button-submit">등록하기</button>
             </div>
         </section>
+
+        <section class="image-upload-section">
+            <h3 class="upload-info">데이트 코스를 소개하는 사진을 넣어주세요! (최소 1장, 최대 10장)</h3>
+            <p class="upload-format">* jpeg / png 파일만 업로드 가능합니다.</p>
+
+            <input type="file" id="courseImages" accept="image/jpeg, image/png" multiple style="display: none;">
+            <div class="image-grid">
+                <div class="image-upload-box" id="uploadBox">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+            <div id="imagePreviewContainer" class="image-preview-container"></div>
+        </section>
+
+        <div class="button-container">
+            <button class="button button-cancel">취소</button>
+            <button class="button button-submit">등록하기</button>
+        </div>
     </main>
 
+    <input type="hidden" id="courseId" th:value="${courseId}">
     <script th:src="@{/js/recommend_course_register.js}"></script>
 </body>
-</html> 
+</html>

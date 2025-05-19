@@ -22,6 +22,7 @@ public class ModelMapperConfig {
         modelMapper.typeMap(SignupRequest.class, Member.class).addMappings(mapper -> {mapper.skip(Member::setId);});
         modelMapper.typeMap(MemberDto.class, Member.class).addMappings(mapper -> mapper.skip(Member::setId));
         modelMapper.typeMap(Course.class, CourseDetailDto.class)
+            .addMapping(Course::getCoursesId, CourseDetailDto::setCoursesId)
             .addMapping(src -> src.getId().getNickname(), CourseDetailDto::setNickname);
 
         return modelMapper;

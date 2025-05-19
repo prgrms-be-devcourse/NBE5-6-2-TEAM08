@@ -12,6 +12,8 @@ public class PlaceDetailDto {
   String title;
   String address;
 
+  public PlaceDetailDto() {
+  }
 
   public PlaceDetailDto(Place place) {
     this.address = place.getAddress();
