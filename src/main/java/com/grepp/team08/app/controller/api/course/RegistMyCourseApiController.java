@@ -1,5 +1,6 @@
 package com.grepp.team08.app.controller.api.course;
 
+import com.grepp.team08.app.model.course.dto.RecommendCourseRegistRequestDto;
 import com.grepp.team08.app.model.course.service.CourseService;
 import com.grepp.team08.app.model.image.service.ImageService;
 import com.grepp.team08.app.model.member.entity.Member;
@@ -56,19 +57,18 @@ public class RegistMyCourseApiController {
 
     @PostMapping("/recommend-course-regist")
     public ResponseEntity<?> recommendCourseRegist(
-        @RequestParam("imageUrls") List<String> imageUrls,
-        @RequestParam("courseId") Long courseId,
+        @RequestBody RecommendCourseRegistRequestDto request,
         @AuthenticationPrincipal Member member
     ) {
         try {
-            log.info("추천 코스 등록 시작 - courseId: {}, 이미지 개수: {}", courseId, imageUrls.size());
+            log.info("추천 코스 등록 시작 - courseId: {}, 이미지 개수: {}", request.getCourseId(), request.getImageUrls().size());
             
-            if (imageUrls == null || imageUrls.isEmpty()) {
+            if (request.getImageUrls() == null || request.getImageUrls().isEmpty()) {
                 return ResponseEntity.badRequest()
                     .body(ApiResponse.error(ResponseCode.BAD_REQUEST, "최소 1장의 이미지가 필요합니다."));
             }
 
-            courseService.registToRecommendCourse(courseId, imageUrls);
+            courseService.registToRecommendCourse(request.getCourseId(), request.getImageUrls());
 
             return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,4 +79,4 @@ public class RegistMyCourseApiController {
                 .body(ApiResponse.error(ResponseCode.BAD_REQUEST, e.getMessage()));
         }
     }
-} 
+}
