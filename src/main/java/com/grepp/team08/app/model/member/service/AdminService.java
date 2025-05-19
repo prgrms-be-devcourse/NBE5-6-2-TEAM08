@@ -5,6 +5,8 @@ import com.grepp.team08.app.model.course.entity.EditorCourse;
 import com.grepp.team08.app.model.course.repository.AdminCourseRepository;
 import com.grepp.team08.app.model.image.entity.Image;
 import com.grepp.team08.app.model.image.repository.ImageRepository;
+import com.grepp.team08.app.model.like.entity.FavoriteCourse;
+import com.grepp.team08.app.model.like.repository.FavoriteRepository;
 import com.grepp.team08.app.model.member.dto.AdminSearchUserDto;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.member.repository.AdminRepository;
@@ -23,6 +25,7 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final AdminCourseRepository adminCourseRepository;
     private final ImageRepository imageRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public List<AdminSearchUserDto> userAllSearch() {
@@ -45,12 +48,13 @@ public class AdminService {
         return adminPlace.stream()
             .map(course -> {
                 Image img = imageRepository.findFirstByEditorCourseId(course).orElse(null);
+                int count = favoriteRepository.countByEditorCourse(course);
 
                 String imageUrl = (img != null)
                     ? imageAccessPath + img.getRenameFileName() // ✅ 설정된 웹 경로 + 파일명
                     : imageAccessPath + "bg_night.jpg";         // 기본 이미지도 동일하게
 
-                return new EditorCourseDto(course, imageUrl);
+                return new EditorCourseDto(course, imageUrl,count);
             })
             .toList();
     }

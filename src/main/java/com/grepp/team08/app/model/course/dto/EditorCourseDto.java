@@ -11,13 +11,15 @@ public class EditorCourseDto {
   private String description;
   private String editorNickname;
   private String imageurl;
+  private int favoriteCnt;
 
-  public EditorCourseDto(EditorCourse course,String imageurl) {
+  public EditorCourseDto(EditorCourse course,String imageurl,int favoriteCount) {
     this.courseId = course.getEditorCourseId();
     this.title = course.getTitle();
     this.description = course.getDescription();
     this.editorNickname = course.getMember().getNickname();
     this.imageurl = imageurl;
+    this.favoriteCnt = favoriteCount;
   }
 
 

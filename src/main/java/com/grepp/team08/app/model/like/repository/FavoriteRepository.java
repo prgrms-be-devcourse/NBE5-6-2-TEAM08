@@ -4,6 +4,7 @@ import com.grepp.team08.app.model.course.entity.EditorCourse;
 import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import com.grepp.team08.app.model.like.entity.FavoriteCourse;
 import com.grepp.team08.app.model.member.entity.Member;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,10 @@ public interface FavoriteRepository extends JpaRepository<FavoriteCourse,Long> {
   boolean existsByMemberAndRecommendCourseAndActivatedTrue(Member member, RecommendCourse recommendCourse);
 
   boolean existsByMemberAndEditorCourseAndActivatedTrue(Member member, EditorCourse editorCourse);
+
+  List<FavoriteCourse> findAllByEditorCourse(EditorCourse course);
+
+  int countByEditorCourse(EditorCourse course);
+
+  int countByRecommendCourse(RecommendCourse recommendCourse);
 }
