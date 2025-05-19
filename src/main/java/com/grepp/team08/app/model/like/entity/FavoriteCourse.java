@@ -1,5 +1,7 @@
-package com.grepp.team08.app.model.course.entity;
+package com.grepp.team08.app.model.like.entity;
 
+import com.grepp.team08.app.model.course.entity.EditorCourse;
+import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.infra.entity.BaseEntity;
 import jakarta.persistence.Entity;
@@ -9,7 +11,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -17,17 +22,25 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FavoriteCourse extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long favoriteCourseId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "recommend_course_id", nullable = false)
-    private RecommendCourse recommendCourseId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "recommend_course_id", nullable = true)
+    private RecommendCourse recommendCourse;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "editor_course_id", nullable = true)
+    private EditorCourse editorCourse;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
-    private Member id;
+    private Member member;
+
 
 }

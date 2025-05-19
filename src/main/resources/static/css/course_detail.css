@@ -31,6 +31,11 @@ body {
   margin-top: 20px;
   position: relative;
 }
+.title-button{
+  display: flex;
+  flex-direction: row;
+  gap:30px;
+}
 
 .course-thumbnail {
   width: 100%;
@@ -86,6 +91,10 @@ body {
   letter-spacing: 2.4px;
   line-height: 30px;
 }
+.title-like{
+  display: flex;
+  gap:20px;
+}
 .image-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -137,3 +146,14 @@ body {
   font-size: 16px;
   color: #555;
 }
+.like-button{
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+  font-size: xx-large;
+
+
+}
+

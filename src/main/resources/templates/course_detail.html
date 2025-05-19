@@ -16,7 +16,17 @@
     <img id="thumbnail" src="" alt="코스 썸네일" class="course-thumbnail" />
   </div>
   <div class="course-info">
-    <h1 id="courseTitle" class="course-title"></h1>
+    <div class="title-button">
+      <h1 id="courseTitle" class="course-title"></h1>
+      <button
+          th:attr="data-recommend-id=${recommendId}"
+          th:classappend="${isLiked} ? ' liked' : ' unliked'"
+          class="like-button"
+          onclick="toggleLike(this)">
+        <span th:text="${isLiked} ? '❤️' : '🩶'"></span>
+      </button>
+    </div>
+
     <p id="courseInstructor" class="course-instructor"></p>
     <p id="courseDate" class="course-date"></p>
     <div id="imageGallery" class="image-gallery"></div>
@@ -24,8 +34,8 @@
       <p id="courseDescription" class="course-description-text"></p>
     </div>
     <div id="placeList" class="place-list"></div>
-
   </div>
+
 </div>
 <div class="review-form">
   <h3>리뷰 작성</h3>
@@ -93,6 +103,28 @@
   .catch(err => {
     console.error("코스 정보를 불러오는 데 실패했습니다.", err);
   });
+
+
+  function toggleLike(button) {
+    const recommendId = button.dataset.recommendId;
+
+    fetch(`/api/users/${recommendId}/likes`, {
+      method: 'POST',
+      credentials: "include",
+    })
+    .then(response => {
+      if (response.ok) {
+        const span = button.querySelector('span');
+        const isLiked = span.textContent === '❤️';
+        span.textContent = isLiked ? '🩶' : '❤️';
+        button.classList.toggle('liked');
+        button.classList.toggle('unliked');
+      } else {
+        alert("찜 실패!");
+      }
+    });
+  }
+
 
   function submitReview() {
     const content = document.getElementById("reviewContent").value;
