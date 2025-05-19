@@ -4,19 +4,23 @@ import com.grepp.team08.app.model.course.entity.EditorCourse;
 import com.grepp.team08.app.model.course.entity.RecommendCourse;
 import com.grepp.team08.app.model.course.repository.AdminCourseRepository;
 import com.grepp.team08.app.model.course.repository.CourseRepository;
+import com.grepp.team08.app.model.like.dto.FavoriteCourseResponse;
 import com.grepp.team08.app.model.like.entity.FavoriteCourse;
 import com.grepp.team08.app.model.like.repository.FavoriteRepository;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FavoriteService {
 
   private final FavoriteRepository favoriteRepository;
@@ -102,5 +106,35 @@ public class FavoriteService {
         .orElseThrow(()-> new EntityNotFoundException("해당 관리자 코스가 없습니다"));
 
     return favoriteRepository.existsByMemberAndEditorCourseAndActivatedTrue(member,editorCourse);
+  }
+
+  @Transactional(readOnly = true)
+  public List<FavoriteCourseResponse> getFavoriteCourses(String userId) {
+    Member member = memberRepository.findByUserId(userId)
+        .orElseThrow(() -> new EntityNotFoundException("로그인을 해주세요"));
+
+    List<FavoriteCourse> favorites = favoriteRepository.findByMemberId(member.getId());
+
+    return favorites.stream().map(fav -> {
+      Long courseId = null;
+      String title = null;
+      String creatorUserId = null;
+
+      if (fav.getRecommendCourse() != null && fav.getRecommendCourse().getCourseId() != null) {
+        courseId = fav.getRecommendCourse().getCourseId().getCoursesId();
+        title = fav.getRecommendCourse().getCourseId().getTitle();
+        creatorUserId = fav.getRecommendCourse().getCourseId().getId().getUserId();
+      } else if (fav.getEditorCourse() != null) {
+        title = fav.getEditorCourse().getTitle();
+        creatorUserId = fav.getEditorCourse().getMember().getUserId();
+      }
+
+      return new FavoriteCourseResponse(
+          fav.getFavoriteCourseId(),
+          creatorUserId,
+          courseId,
+          title
+      );
+    }).toList();
   }
 }
