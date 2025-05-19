@@ -8,6 +8,60 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentImages = [];
     let uploadedImageUrls = [];
     let isProcessing = false;
+    const courseId = document.getElementById('courseId').value;
+
+    // 코스 상세 정보 불러오기
+    fetch(`/api/course/mycourse/${courseId}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        },
+        credentials: 'include'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('코스 정보를 불러오는데 실패했습니다.');
+        }
+        return response.json();
+    })
+    .then(course => {
+        console.log('Loaded course details:', course);
+        
+        // 장소 목록 표시
+        const placeContainer = document.querySelector('.place-grid');
+        if (placeContainer && course.places && course.places.length > 0) {
+            placeContainer.innerHTML = ''; // 기존 내용 초기화
+            course.places.forEach(place => {
+                const placeCard = document.createElement('div');
+                placeCard.className = 'place-card';
+                placeCard.innerHTML = `
+                    <div class="place-image-container">
+                        <input type="file" class="place-image-input" accept="image/*" hidden>
+                        <div class="place-image-placeholder">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>${place.title}</span>
+                        </div>
+                        <p class="place-address">${place.address}</p>
+                    </div>
+                `;
+                placeContainer.appendChild(placeCard);
+            });
+        } else {
+            console.error('Place container not found or no places available');
+        }
+
+        // 코스 제목 업데이트
+        const sectionSubtitle = document.querySelector('.section-subtitle');
+        if (sectionSubtitle && course.title) {
+            sectionSubtitle.textContent = course.title;
+        }
+    })
+    .catch(error => {
+        console.error('코스 정보 로딩 실패:', error);
+        alert('코스 정보를 불러오는데 실패했습니다. 페이지를 새로고침 해주세요.');
+    });
 
     // 업로드 박스 전체 영역 클릭 이벤트
     uploadBox.addEventListener('click', function(e) {
@@ -122,13 +176,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            const courseId = document.getElementById('courseId').value;
-            const params = new URLSearchParams();
-            params.append('courseId', courseId);
-            uploadedImageUrls.forEach(url => params.append('imageUrls', url));
-
-            const response = await fetch('/api/course/recommend-course-regist?' + params.toString(), {
-                method: 'POST'
+            const response = await fetch('/api/course/recommend-course-regist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    imageUrls: uploadedImageUrls,
+                    courseId: courseId
+                })
             });
 
             const result = await response.json();

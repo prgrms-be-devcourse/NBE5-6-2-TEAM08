@@ -21,6 +21,14 @@ function renderCourseDetail(course) {
 
     const desc = detailSection.querySelector(".course-description p");
     desc.textContent = course.description || "설명이 없습니다.";
+
+    // 추천 코스 등록 페이지 이동
+    const recommendButton = detailSection.querySelector("#recommend-button");
+    if (recommendButton) {
+        recommendButton.addEventListener("click", () => {
+            window.location.href = `/recommend-course-regist?courseId=${course.coursesId}`;
+        });
+    }
 }
 
 window.renderCourseDetail = renderCourseDetail;
