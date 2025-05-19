@@ -11,15 +11,17 @@ import com.grepp.team08.app.model.course.repository.AdminCourseRepository;
 import com.grepp.team08.app.model.course.repository.CourseRepository;
 import com.grepp.team08.app.model.image.entity.Image;
 import com.grepp.team08.app.model.image.repository.ImageRepository;
+import com.grepp.team08.app.model.like.repository.FavoriteRepository;
 import com.grepp.team08.app.model.place.dto.PlaceDetailDto;
 import com.grepp.team08.app.model.place.dto.mainpage.AdminUserTopListDto;
 import com.grepp.team08.app.model.place.entity.Place;
 import com.grepp.team08.app.model.place.repository.PlaceRepository;
+import com.grepp.team08.app.model.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,10 @@ public class PlaceMainPageService {
   private final CourseRepository courseRepository;
   private final ImageRepository imageRepository;
   private final PlaceRepository placeRepository;
+  private final ReviewRepository reviewRepository;
+  private final FavoriteRepository favoriteRepository;
+  @Value("${upload.path}")
+  private String imageAccessPath;
 
 
 
@@ -46,31 +52,29 @@ public class PlaceMainPageService {
 
     List<EditorCourseDto> adminDto = adminplace.stream()
         .map(course -> {
-          Image img = imageRepository.findFirstByEditorCourseId(course)
-              .orElse(null);
-          if(img !=null){
-            String imageUrl = "/images/editor/" + img.getRenameFileName();
-            return new EditorCourseDto(course, imageUrl);
-          }
-          else{
-            return new EditorCourseDto(course,"/image/bg_night.jpg");
-          }
+          Image img = imageRepository.findFirstByEditorCourseId(course).orElse(null);
+          int count = favoriteRepository.countByEditorCourse(course);
 
+          String imageUrl = (img != null)
+              ? imageAccessPath + img.getRenameFileName()
+              : imageAccessPath + "bg_night.jpg";
+
+          return new EditorCourseDto(course, imageUrl, count);
         })
         .toList();
+
 
 
     List<CourseDto> userDto = userplace.stream()
         .map(course -> {
           Image img = imageRepository.findFirstByRecommendCourseId(course)
               .orElse(null);
-          if(img !=null){
-            String imageUrl = "/images/editor/" + img.getRenameFileName();
-            return new CourseDto(course, imageUrl);
-          }
-          else{
-            return new CourseDto(course,"/image/bg_night.jpg");
-          }
+          int count = favoriteRepository.countByRecommendCourse(course);
+          int reviewCnt = reviewRepository.countByRecommendCourseId(course);
+          String imageUrl = (img != null)
+              ? imageAccessPath + img.getRenameFileName()
+              : imageAccessPath + "bg_night.jpg";
+          return new CourseDto(course, imageUrl, count,reviewCnt);
 
         })
         .toList();
@@ -86,18 +90,16 @@ public class PlaceMainPageService {
     List<EditorCourse> adminPlace = adminCourseRepository.findAllByActivatedTrue();
     List<EditorCourseDto> adminDto = adminPlace.stream()
         .map(course -> {
-          Image img = imageRepository.findFirstByEditorCourseId(course)
-              .orElse(null);
-          if(img !=null){
-            String imageUrl = "/images/editor/" + img.getRenameFileName();
-            return new EditorCourseDto(course, imageUrl);
-          }
-          else{
-            return new EditorCourseDto(course,"/image/bg_night.jpg");
-          }
+          Image img = imageRepository.findFirstByEditorCourseId(course).orElse(null);
+          int count = favoriteRepository.countByEditorCourse(course);
+          String imageUrl = (img != null)
+              ? imageAccessPath + img.getRenameFileName()
+              : imageAccessPath + "bg_night.jpg";
 
+          return new EditorCourseDto(course, imageUrl, count);
         })
         .toList();
+
     return adminDto;
 
   }
@@ -108,13 +110,12 @@ public class PlaceMainPageService {
         .map(course -> {
           Image img = imageRepository.findFirstByRecommendCourseId(course)
               .orElse(null);
-          if(img !=null){
-            String imageUrl = "/images/editor/" + img.getRenameFileName();
-            return new CourseDto(course, imageUrl);
-          }
-          else{
-            return new CourseDto(course,"/image/bg_night.jpg");
-          }
+          int count = favoriteRepository.countByRecommendCourse(course);
+          int reviewCnt = reviewRepository.countByRecommendCourseId(course);
+          String imageUrl = (img != null)
+              ? imageAccessPath + img.getRenameFileName()
+              : imageAccessPath + "bg_night.jpg";
+          return new CourseDto(course,imageUrl,count,reviewCnt);
 
         })
         .toList();
@@ -144,10 +145,10 @@ public class PlaceMainPageService {
     List<String> imageUrl = image.stream()
         .map(img -> {
           if(img != null){
-            return "/images/editor/"+img.getRenameFileName();
+            return "/images/"+img.getRenameFileName();
           }
           else {
-            return  "/image/bg_night.jpg";
+            return  "/images/bg_night.jpg";
           }
         })
             .toList();
@@ -166,7 +167,7 @@ public class PlaceMainPageService {
     EditorDetailCourseDto placeDetail = new EditorDetailCourseDto();
     placeDetail.setTitle(editorCourse.getTitle());
     placeDetail.setNickname(editorCourse.getMember().getNickname());
-    placeDetail.setCreateAt(editorCourse.getCreatedAt());
+    placeDetail.setCreatedAt(editorCourse.getCreatedAt());
     placeDetail.setDescription(editorCourse.getDescription());
 
     List<Place> places = placeRepository.findAllByEditorCourseId(editorCourse);
@@ -179,10 +180,10 @@ public class PlaceMainPageService {
     List<String> imageUrl = image.stream()
         .map(img -> {
           if(img != null){
-            return "/images/editor/"+img.getRenameFileName();
+            return "/images/"+img.getRenameFileName();
           }
           else {
-            return  "/image/bg_night.jpg";
+            return  "/images/bg_night.jpg";
           }
         })
         .toList();

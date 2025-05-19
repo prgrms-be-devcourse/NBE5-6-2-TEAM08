@@ -51,9 +51,9 @@ public class CourseService {
     public void init() {
         // src/main/resources/static/image 디렉토리 사용
         String projectRoot = System.getProperty("user.dir");
-        this.uploadPath = projectRoot + File.separator + "src" + File.separator + "main" +
-            File.separator + "resources" + File.separator + "static" +
-            File.separator + "image";
+        this.uploadPath = projectRoot + File.separator + "src" + File.separator + "main" + 
+                         File.separator + "resources" + File.separator + "static" + 
+                         File.separator + "image";
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
@@ -137,7 +137,6 @@ public class CourseService {
     private String extractFileName(String path) {
         return path.substring(path.lastIndexOf('/') + 1);
     }
-
     @Transactional(readOnly = true)
     public CourseDetailDto getCourseDetail(Long courseId) {
         Course course = getCourseById(courseId);
@@ -146,20 +145,17 @@ public class CourseService {
 
         List<Place> places = placeRepository.findByCourseId(course);
         List<PlaceDetailDto> placeDtos = places.stream()
-            .map(place -> {
-                PlaceDetailDto placeDto = new PlaceDetailDto();
-                placeDto.setTitle(place.getPlaceName());  // placeName을 title로 매핑
-                placeDto.setAddress(place.getAddress());
-                return placeDto;
-            })
-            .toList();
+                .map(place -> {
+                    return new PlaceDetailDto(place.getPlaceName(), place.getAddress());
+                })
+                .toList();
         dto.setPlaces(placeDtos);
 
         List<Image> images = imageRepository.findByRecommendCourseId_CourseId(course);
 
         List<String> imageUrls = images.stream()
-            .map(Image::getSavePath)
-            .toList();
+                .map(Image::getSavePath)
+                .toList();
         dto.setImageUrl(imageUrls);
 
         return dto;
