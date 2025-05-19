@@ -131,7 +131,7 @@ public class PlaceMainPageService {
     CourseDetailDto placeDetail = new CourseDetailDto();
     placeDetail.setTitle(recommendCourse.getCourseId().getTitle());
     placeDetail.setNickname(recommendCourse.getCourseId().getId().getNickname());
-    placeDetail.setCreateAt(recommendCourse.getCreatedAt());
+    placeDetail.setCreatedAt(recommendCourse.getCreatedAt());
     placeDetail.setDescription(recommendCourse.getCourseId().getDescription());
     Course course = recommendCourse.getCourseId();
     List<Place> places = placeRepository.findAllByCourseId(course);
