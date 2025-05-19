@@ -10,9 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review,Long> {
 
-  @Query("SELECT r FROM Review r JOIN FETCH r.id WHERE r.recommendCourseId = :recommendCourse")
-
-
   int countByRecommendCourseIdAndActivatedTrue(RecommendCourse course);
 
   List<Review> findAllByRecommendCourseIdAndActivatedTrue(RecommendCourse recommendCourse);
