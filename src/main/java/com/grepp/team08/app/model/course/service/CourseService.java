@@ -136,7 +136,7 @@ public class CourseService {
 
     private String extractFileName(String path) {
         return path.substring(path.lastIndexOf('/') + 1);
-      
+    }
     @Transactional(readOnly = true)
     public CourseDetailDto getCourseDetail(Long courseId) {
         Course course = getCourseById(courseId);

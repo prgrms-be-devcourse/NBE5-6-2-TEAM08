@@ -17,7 +17,7 @@ public class CourseDetailDto {
   String title;
   String nickname;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  LocalDateTime createAt;
+  LocalDateTime createdAt;
   String description;
   List<String> imageUrl;
   List<PlaceDetailDto> places;

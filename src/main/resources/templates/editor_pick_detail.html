@@ -21,6 +21,10 @@
 
   <div class="course-info">
 
+
+
+    <p id="courseInstructor" class="course-instructor"></p>
+    <p id="courseDate" class="course-date"></p>
     <div class="title-button">
       <h1 id="courseTitle" class="course-title"></h1>
       <button
@@ -31,10 +35,6 @@
         <span th:text="${isLiked} ? '❤️' : '🩶'"></span>
       </button>
     </div>
-
-    <p id="courseInstructor" class="course-instructor"></p>
-    <p id="courseDate" class="course-date"></p>
-    <h1 id="courseTitle" class="course-title"></h1>
     <div id="imageGallery" class="image-gallery"></div>
     <div class="course-description">
       <p id="courseDescription" class="course-description-text"></p>
@@ -58,7 +58,7 @@
 
     document.getElementById("courseTitle").innerText = data.title;
     document.getElementById("courseInstructor").innerText = `${data.nickname} 에디터의 픽!`;
-    document.getElementById("courseDate").innerText = `등록일: ${data.createAt.split("T")[0]}`;
+    document.getElementById("courseDate").innerText = `등록일: ${data.createdAt.split("T")[0]}`;
     document.getElementById("courseDescription").innerText = data.description;
     const imageGallery = document.getElementById("imageGallery");
     imageGallery.innerHTML = ""; // 초기화

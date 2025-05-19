@@ -13,4 +13,6 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   @Query("SELECT r FROM Review r JOIN FETCH r.id WHERE r.recommendCourseId = :recommendCourse")
 
   List<Review> findAllByRecommendCourseId(RecommendCourse recommendCourse);
+
+  int countByRecommendCourseId(RecommendCourse course);
 }

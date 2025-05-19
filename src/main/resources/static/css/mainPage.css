@@ -151,3 +151,16 @@
   font-weight: 500;
   color: #4d4d4d;
 }
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  font-size: 13px;
+  color: #555;
+  padding: 20px;
+}
+.card-stats {
+  display: flex;
+  align-items: center;
+}
