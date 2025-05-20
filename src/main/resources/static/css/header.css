@@ -44,10 +44,9 @@ body {
   font-weight: bold;
   color: #ff4fa0;
   font-size: 20px;
-  background: #ffe0f0;
+  background: #faeff3;
   padding: 6px 14px;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(255, 79, 160, 0.12);
 }
 
 .navbar-right {

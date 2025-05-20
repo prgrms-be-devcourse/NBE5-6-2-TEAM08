@@ -6,6 +6,7 @@
   <title>유저 메인페이지</title>
   <link rel="stylesheet" th:href="@{/css/mainPage.css}" />
   <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -36,6 +37,8 @@
     <div class="card-list" id="recommend-list"></div>
   </section>
 </div>
+
+<div th:replace="fragments/footer :: footer"></div>
 
 
 <!-- JS 스크립트 링크 -->
