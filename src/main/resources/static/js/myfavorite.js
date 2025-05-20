@@ -31,10 +31,21 @@ function renderFavoriteCourses(courseList) {
     const card = document.createElement('div');
     card.className = 'course-card';
 
+    const isRecommend = course.recommendCourseId !== null;
+    const courseId = isRecommend ? course.recommendCourseId : course.editorCourseId;
+    const url = isRecommend
+        ? `/recommend-courses/${courseId}`
+        : `/editor-recommand-courses/${courseId}`;
+
     card.innerHTML = `
       <h3>${course.title}</h3>
       <p>작성자: ${course.userId}</p>
     `;
+
+    card.addEventListener('click', () => {
+      // AJAX로 상세정보 받아오기
+      window.location.href = url;
+    });
 
     container.appendChild(card);
   });

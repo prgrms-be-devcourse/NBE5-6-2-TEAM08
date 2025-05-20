@@ -148,6 +148,7 @@ body {
   font-size: 14px;
   font-family: 'Noto Sans KR', sans-serif;
   transition: box-shadow 0.3s;
+  cursor: pointer;
 }
 
 .course-card:hover {

@@ -116,15 +116,17 @@ public class FavoriteService {
     List<FavoriteCourse> favorites = favoriteRepository.findByMemberId(member.getId());
 
     return favorites.stream().map(fav -> {
-      Long courseId = null;
+      Long recommendCourseId = null;
+      Long editorCourseId = null;
       String title = null;
       String creatorUserId = null;
 
       if (fav.getRecommendCourse() != null && fav.getRecommendCourse().getCourseId() != null) {
-        courseId = fav.getRecommendCourse().getCourseId().getCoursesId();
+        recommendCourseId = fav.getRecommendCourse().getRecommendCourseId();
         title = fav.getRecommendCourse().getCourseId().getTitle();
         creatorUserId = fav.getRecommendCourse().getCourseId().getId().getUserId();
       } else if (fav.getEditorCourse() != null) {
+        editorCourseId = fav.getEditorCourse().getEditorCourseId();
         title = fav.getEditorCourse().getTitle();
         creatorUserId = fav.getEditorCourse().getMember().getUserId();
       }
@@ -132,7 +134,8 @@ public class FavoriteService {
       return new FavoriteCourseResponse(
           fav.getFavoriteCourseId(),
           creatorUserId,
-          courseId,
+          recommendCourseId,
+          editorCourseId,
           title
       );
     }).toList();
