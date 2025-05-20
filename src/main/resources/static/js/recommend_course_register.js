@@ -139,7 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     const deleteBtn = document.createElement('button');
                     deleteBtn.innerHTML = '×';
                     deleteBtn.className = 'remove-image';
-                    deleteBtn.onclick = function() {
+                    deleteBtn.onclick = function(ev) {
+                        ev.stopPropagation();
                         previewDiv.remove();
                         const index = currentImages.indexOf(file);
                         if (index > -1) {

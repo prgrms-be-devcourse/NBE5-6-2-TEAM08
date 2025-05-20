@@ -56,8 +56,8 @@ public class PlaceMainPageService {
 
 
           String imageUrl = (img != null)
-              ? "/images" + "/editor/" +img.getRenameFileName()
-              : "/images/" + "bg_night.jpg";
+              ? "/images/" + img.getRenameFileName()
+              : "/images/bg_night.jpg";
 
           return new EditorCourseDto(course, imageUrl, likeCount);
         })
@@ -73,7 +73,7 @@ public class PlaceMainPageService {
           int reviewCnt = reviewRepository.countByRecommendCourseIdAndActivatedTrue(course);
           String imageUrl = (img != null)
               ? "/images/" +  img.getRenameFileName()
-              : "/images/" + "bg_night.jpg";
+              : "/images/bg_night.jpg";
           return new CourseDto(course, imageUrl, count,reviewCnt);
 
         })
@@ -93,8 +93,8 @@ public class PlaceMainPageService {
           Image img = imageRepository.findFirstByEditorCourseId(course).orElse(null);
           int likeCount = favoriteRepository.countByEditorCourseAndActivatedTrue(course);
           String imageUrl = (img != null)
-              ? "/images" + "/editor/" +img.getRenameFileName()
-              : "/images/" + "bg_night.jpg";
+              ? "/images/" + img.getRenameFileName()
+              : "/images/bg_night.jpg";
           return new EditorCourseDto(course, imageUrl, likeCount);
         })
         .toList();
@@ -113,7 +113,7 @@ public class PlaceMainPageService {
           int reviewCnt = reviewRepository.countByRecommendCourseIdAndActivatedTrue(course);
           String imageUrl = (img != null)
               ? "/images/" +  img.getRenameFileName()
-              : "/images/" + "bg_night.jpg";
+              : "/images/bg_night.jpg";
           return new CourseDto(course,imageUrl,count,reviewCnt);
 
         })
@@ -144,7 +144,7 @@ public class PlaceMainPageService {
     List<String> imageUrl = image.stream()
         .map(img -> {
           if(img != null){
-            return "/images/"+img.getRenameFileName();
+            return "/images/" + img.getRenameFileName();
           }
           else {
             return  "/images/bg_night.jpg";
@@ -179,7 +179,7 @@ public class PlaceMainPageService {
     List<String> imageUrl = image.stream()
         .map(img -> {
           if(img != null){
-            return "/images/"+img.getRenameFileName();
+            return "/images/" + img.getRenameFileName();
           }
           else {
             return  "/images/bg_night.jpg";
