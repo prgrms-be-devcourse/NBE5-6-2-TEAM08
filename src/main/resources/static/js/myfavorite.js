@@ -29,10 +29,11 @@ function renderFavoriteCourses(courseList) {
 
   courseList.forEach(course => {
     const card = document.createElement('div');
-    card.className = 'course-card';
+    card.className = 'course-card favorite-card';
 
     const isRecommend = course.recommendCourseId !== null;
-    const courseId = isRecommend ? course.recommendCourseId : course.editorCourseId;
+    const courseId = isRecommend ? course.recommendCourseId
+        : course.editorCourseId;
     const url = isRecommend
         ? `/recommend-courses/${courseId}`
         : `/editor-recommand-courses/${courseId}`;
@@ -40,6 +41,7 @@ function renderFavoriteCourses(courseList) {
     card.innerHTML = `
       <h3>${course.title}</h3>
       <p>작성자: ${course.userId}</p>
+      <button class="favorite-delete-btn" onclick="deleteFavorite(${course.favoriteCourseId}, event)">×</button>
     `;
 
     card.addEventListener('click', () => {
@@ -50,3 +52,25 @@ function renderFavoriteCourses(courseList) {
     container.appendChild(card);
   });
 }
+
+  function deleteFavorite(favoriteCourseId, event) {
+    event.stopPropagation();
+
+    fetch(`/api/members/favorites/${favoriteCourseId}`, {
+      method: 'PATCH',
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('찜 삭제 실패');
+      }
+      return response.text();
+    })
+    .then(() => {
+      alert('찜 목록에서 삭제되었습니다.');
+      loadFavoriteCourses();
+    })
+    .catch(err => {
+      console.error("삭제 실패:", err);
+      alert('삭제 중 오류가 발생했습니다.');
+    });
+  }

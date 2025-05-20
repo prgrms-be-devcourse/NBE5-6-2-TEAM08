@@ -140,4 +140,12 @@ public class FavoriteService {
       );
     }).toList();
   }
+
+  @Transactional
+  public void deactivateFavorite(Long favoriteCourseId) {
+    FavoriteCourse favorite = favoriteRepository.findById(favoriteCourseId)
+        .orElseThrow(() -> new EntityNotFoundException("찜 정보를 찾을 수 없습니다."));
+    favorite.setActivated(false);
+    favorite.setModifiedAt(LocalDateTime.now());
+  }
 }

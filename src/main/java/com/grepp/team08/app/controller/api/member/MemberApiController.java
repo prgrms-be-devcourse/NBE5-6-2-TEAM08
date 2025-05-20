@@ -5,6 +5,7 @@ import com.grepp.team08.app.controller.web.member.payload.SignupRequest;
 import com.grepp.team08.app.model.auth.code.Role;
 import com.grepp.team08.app.model.auth.domain.Principal;
 import com.grepp.team08.app.model.like.dto.FavoriteCourseResponse;
+import com.grepp.team08.app.model.like.entity.FavoriteCourse;
 import com.grepp.team08.app.model.like.service.FavoriteService;
 import com.grepp.team08.app.model.member.dto.MemberDto;
 import com.grepp.team08.app.model.member.entity.Member;
@@ -12,7 +13,9 @@ import com.grepp.team08.app.model.member.repository.MemberRepository;
 import com.grepp.team08.app.model.member.service.MemberService;
 import com.grepp.team08.infra.response.ApiResponse;
 import com.grepp.team08.infra.response.ResponseCode;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +26,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -94,4 +99,11 @@ public class MemberApiController {
 
         return ResponseEntity.ok(favorites);
     }
+
+    @PatchMapping("/favorites/{favoriteCourseId}")
+    public ResponseEntity<Void> deleteFavorite(@PathVariable Long favoriteCourseId) {
+        favoriteService.deactivateFavorite(favoriteCourseId);
+        return ResponseEntity.ok().build();
+    }
+
 }

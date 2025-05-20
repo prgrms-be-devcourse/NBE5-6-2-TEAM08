@@ -164,3 +164,26 @@
   display: flex;
   align-items: center;
 }
+
+.favorite-card .favorite-delete-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background-color: #ff4f4f;
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.favorite-card .favorite-delete-btn:hover {
+  background-color: #cc0000;
+}
+
+.favorite-card {
+  position: relative;
+}
