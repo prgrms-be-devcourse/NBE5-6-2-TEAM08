@@ -12,7 +12,7 @@
     </a>
     <div class="navbar-right">
       <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-        <a th:href="@{/admin/editor-course}">관리자 코스 만들기</a>
+        <a th:href="@{/admin/editor-course}">에디터 픽 코스 만들기</a>
         <a th:href="@{/admin/users}">관리자 대시보드</a>
       </div>
       <div th:if="${#authorization.expression('hasRole(''USER'')')}">
