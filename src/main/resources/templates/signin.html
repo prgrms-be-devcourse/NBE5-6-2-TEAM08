@@ -37,6 +37,17 @@
   <div class="links">
     <a th:href="@{/member/signup}">아직 회원이 아니신가요?</a>
   </div>
+  <div class="links">
+    <a th:href="@{/member/find-password}">비밀번호 찾기</a>
+  </div>
 </div>
+
+<div th:if="${param.msg}" th:text="${param.msg}" id="alert-msg" style="display:none;"></div>
+<script>
+    var msg = document.getElementById('alert-msg');
+    if (msg && msg.textContent) {
+        alert(msg.textContent);
+    }
+</script>
 </body>
 </html>
