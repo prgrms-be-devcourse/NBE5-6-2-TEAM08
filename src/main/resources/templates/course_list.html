@@ -6,6 +6,7 @@
   <title>에디터픽 코스 목록</title>
   <link rel="stylesheet" th:href="@{/css/course_list.css}" />
   <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -15,7 +16,7 @@
     <!-- JS로 코스 카드가 렌더링됩니다 -->
   </div>
 </div>
-
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
 <script>
@@ -41,9 +42,8 @@
           <div class="course-title">${course.title}</div>
           <div class="card-author">
             <div class="author-avatar" style="background-image:url('/images/user.jpg');"></div>
-          <div class="course-instructor">관리자 명: ${course.editorNickname}</div>
+          <div class="course-instructor">${course.editorNickname} 에디터</div>
           </div>
-          <div class="course-desc">${course.description}</div>
            <div class="card-footer">
           <div class ="card-stats">❤️ ${course.favoriteCnt}</div>
         </div>

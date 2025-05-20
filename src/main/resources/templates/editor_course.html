@@ -7,6 +7,7 @@
 
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/editor_course.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 </head>
 
 <body>
@@ -72,7 +73,7 @@
   <textarea id="courseDescription" placeholder="이 데이트 코스에 대한 설명을 작성해주세요."></textarea>
   <button class="register-btn">코스 등록</button>
 </div>
-
+<div th:replace="fragments/footer :: footer"></div>
 <script th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey} + '&autoload=true&libraries=services'"></script>
 <script th:src="@{/js/editor_course.js}"></script>
 </body>
