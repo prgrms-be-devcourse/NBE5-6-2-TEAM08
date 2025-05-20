@@ -11,12 +11,13 @@ import com.grepp.team08.app.model.member.repository.MemberRepository;
 import com.grepp.team08.infra.error.CommonException;
 import com.grepp.team08.infra.mail.MailTemplate;
 import com.grepp.team08.infra.response.ResponseCode;
+import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +60,7 @@ public class MemberService {
 
     }
 
+    @Transactional
     public Member findByUserId(String userId) {
         return memberRepository.findByUserId(userId)
             .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
@@ -89,6 +91,24 @@ public class MemberService {
         return courses.stream()
             .map(c -> new MyCourseResponse(c.getCoursesId(), c.getTitle()))
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+  public String getNicknameByUserId(String name) {
+      return memberRepository.findByUserId(name)
+          .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."))
+          .getNickname();
+  }
+
+    @Transactional
+    public void deactivateMember(String userId) {
+        Member member = memberRepository.findByUserId(userId)
+            .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        member.unActivated();
+        member.setLeaved(true);
+        member.setLeavedAt(LocalDateTime.now());
+        memberRepository.save(member);
     }
 
     @Transactional

@@ -97,6 +97,15 @@ public class MainPagePlaceApiController {
 
   }
 
+  //리뷰 삭제
+  @PostMapping("/recommend-courses/delete/{review_id}")
+  public ResponseEntity<?> reviewDelete(@PathVariable Long review_id){
+
+    reviewService.reviewDelete(review_id);
+
+    return ResponseEntity.ok(ApiResponse.success("리뷰 삭제가 되었습니다"));
+
+  }
 
   //찜하기 사용자
   @PostMapping("/users/{recommend_id}/likes")

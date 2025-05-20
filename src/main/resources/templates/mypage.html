@@ -6,6 +6,7 @@
   <title>마이페이지</title>
   <link rel="stylesheet" th:href="@{/css/header.css}"/>
   <link rel="stylesheet" th:href="@{/css/mypage.css}"/>
+  <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 
 </head>
 <body>
@@ -19,9 +20,11 @@
     <ul class="menu">
       <li><a href="#" onclick="showSection('edit')">회원정보 수정</a></li>
       <li><a href="#" onclick="showSection('mycourse')">내가 만든 데이트 코스</a></li>
-      <li>내가 찜한 코스</li>
+      <li><a href="#" onclick="showSection('myfavorite')">내가 찜한 코스</a></li>
     </ul>
-    <div class="footer">회원탈퇴</div>
+    <div class="sidebar-footer">
+    <button  class="deactivate-button" onclick="deactivateAccount()">회원 탈퇴</button>
+    </div>
   </aside>
 
   <main class="main-content">
@@ -82,15 +85,23 @@
 
       <button id="recommend-button" class="recommend-btn">추천 코스로 등록</button>
     </section>
+
+    <!-- 내가 찜한 코스 영역 -->
+    <section id="myfavorite-section" style="display: none;">
+      <h2>내가 찜한 코스</h2>
+      <div id="favorite-course-list" class="card-list"></div>
+    </section>
   </main>
 
   <script th:src="@{/js/mypage_edit.js}"></script>
   <script th:src="@{/js/mycourse_list.js}"></script>
   <script th:src="@{/js/mycourse_detail.js}"></script>
+  <script th:src="@{/js/myfavorite.js}"></script>
+  <script th:src="@{/js/member_gg.js}"></script>
 
   <script>
     function showSection(section) {
-      const sections = ['edit-section', 'mycourse-section', 'mycourse-detail-section'];
+      const sections = ['edit-section', 'mycourse-section', 'mycourse-detail-section', 'myfavorite-section'];
       sections.forEach(id => {
         document.getElementById(id).style.display = 'none';
       });
@@ -101,9 +112,12 @@
         document.getElementById('mycourse-section').style.display = 'block';
       } else if (section === 'mycourse-detail') {
         document.getElementById('mycourse-detail-section').style.display = 'block';
+      } else if (section === 'myfavorite') {
+        document.getElementById('myfavorite-section').style.display = 'block';
       }
     }
   </script>
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

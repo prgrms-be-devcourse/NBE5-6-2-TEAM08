@@ -8,10 +8,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,9 +23,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
@@ -39,6 +45,26 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationFailureHandler failureHandler() {
+        return new AuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request,
+                HttpServletResponse response, AuthenticationException exception)
+                throws IOException, ServletException {
+
+                String errorMessage = "아이디 또는 비밀번호가 잘못되었습니다.";
+
+                if (exception instanceof InternalAuthenticationServiceException &&
+                    exception.getCause() instanceof DisabledException) {
+                    errorMessage = "탈퇴된 회원입니다.";
+                }
+
+                response.sendRedirect("/member/signin?error=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+            }
+        };
+    }
+
+    @Bean
     public AuthenticationSuccessHandler successHandler(){
         return new AuthenticationSuccessHandler() {
             @Override
@@ -52,7 +78,7 @@ public class SecurityConfig {
                                                     authority.getAuthority().equals("ROLE_ADMIN"));
 
                 if(isAdmin){
-                    response.sendRedirect("/admin");
+                    response.sendRedirect("/");
                     return;
                 }
 
@@ -88,8 +114,8 @@ public class SecurityConfig {
                                      .usernameParameter("userId")
                                      .loginProcessingUrl("/member/signin")
                                      .defaultSuccessUrl("/")
-                                     .failureUrl("/member/signin?error")
                                      .successHandler(successHandler())
+                                     .failureHandler(failureHandler())
                                      .permitAll()
             )
             .rememberMe(rememberMe -> rememberMe.key(rememberMeKey))
