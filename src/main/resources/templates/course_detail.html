@@ -8,6 +8,7 @@
   <link rel="stylesheet" th:href="@{/css/editor_pick_detail.css}" />
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/review.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -58,7 +59,7 @@
   <h3>리뷰 목록</h3>
   <div id="reviewList" class="review-list"></div>
 </div>
-
+<div th:replace="fragments/footer :: footer"></div>
 <script>
   const recommendId = [[${recommendId}]];
   const currentUserNickname = '[[${loginNickname}]]';
