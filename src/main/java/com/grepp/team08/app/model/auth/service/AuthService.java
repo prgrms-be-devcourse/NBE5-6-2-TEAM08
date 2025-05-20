@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +28,10 @@ public class AuthService implements UserDetailsService {
 
         Member member = memberRepository.findByUserId(userid)
             .orElseThrow(() -> new UsernameNotFoundException(userid));
+
+        if (!member.getActivated() || member.isLeaved()) {
+            throw new DisabledException("탈퇴된 회원입니다.");
+        }
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(member.getRole().name()));

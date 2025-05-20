@@ -11,6 +11,7 @@ import com.grepp.team08.app.model.member.repository.MemberRepository;
 import com.grepp.team08.infra.error.CommonException;
 import com.grepp.team08.infra.response.ResponseCode;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -96,4 +97,15 @@ public class MemberService {
           .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."))
           .getNickname();
   }
+
+    @Transactional
+    public void deactivateMember(String userId) {
+        Member member = memberRepository.findByUserId(userId)
+            .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        member.unActivated();
+        member.setLeaved(true);
+        member.setLeavedAt(LocalDateTime.now());
+        memberRepository.save(member);
+    }
 }
