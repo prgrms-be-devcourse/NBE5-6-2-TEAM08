@@ -15,11 +15,12 @@ public interface AdminCourseRepository extends JpaRepository<EditorCourse,Long> 
   @Query("""
     SELECT e FROM EditorCourse e
     JOIN FETCH e.member
+    WHERE e.activated = true
     ORDER BY e.createdAt DESC
 """)
   List<EditorCourse> findTop4ByOrderByCreatedAtDesc(Pageable pageable);
 
-  @Query("SELECT e FROM EditorCourse e JOIN FETCH e.member WHERE e.activated = true")
+  @Query("SELECT e FROM EditorCourse e JOIN FETCH e.member WHERE e.activated = true ORDER BY e.createdAt DESC")
   List<EditorCourse> findAllByActivatedTrue();
 
   @Query("SELECT e FROM EditorCourse e JOIN FETCH e.member WHERE e.editorCourseId = :id")

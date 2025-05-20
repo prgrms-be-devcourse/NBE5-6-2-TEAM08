@@ -38,9 +38,7 @@ public class AdminService {
         return userDtos;
     }
 
-    @Value("${upload.path}")
-    private String imageAccessPath;
-
+    // 에디터 픽 코스 관리 및 목록
     @Transactional
     public List<EditorCourseDto> adminAllCourse() {
         List<EditorCourse> adminPlace = adminCourseRepository.findAllByActivatedTrue();
@@ -51,8 +49,8 @@ public class AdminService {
                 int count = favoriteRepository.countByEditorCourse(course);
 
                 String imageUrl = (img != null)
-                    ? imageAccessPath + img.getRenameFileName() // ✅ 설정된 웹 경로 + 파일명
-                    : imageAccessPath + "bg_night.jpg";         // 기본 이미지도 동일하게
+                    ? "/images/" + img.getRenameFileName() // ✅ 설정된 웹 경로 + 파일명
+                    : "/images/bg_night.jpg";         // 기본 이미지도 동일하게
 
                 return new EditorCourseDto(course, imageUrl,count);
             })

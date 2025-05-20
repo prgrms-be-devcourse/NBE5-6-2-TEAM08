@@ -25,6 +25,7 @@ public interface CourseRepository extends JpaRepository<RecommendCourse,Long> {
     SELECT rc FROM RecommendCourse rc
     JOIN FETCH rc.courseId c
     JOIN FETCH c.id
+    ORDER BY c.createdAt DESC
 """)
   List<RecommendCourse> findAllWithCourseAndMember();
 

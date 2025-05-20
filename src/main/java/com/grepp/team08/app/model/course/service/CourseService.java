@@ -1,6 +1,7 @@
 package com.grepp.team08.app.model.course.service;
 
 import com.grepp.team08.app.model.course.dto.CourseDetailDto;
+import com.grepp.team08.app.model.course.dto.CourseDto;
 import com.grepp.team08.app.model.course.dto.MyCourseResponse;
 import com.grepp.team08.app.model.course.dto.MyDateCourseDto;
 import com.grepp.team08.app.model.course.entity.Course;
@@ -9,10 +10,12 @@ import com.grepp.team08.app.model.course.repository.RecommendCourseRepository;
 import com.grepp.team08.app.model.course.repository.RegistMyCourseRepository;
 import com.grepp.team08.app.model.image.entity.Image;
 import com.grepp.team08.app.model.image.repository.ImageRepository;
+import com.grepp.team08.app.model.like.repository.FavoriteRepository;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.place.dto.PlaceDetailDto;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -41,6 +44,7 @@ public class CourseService {
     private final PlaceRepository placeRepository;
     private final RegistMyCourseRepository courseRepository;
     private final RecommendCourseRepository recommendCourseRepository;
+    private final FavoriteRepository favoriteRepository;
     private final ImageRepository imageRepository;
     private final ModelMapper modelMapper;
 
@@ -159,5 +163,10 @@ public class CourseService {
         dto.setImageUrl(imageUrls);
 
         return dto;
+    }
+
+    public CourseDto getTopLikedCourse() {
+        RecommendCourse rc = recommendCourseRepository.findTopLikedRecommendCourse();
+        return new CourseDto(rc);
     }
 }
