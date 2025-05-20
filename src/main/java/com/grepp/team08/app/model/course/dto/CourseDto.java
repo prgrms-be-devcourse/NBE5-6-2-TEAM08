@@ -24,5 +24,14 @@ public class CourseDto {
     this.reviewCnt = reviewCnt;
   }
 
+  public CourseDto(RecommendCourse course) {
+    this.courseId = course.getRecommendCourseId();
+    this.title = course.getCourseId().getTitle();
+    this.description = course.getCourseId().getDescription();
+    this.creatorNickname = course.getCourseId().getId().getNickname();
+  }
+
+
+
 }
 

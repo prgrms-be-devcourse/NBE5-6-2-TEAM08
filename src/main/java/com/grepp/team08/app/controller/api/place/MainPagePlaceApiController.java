@@ -6,9 +6,11 @@ import com.grepp.team08.app.model.course.dto.CourseDto;
 import com.grepp.team08.app.model.course.dto.EditorCourseDto;
 import com.grepp.team08.app.model.course.dto.EditorDetailCourseDto;
 import com.grepp.team08.app.model.course.entity.EditorCourse;
+import com.grepp.team08.app.model.course.service.CourseService;
 import com.grepp.team08.app.model.like.service.FavoriteService;
 import com.grepp.team08.app.model.place.dto.mainpage.AdminUserTopListDto;
 import com.grepp.team08.app.model.place.service.PlaceMainPageService;
+import com.grepp.team08.app.model.recommend.service.RecommendService;
 import com.grepp.team08.app.model.review.dto.RequestReviewDto;
 import com.grepp.team08.app.model.review.dto.ResponseReviewDto;
 import com.grepp.team08.app.model.review.service.ReviewService;
@@ -34,6 +36,7 @@ public class MainPagePlaceApiController {
   private final PlaceMainPageService placeMainPageService;
   private final ReviewService reviewService;
   private final FavoriteService favoriteService;
+  private final CourseService courseService;
 
 
 
@@ -129,6 +132,14 @@ public class MainPagePlaceApiController {
 
 
   }
+  // 좋아요 수 가장 많은 1개 불러오기. activated 처리 완료
+  @GetMapping("/top-liked-course")
+  public ResponseEntity<CourseDto> getTopLikedCourse() {
+    CourseDto top = courseService.getTopLikedCourse();
+    return ResponseEntity.ok(top);
+  }
+
+
 
 
 

@@ -101,5 +101,23 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
     window.location.href = '/recommend-courses';
   });
+
+  // 인기 코스 하나 가져오기
+  fetch('/api/top-liked-course')
+  .then(res => res.json())
+  .then(course => {
+    const banner = document.getElementById('top-liked-card');
+    banner.innerHTML = `
+      <div class="banner-card-content">
+        <div class="banner-card-title">${course.title} by ${course.creatorNickname}</div>
+      </div>
+    `;
+    banner.addEventListener('click', () => {
+      window.location.href = `/recommend-courses/${course.courseId}`;
+    });
+  })
+  .catch(err => {
+    console.error("인기 코스를 불러오지 못했습니다:", err);
+  });
 });
 
