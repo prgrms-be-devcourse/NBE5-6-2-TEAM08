@@ -62,7 +62,7 @@ body {
   border-radius: 4px;
 }
 
-.footer {
+.sidebar-footer {
   margin-top: auto;
   text-align: center;
   font-size: 12px;
@@ -200,3 +200,38 @@ body {
   cursor: pointer;
 }
 
+
+.favorite-card .favorite-delete-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background-color: #ff4f4f;
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.favorite-card .favorite-delete-btn:hover {
+  background-color: #cc0000;
+}
+
+.favorite-card {
+  position: relative;
+}
+
+.deactivate-button{
+  all: unset;
+  font-size: 12px;
+  color: #999;
+  cursor: pointer;
+}
+
+.deactivate-button:hover{
+  text-decoration: underline;
+  color: #666;
+}

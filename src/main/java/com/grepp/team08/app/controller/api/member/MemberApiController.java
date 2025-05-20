@@ -14,7 +14,11 @@ import com.grepp.team08.app.model.member.service.MemberService;
 import com.grepp.team08.infra.response.ApiResponse;
 import com.grepp.team08.infra.response.ResponseCode;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -106,4 +110,16 @@ public class MemberApiController {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/deactivate")
+    public ResponseEntity<Void> deactivateMember(
+        @AuthenticationPrincipal Principal principal,
+        HttpServletRequest request,
+        HttpServletResponse response) throws ServletException {
+
+        String userId = principal.getUsername();
+        memberService.deactivateMember(userId);
+
+        request.logout();
+        return ResponseEntity.ok().build();
+    }
 }

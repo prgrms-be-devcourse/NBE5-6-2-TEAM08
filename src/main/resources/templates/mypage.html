@@ -22,7 +22,9 @@
       <li><a href="#" onclick="showSection('mycourse')">내가 만든 데이트 코스</a></li>
       <li><a href="#" onclick="showSection('myfavorite')">내가 찜한 코스</a></li>
     </ul>
-    <div class="footer">회원탈퇴</div>
+    <div class="sidebar-footer">
+    <button  class="deactivate-button" onclick="deactivateAccount()">회원 탈퇴</button>
+    </div>
   </aside>
 
   <main class="main-content">
@@ -95,6 +97,7 @@
   <script th:src="@{/js/mycourse_list.js}"></script>
   <script th:src="@{/js/mycourse_detail.js}"></script>
   <script th:src="@{/js/myfavorite.js}"></script>
+  <script th:src="@{/js/member_gg.js}"></script>
 
   <script>
     function showSection(section) {
