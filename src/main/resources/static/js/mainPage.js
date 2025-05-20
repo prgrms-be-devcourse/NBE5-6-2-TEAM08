@@ -1,5 +1,7 @@
 function renderCards(cardData, containerId, type) {
   const cardList = document.getElementById(containerId);
+  if (!cardList) return;  // ✅ 존재하지 않으면 종료
+
   cardList.innerHTML = '';
 
   cardData.forEach(card => {
@@ -13,33 +15,64 @@ function renderCards(cardData, containerId, type) {
     const cardDiv = document.createElement('div');
     cardDiv.className = 'course-card';
     cardDiv.style.cursor = 'pointer';
-
-
     cardDiv.addEventListener('click', () => {
-      if (type === 'admin') {
-        window.location.href = `/editor-recommand-courses/${courseId}`;
-      } else {
-        window.location.href = `/recommend-courses/${courseId}`;
-      }
+      const url = type === 'admin'
+          ? `/editor-recommand-courses/${courseId}`
+          : `/recommend-courses/${courseId}`;
+      window.location.href = url;
     });
-    let extraInfo = `<div class="card-stats">❤️ ${favoriteCount}</div>`;
 
+    let extraInfo = `<div class="card-stats">❤️ ${favoriteCount}</div>`;
     if (type === 'user') {
       extraInfo += `<div class="card-stats">💬 ${commentCount}</div>`;
     }
+
     cardDiv.innerHTML = `
-      <div class="card-image" style="background-image:url('${imageUrl}');"></div>
+      <div class="card-image" style="background-image:url('${imageUrl}')"></div>
       <div class="card-title">${title}</div>
       <div class="card-author">
-        <div class="author-avatar" style="background-image:url('/images/user.jpg');"></div>
+        <div class="author-avatar" style="background-image:url('/images/user.jpg')"></div>
         <div class="author-name">${author}</div>
       </div>
-      <div class="card-footer">
-        ${extraInfo}
-      </div>
+      <div class="card-footer">${extraInfo}</div>
     `;
+
     cardList.appendChild(cardDiv);
   });
+}
+
+function renderCarousel(data) {
+  const carousel = document.getElementById('editor-carousel');
+  if (!carousel) return;
+
+  carousel.innerHTML = '';
+
+  data.forEach(course => {
+    const card = document.createElement('div');
+    card.className = 'course-card';
+    card.onclick = () => {
+      window.location.href = `/editor-recommand-courses/${course.courseId}`;
+    };
+    card.innerHTML = `
+      <img src="${course.imageurl}" alt="${course.title} 썸네일" />
+      <div class="course-card-content">
+        <div class="course-title">${course.title}</div>
+        <div class="card-author">
+          <div class="author-avatar" style="background-image:url('/image/user.jpg');"></div>
+          <div class="course-instructor">${course.editorNickname} 에디터</div>
+        </div>
+      </div>
+    `;
+    carousel.appendChild(card);
+  });
+
+  // 자동 슬라이드
+  let index = 0;
+  const total = data.length;
+  setInterval(() => {
+    index = (index + 1) % total;
+    carousel.style.transform = `translateX(-${index * 100}%)`;
+  }, 2500);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -49,19 +82,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const adminCourses = data.adminlist;
     const userCourses = data.userlist;
 
+    // 혼용 렌더링
     renderCards(adminCourses, 'editor-pick-list', 'admin');
     renderCards(userCourses, 'recommend-list', 'user');
+    renderCarousel(adminCourses);
   })
   .catch(error => {
     console.error('데이터 불러오기 실패:', error);
   });
-  document.getElementById('editor-more').addEventListener('click', function (e) {
+
+  // 더보기 버튼
+  document.getElementById('editor-more')?.addEventListener('click', e => {
     e.preventDefault();
     window.location.href = '/editor-recommand-courses';
   });
 
-  document.getElementById('user-more').addEventListener('click', function (e) {
+  document.getElementById('user-more')?.addEventListener('click', e => {
     e.preventDefault();
     window.location.href = '/recommend-courses';
   });
 });
+

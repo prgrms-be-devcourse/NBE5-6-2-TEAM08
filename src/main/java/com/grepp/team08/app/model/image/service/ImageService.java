@@ -21,7 +21,7 @@ public class ImageService {
     public List<String> upload(List<MultipartFile> files) {
         List<String> savedPaths = new ArrayList<>();
 
-        String editorDirPath = uploadDir + File.separator + "editor";
+        String editorDirPath = uploadDir + File.separator;
         File editorDir = new File(editorDirPath);
         if (!editorDir.exists()) {
             editorDir.mkdirs(); // 경로 없으면 생성
@@ -43,7 +43,7 @@ public class ImageService {
             }
 
             // 웹에서 접근 가능한 경로 (WebMvcConfigurer에서 매핑된 것 기준)
-            savedPaths.add("/images/editor/" + renamed);
+            savedPaths.add("/images/" + renamed);
         }
 
         return savedPaths;
