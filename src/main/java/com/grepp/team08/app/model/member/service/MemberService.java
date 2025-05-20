@@ -9,12 +9,14 @@ import com.grepp.team08.app.model.member.dto.MemberDto;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.member.repository.MemberRepository;
 import com.grepp.team08.infra.error.CommonException;
+import com.grepp.team08.infra.mail.MailTemplate;
 import com.grepp.team08.infra.response.ResponseCode;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,7 @@ public class MemberService {
     private final MyCourseRepository myCourseRepository;
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final MailTemplate mailTemplate;
 
     @Transactional
     public void signup(MemberDto dto, Role role) {
@@ -86,5 +89,33 @@ public class MemberService {
         return courses.stream()
             .map(c -> new MyCourseResponse(c.getCoursesId(), c.getTitle()))
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void processFindPassword(String email) {
+        Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new CommonException(ResponseCode.BAD_REQUEST, "존재하지 않는 이메일입니다."));
+
+        // 임시 비밀번호 생성
+        String tempPassword = generateRandomPassword();
+        member.setPassword(passwordEncoder.encode(tempPassword));
+        memberRepository.save(member);
+
+        // 메일 발송
+        mailTemplate.setTo(email);
+        mailTemplate.setTemplatePath("find_password_mail");
+        mailTemplate.setSubject("DateNow 임시 비밀번호 발급");
+        mailTemplate.setProperties("tempPassword", tempPassword);
+        mailTemplate.send();
+    }
+
+    private String generateRandomPassword() {
+        int length = 8;
+        String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder(length);
+        java.security.SecureRandom rnd = new java.security.SecureRandom();
+        for (int i = 0; i < length; i++)
+            sb.append(chars.charAt(rnd.nextInt(chars.length())));
+        return sb.toString();
     }
 }

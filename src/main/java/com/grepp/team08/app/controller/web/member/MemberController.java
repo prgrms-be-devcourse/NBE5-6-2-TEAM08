@@ -1,17 +1,17 @@
 package com.grepp.team08.app.controller.web.member;
 
+import com.grepp.team08.app.controller.web.member.payload.FindPasswordRequest;
 import com.grepp.team08.app.controller.web.member.payload.SigninRequest;
 import com.grepp.team08.app.controller.web.member.payload.SignupRequest;
 import com.grepp.team08.app.model.auth.code.Role;
-import com.grepp.team08.app.model.auth.domain.Principal;
 import com.grepp.team08.app.model.member.dto.MemberDto;
-import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.member.service.MemberService;
 import jakarta.validation.Valid;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,6 +56,31 @@ public class MemberController {
         memberService.signup(form.toDto(), Role.ROLE_USER);
         log.info("회원가입 완료");
         return "redirect:/";
+    }
+
+    @GetMapping("/find-password")
+    public String findPassword(Model model){
+        model.addAttribute("findPasswordRequest", new FindPasswordRequest());
+        return "find_password";
+    }
+
+    @PostMapping("/find-password")
+    public String findPassword(
+        @Valid @ModelAttribute("findPasswordRequest") FindPasswordRequest form,
+        BindingResult bindingResult,
+        Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "find_password";
+        }
+        try {
+            memberService.processFindPassword(form.getEmail());
+            String msg = URLEncoder.encode("임시 비밀번호가 이메일로 발송되었습니다.", StandardCharsets.UTF_8);
+            return "redirect:/member/signin?msg=" + msg;
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", "등록되지 않은 메일입니다");
+            return "find_password";
+        }
     }
 
 }
