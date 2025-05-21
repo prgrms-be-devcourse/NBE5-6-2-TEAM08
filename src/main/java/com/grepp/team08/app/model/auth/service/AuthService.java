@@ -36,10 +36,6 @@ public class AuthService implements UserDetailsService {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(member.getRole().name()));
 
-        log.info("member.getUserId(): {}", member.getUserId());
-        log.info("member.getPassword(): {}", member.getPassword());
-        log.info("authorities: {}", authorities);
-
         // 스프링시큐리티는 기본적으로 권한 앞에 ROLE_ 이 있음을 가정
         // hasRole("ADMIN") =>  ROLE_ADMIN 권한이 있는 지 확인.
         // TEAM_{teamId}:{role}

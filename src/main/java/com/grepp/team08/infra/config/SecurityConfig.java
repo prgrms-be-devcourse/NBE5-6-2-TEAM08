@@ -97,17 +97,15 @@ public class SecurityConfig {
             .csrf(csrf -> csrf
                 .ignoringRequestMatchers("/api/**")  // REST API는 제외
             )
-//            .csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
             .authorizeHttpRequests(
                 (requests) -> requests
                                   .requestMatchers(GET, "/css/**", "/js/**", "/images/**").permitAll()
-                                  .requestMatchers(GET, "/api/**", "/api/ai/**").permitAll()
-                                  .requestMatchers(POST, "/api/**").permitAll()
-                                  .requestMatchers(PUT, "/api/**").permitAll()
                                   .requestMatchers(GET, "/member/signup", "/member/signup/**", "/member/signin", "/member/find-password").permitAll()
                                   .requestMatchers(POST, "/member/signin", "/member/signup", "/member/find-password").permitAll()
-//                                .anyRequest().permitAll() // 모두 승인하려면 해당 줄 주석 해제, .anyRequest().authenticated()는 주석처리
-                                  .anyRequest().authenticated() //
+                                  .requestMatchers("/api/members/exists/userId", "/api/members/check/email", "/api/members/check/nickname", "/api/members/signup").permitAll()
+                                  .requestMatchers("/admin/**").hasRole("ADMIN")
+                                  .requestMatchers("/api/**").authenticated()
+                                  .anyRequest().authenticated()
             )
             .formLogin((form) -> form
                                      .loginPage("/member/signin")

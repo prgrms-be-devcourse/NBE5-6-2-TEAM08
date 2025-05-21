@@ -119,21 +119,21 @@ public class FavoriteService {
       Long recommendCourseId = null;
       Long editorCourseId = null;
       String title = null;
-      String creatorUserId = null;
+      String nickname = null;
 
       if (fav.getRecommendCourse() != null && fav.getRecommendCourse().getCourseId() != null) {
         recommendCourseId = fav.getRecommendCourse().getRecommendCourseId();
         title = fav.getRecommendCourse().getCourseId().getTitle();
-        creatorUserId = fav.getRecommendCourse().getCourseId().getId().getUserId();
+        nickname = fav.getRecommendCourse().getCourseId().getId().getNickname();
       } else if (fav.getEditorCourse() != null) {
         editorCourseId = fav.getEditorCourse().getEditorCourseId();
         title = fav.getEditorCourse().getTitle();
-        creatorUserId = fav.getEditorCourse().getMember().getUserId();
+        nickname = fav.getEditorCourse().getMember().getNickname();
       }
 
       return new FavoriteCourseResponse(
           fav.getFavoriteCourseId(),
-          creatorUserId,
+          nickname,
           recommendCourseId,
           editorCourseId,
           title

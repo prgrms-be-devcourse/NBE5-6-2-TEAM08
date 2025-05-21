@@ -93,19 +93,35 @@ body {
   margin-bottom: 30px;
 }
 
-#edit-section label {
+#edit-section .form-group label {
   width: 130px;
   font-weight: bold;
   font-size: 16px;
 }
 
-#edit-section input {
+#edit-section .input-wrapper {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#edit-section input {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 15px;
   background-color: #f9f9f9;
+}
+
+#edit-section .error-field,
+#edit-section .success-field {
+  font-size: 0.9em;
+  margin-top: 4px;
+  color: red;
+}
+
+#edit-section .success-field {
+  color: green;
 }
 
 #edit-section .check-btn {
@@ -131,6 +147,17 @@ body {
   border: none;
   border-radius: 12px;
   cursor: pointer;
+}
+
+#edit-section .error-field,
+#edit-section .success-field {
+  font-size: 0.9em;
+  margin-top: 4px;
+  color: red;
+}
+
+#edit-section .success-field {
+  color: green;
 }
 
 .card-list {

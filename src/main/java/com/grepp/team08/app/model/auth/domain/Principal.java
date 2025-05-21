@@ -11,12 +11,6 @@ public class Principal extends User {
 
     private final String email;
 
-    public Principal(String username, String password,
-        Collection<? extends GrantedAuthority> authorities, String email) {
-        super(username, password, authorities);
-        this.email = email;
-    }
-
     public Principal(String username, String password, String email,
         Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);

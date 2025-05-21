@@ -11,7 +11,7 @@
 
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
     <aside class="sidebar" th:fragment="sidebar">
         <div class="profile">
@@ -134,7 +134,7 @@
     </main>
     <input type="hidden" id="courseId" th:value="${courseId}">
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script th:src="@{/js/recommend_course_register.js}"></script>
 <script th:src="@{/js/mypage_edit.js}"></script>
 <script th:src="@{/js/mycourse_list.js}"></script>
