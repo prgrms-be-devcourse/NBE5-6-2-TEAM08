@@ -2,18 +2,15 @@ package com.grepp.team08.infra.init;
 
 import com.grepp.team08.app.model.place.document.HotPlaceEmbedding;
 import com.grepp.team08.app.model.place.repository.HotPlaceEmbeddingRepository;
-import com.grepp.team08.app.model.recommend.code.Category;
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.store.embedding.EmbeddingStore;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
