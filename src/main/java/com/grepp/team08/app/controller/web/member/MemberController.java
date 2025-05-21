@@ -46,15 +46,11 @@ public class MemberController {
         BindingResult bindingResult,
         Model model) {
 
-        log.info("회원가입 시도: {}", form);
-
         if (bindingResult.hasErrors()) {
-            log.warn("회원가입 오류", bindingResult.getAllErrors());
             return "signup";
         }
 
         memberService.signup(form.toDto(), Role.ROLE_USER);
-        log.info("회원가입 완료");
         return "redirect:/";
     }
 

@@ -9,7 +9,7 @@
   <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="main-content">
   <!-- 왼쪽 컬럼 -->
   <div class="left-column">
@@ -56,7 +56,7 @@
 </div>
 
 
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 
 <!-- JS 스크립트 링크 -->

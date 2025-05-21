@@ -40,7 +40,7 @@ function renderFavoriteCourses(courseList) {
 
     card.innerHTML = `
       <h3>${course.title}</h3>
-      <p>작성자: ${course.userId}</p>
+      <p>작성자: ${course.nickname}</p>
       <button class="favorite-delete-btn" onclick="deleteFavorite(${course.favoriteCourseId}, event)">×</button>
     `;
 

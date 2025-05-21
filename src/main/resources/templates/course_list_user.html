@@ -9,14 +9,14 @@
   <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="course-list-container">
   <h1>사용자픽 코스 목록</h1>
   <div class="course-list" id="courseList">
     <!-- JS로 코스 카드가 렌더링됩니다 -->
   </div>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
 <script>

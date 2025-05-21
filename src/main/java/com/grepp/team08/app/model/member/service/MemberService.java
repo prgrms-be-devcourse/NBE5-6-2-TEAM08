@@ -77,7 +77,6 @@ public class MemberService {
         member.setEmail(request.getEmail());
         member.setNickname(request.getNickname());
 
-        log.info("변경된 회원 정보: {}", member);
         memberRepository.save(member);
     }
 

@@ -11,7 +11,7 @@
   <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="course-detail-container">
   <div class="course-header">
     <img id="thumbnail" src="" alt="코스 썸네일" class="course-thumbnail" />
@@ -59,7 +59,7 @@
   <h3>리뷰 목록</h3>
   <div id="reviewList" class="review-list"></div>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script>
   const recommendId = [[${recommendId}]];
   const currentUserNickname = '[[${loginNickname}]]';

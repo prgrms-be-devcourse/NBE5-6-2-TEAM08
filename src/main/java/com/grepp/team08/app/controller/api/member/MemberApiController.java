@@ -86,7 +86,6 @@ public class MemberApiController {
     public ResponseEntity<ApiResponse<?>> updateMember(
         @PathVariable("user_id") String userId,
         @RequestBody MemberUpdateRequest request) {
-        log.info("PUT 요청 도착: userId = {}", userId);
 
         memberService.updateMember(userId, request);
         return ResponseEntity

@@ -10,11 +10,11 @@
 
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
   <aside class="sidebar" th:fragment="sidebar">
     <div class="user-info">
-      <p class="user-name" th:text="'사용자 이름: ' + ${member.name}"></p>
+      <p class="user-name" th:text="'닉네임: ' + ${member.nickname}"></p>
       <p class="user-email" th:text="'이메일: ' + ${member.email}"></p>
     </div>
     <ul class="menu">
@@ -118,6 +118,6 @@
     }
   </script>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

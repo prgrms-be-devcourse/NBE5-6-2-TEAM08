@@ -10,7 +10,7 @@
   <link rel="stylesheet" th:href="@{/css/footer.css}"/>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="admin-layout">
   <nav class="sidebar">
     <ul>
@@ -28,7 +28,7 @@
 </div>
   </main>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
 <script>

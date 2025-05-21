@@ -35,11 +35,9 @@ public class MyCourseController {
     ) {
         String userId = principal.getUsername();
 
-        log.info("로그인한 사용자 userId: {}", userId);
         Member member = memberService.findByUserId(userId);
 
         List<MyCourseResponse> courses = courseService.findMyCourses(member);
-        log.info("조회된 코스 수: {}", courses.size());
         return ResponseEntity.ok(ApiResponse.success(courses));
     }
 
