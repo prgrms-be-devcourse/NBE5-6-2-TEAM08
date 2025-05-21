@@ -11,7 +11,7 @@ import lombok.Data;
 public class SignupRequest {
     
     @NotBlank
-    @Pattern(regexp = "^[a-z]{4,10}$")
+    @Pattern(regexp = "^[a-z0-9]{4,10}$")
     private String userId;
 
     @NotBlank

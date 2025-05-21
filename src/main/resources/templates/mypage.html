@@ -53,7 +53,7 @@
         <div class="form-group">
           <label for="phone">전화번호</label>
           <div class="input-wrapper">
-            <input type="text" id="phone" name="phone" th:value="${member.phone}" placeholder="010-0000-0000" />
+            <input type="text" id="phone" name="phone" th:value="${member.phone}" th:data-original="${member.phone}"/>
             <div id="phone-msg" class="error-field"></div>
           </div>
         </div>
@@ -61,7 +61,7 @@
         <div class="form-group">
           <label for="email">이메일</label>
           <div class="input-wrapper">
-            <input type="email" id="email" name="email" th:value="${member.email}" th:data-original="${member.email}" placeholder="example@example.com" />
+            <input type="email" id="email" name="email" th:value="${member.email}" th:data-original="${member.email}"/>
             <div id="email-msg" class="error-field"></div>
           </div>
         </div>
@@ -69,13 +69,13 @@
         <div class="form-group">
           <label for="nickname">닉네임</label>
           <div class="input-wrapper">
-            <input type="text" id="nickname" name="nickname" th:value="${member.nickname}" th:data-original="${member.nickname}" placeholder="닉네임" />
+            <input type="text" id="nickname" name="nickname" th:value="${member.nickname}" th:data-original="${member.nickname}"/>
             <div id="nickname-msg" class="error-field"></div>
           </div>
         </div>
 
         <div class="submit-wrap">
-          <button type="submit" class="submit-btn" id="submitBtn">수정하기</button>
+          <button type="submit" class="submit-btn" id="submitBtn" disabled>수정하기</button>
         </div>
       </form>
     </section>

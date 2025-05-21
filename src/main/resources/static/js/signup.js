@@ -31,7 +31,7 @@ function checkDuplication(field) {
   }
 
   if (field === 'userId') {
-    const idRegex = /^[a-z]{4,10}$/;
+    const idRegex = /^[a-z0-9]{4,10}$/;
     if (!idRegex.test(value)) {
       msgElement.textContent = '아이디는 영어 소문자 4~10자여야 합니다.';
       msgElement.className = 'error-field';

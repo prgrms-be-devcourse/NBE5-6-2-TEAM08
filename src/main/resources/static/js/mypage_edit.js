@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const phone = document.getElementById("phone");
   const email = document.getElementById("email");
   const nickname = document.getElementById("nickname");
-
   const errorMsg = document.getElementById("error-message");
 
   const originalEmail = email.getAttribute("data-original");
@@ -13,14 +12,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const isValid = {
     password: false,
-    phone: false,
+    phone: true,
     email: true,
     nickname: true
   };
 
+  const isChanged = {
+    password: false,
+    phone: false,
+    email: false,
+    nickname: false
+  };
+
   function updateSubmitButton() {
-    const allValid = Object.values(isValid).every(Boolean);
-    document.getElementById("submitBtn").disabled = !allValid;
+    const changedFields = Object.values(isChanged).some(v => v);
+    const allValid = Object.entries(isValid)
+    .filter(([key]) => isChanged[key])
+    .every(([_, v]) => v);
+
+    const submitEnabled = isValid.password && changedFields && allValid;
+    document.getElementById("submitBtn").disabled = !submitEnabled;
   }
 
   function validatePassword() {
@@ -28,7 +39,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirm = passwordConfirm.value;
     const msg = document.getElementById("password-msg");
 
-    if (!pw || pw.length < 8 || pw.length > 20) {
+    isChanged.password = !!pw || !!confirm;
+
+    if (!pw && !confirm) {
+      msg.textContent = '';
+      isValid.password = false;
+    } else if (pw.length < 8 || pw.length > 20) {
       msg.textContent = '비밀번호는 8자 이상 20자 이하로 입력해야 합니다.';
       msg.className = 'error-field';
       isValid.password = false;
@@ -49,7 +65,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const msg = document.getElementById("phone-msg");
     const regex = /^\d{3}-\d{3,4}-\d{4}$/;
 
-    if (regex.test(val)) {
+    isChanged.phone = true;
+
+    if (!val) {
+      msg.textContent = '';
+      isValid.phone = true;
+    } else if (regex.test(val)) {
       msg.textContent = '';
       isValid.phone = true;
     } else {
@@ -65,7 +86,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const value = input.value.trim();
     const msg = document.getElementById(`${field}-msg`);
 
-    if (value === originalValue) {
+    isChanged[field] = value !== originalValue;
+
+    if (!isChanged[field]) {
       msg.textContent = '';
       isValid[field] = true;
       updateSubmitButton();
@@ -123,13 +146,51 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
+    if (!isValid.password) {
+      errorMsg.textContent = "비밀번호를 올바르게 입력하세요.";
+      errorMsg.style.display = "block";
+      return;
+    }
+    if (isChanged.email && !isValid.email) {
+      errorMsg.textContent = "이메일 중복 확인을 통과하지 않았습니다.";
+      errorMsg.style.display = "block";
+      return;
+    }
+    if (isChanged.nickname && !isValid.nickname) {
+      errorMsg.textContent = "닉네임 중복 확인을 통과하지 않았습니다.";
+      errorMsg.style.display = "block";
+      return;
+    }
+    if (isChanged.phone && !isValid.phone) {
+      errorMsg.textContent = "전화번호 형식을 확인하세요.";
+      errorMsg.style.display = "block";
+      return;
+    }
+
     const userId = form.dataset.userid;
-    const payload = {
-      password: password.value,
-      phone: phone.value,
-      email: email.value,
-      nickname: nickname.value
-    };
+    const payload = {};
+
+    if (isValid.password && isChanged.password) {
+      payload.password = password.value;
+    }
+
+    if (isChanged.email && isValid.email) {
+      payload.email = email.value;
+    } else {
+      payload.email = email.getAttribute("data-original");
+    }
+
+    if (isChanged.nickname && isValid.nickname) {
+      payload.nickname = nickname.value;
+    } else {
+      payload.nickname = nickname.getAttribute("data-original");
+    }
+
+    if (isChanged.phone && isValid.phone) {
+      payload.phone = phone.value;
+    } else {
+      payload.phone = phone.getAttribute("data-original");
+    }
 
     try {
       const response = await fetch(`/api/members/edit/${userId}`, {
