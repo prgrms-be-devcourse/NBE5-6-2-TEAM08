@@ -9,6 +9,7 @@ body {
 .main-content {
   display: flex;
   max-width: 1440px;
+  width: 100%;
   margin: 40px auto;
   padding: 0 24px;
   gap: 32px;
@@ -112,6 +113,7 @@ body {
 .carousel .course-card {
   flex: 0 0 100%;
   max-width: 100%;
+  width: 50%;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);

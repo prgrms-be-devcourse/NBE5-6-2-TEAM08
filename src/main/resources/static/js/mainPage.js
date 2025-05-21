@@ -58,7 +58,7 @@ function renderCarousel(data) {
       <div class="course-card-content">
         <div class="course-title">${course.title}</div>
         <div class="card-author">
-          <div class="author-avatar" style="background-image:url('/image/user.jpg');"></div>
+          <div class="author-avatar" style="background-image:url('/images/user.jpg');"></div>
           <div class="course-instructor">${course.editorNickname} 에디터</div>
         </div>
       </div>
