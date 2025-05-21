@@ -8,16 +8,120 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const errorMsg = document.getElementById("error-message");
 
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
+  const originalEmail = email.getAttribute("data-original");
+  const originalNickname = nickname.getAttribute("data-original");
 
-    if (password.value !== passwordConfirm.value) {
-      errorMsg.textContent = "비밀번호가 일치하지 않습니다.";
-      errorMsg.style.display = "block";
+  const isValid = {
+    password: false,
+    phone: false,
+    email: true,
+    nickname: true
+  };
+
+  function updateSubmitButton() {
+    const allValid = Object.values(isValid).every(Boolean);
+    document.getElementById("submitBtn").disabled = !allValid;
+  }
+
+  function validatePassword() {
+    const pw = password.value;
+    const confirm = passwordConfirm.value;
+    const msg = document.getElementById("password-msg");
+
+    if (!pw || pw.length < 8 || pw.length > 20) {
+      msg.textContent = '비밀번호는 8자 이상 20자 이하로 입력해야 합니다.';
+      msg.className = 'error-field';
+      isValid.password = false;
+    } else if (pw !== confirm) {
+      msg.textContent = '비밀번호가 일치하지 않습니다.';
+      msg.className = 'error-field';
+      isValid.password = false;
+    } else {
+      msg.textContent = '비밀번호가 일치합니다.';
+      msg.className = 'success-field';
+      isValid.password = true;
+    }
+    updateSubmitButton();
+  }
+
+  function validatePhone() {
+    const val = phone.value.trim();
+    const msg = document.getElementById("phone-msg");
+    const regex = /^\d{3}-\d{3,4}-\d{4}$/;
+
+    if (regex.test(val)) {
+      msg.textContent = '';
+      isValid.phone = true;
+    } else {
+      msg.textContent = '전화번호 형식을 확인하세요. 예: 010-1234-5678';
+      msg.className = 'error-field';
+      isValid.phone = false;
+    }
+    updateSubmitButton();
+  }
+
+  async function validateField(field, originalValue) {
+    const input = document.getElementById(field);
+    const value = input.value.trim();
+    const msg = document.getElementById(`${field}-msg`);
+
+    if (value === originalValue) {
+      msg.textContent = '';
+      isValid[field] = true;
+      updateSubmitButton();
       return;
     }
 
-    errorMsg.style.display = "none";
+    if (!value) {
+      msg.textContent = '값을 입력하세요.';
+      msg.className = 'error-field';
+      isValid[field] = false;
+      updateSubmitButton();
+      return;
+    }
+
+    if (field === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        msg.textContent = '이메일 형식이 올바르지 않습니다.';
+        msg.className = 'error-field';
+        isValid.email = false;
+        updateSubmitButton();
+        return;
+      }
+    }
+
+    try {
+      const res = await fetch(`/api/members/check/${field}?${field}=` + encodeURIComponent(value));
+      const result = await res.json();
+
+      if (!result.data) {
+        msg.textContent = '사용 가능한 값입니다.';
+        msg.className = 'success-field';
+        isValid[field] = true;
+      } else {
+        msg.textContent = '이미 사용 중인 값입니다.';
+        msg.className = 'error-field';
+        isValid[field] = false;
+      }
+    } catch (err) {
+      console.error(err);
+      msg.textContent = '중복 검사 중 오류 발생';
+      msg.className = 'error-field';
+      isValid[field] = false;
+    }
+
+    updateSubmitButton();
+  }
+
+  password.addEventListener("input", validatePassword);
+  passwordConfirm.addEventListener("input", validatePassword);
+  phone.addEventListener("input", validatePhone);
+  email.addEventListener("input", () => validateField('email', originalEmail));
+  nickname.addEventListener("input", () => validateField('nickname', originalNickname));
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
     const userId = form.dataset.userid;
     const payload = {
@@ -30,9 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(`/api/members/edit/${userId}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
 

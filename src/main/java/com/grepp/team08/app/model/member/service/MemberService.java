@@ -36,7 +36,6 @@ public class MemberService {
 
     @Transactional
     public void signup(MemberDto dto, Role role) {
-        log.info("회원가입 DTO: {}", dto);
 
         if (memberRepository.existsByUserId(dto.getUserId())) {
             throw new CommonException(ResponseCode.BAD_REQUEST, "이미 사용 중인 아이디입니다.");
@@ -82,10 +81,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public List<MyCourseResponse> findMyCourses(Member member) {
-        log.info("🛠 [CourseService] member id: {}", member.getId());
-
         List<Course> courses = myCourseRepository.findById(member);
-        log.info("🛠 [CourseService] Course 조회 결과: {}개", courses.size());
 
         return courses.stream()
             .map(c -> new MyCourseResponse(c.getCoursesId(), c.getTitle()))

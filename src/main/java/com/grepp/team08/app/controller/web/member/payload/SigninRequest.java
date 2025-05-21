@@ -1,6 +1,7 @@
 package com.grepp.team08.app.controller.web.member.payload;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -8,10 +9,11 @@ import lombok.Data;
 public class SigninRequest {
     
     @NotBlank
+    @Pattern(regexp = "^[a-z]{4,10}$")
     private String userId;
     
     @NotBlank
-    @Size(min = 1, max = 10)
+    @Size(min = 8, max = 10)
     private String password;
 
 

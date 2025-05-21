@@ -34,36 +34,48 @@
       <div id="error-message" style="display:none; color:red;"></div>
 
       <form id="editForm" th:data-userid="${member.userId}">
+
         <div class="form-group">
           <label for="password">비밀번호</label>
-          <input type="password" id="password" name="password" placeholder="비밀번호 입력"/>
+          <div class="input-wrapper">
+            <input type="password" id="password" name="password" placeholder="비밀번호 입력" />
+            <div id="password-msg" class="error-field"></div>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="passwordConfirm">비밀번호 확인</label>
-          <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호 확인"/>
+          <div class="input-wrapper">
+            <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호 확인" />
+          </div>
         </div>
 
         <div class="form-group">
           <label for="phone">전화번호</label>
-          <input type="text" id="phone" name="phone" th:value="${member.phone}"
-                 placeholder="010-0000-0000"/>
+          <div class="input-wrapper">
+            <input type="text" id="phone" name="phone" th:value="${member.phone}" placeholder="010-0000-0000" />
+            <div id="phone-msg" class="error-field"></div>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="email">이메일</label>
-          <input type="email" id="email" name="email" th:value="${member.email}"
-                 placeholder="example@example.com"/>
+          <div class="input-wrapper">
+            <input type="email" id="email" name="email" th:value="${member.email}" th:data-original="${member.email}" placeholder="example@example.com" />
+            <div id="email-msg" class="error-field"></div>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="nickname">닉네임</label>
-          <input type="text" id="nickname" name="nickname" th:value="${member.nickname}"
-                 placeholder="닉네임"/>
+          <div class="input-wrapper">
+            <input type="text" id="nickname" name="nickname" th:value="${member.nickname}" th:data-original="${member.nickname}" placeholder="닉네임" />
+            <div id="nickname-msg" class="error-field"></div>
+          </div>
         </div>
 
         <div class="submit-wrap">
-          <button type="submit" class="submit-btn">수정하기</button>
+          <button type="submit" class="submit-btn" id="submitBtn">수정하기</button>
         </div>
       </form>
     </section>

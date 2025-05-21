@@ -49,11 +49,13 @@
     <div class="field">
       <label for="birth">생년월일</label>
       <input type="text" id="birth" th:field="*{birth}" placeholder="YYYY-MM-DD">
+      <div id="birth-msg" class="error-field"></div>
     </div>
 
     <div class="field">
       <label for="phone">전화번호</label>
       <input type="text" id="phone" th:field="*{phone}" placeholder="전화번호를 입력하세요.">
+      <div id="phone-msg" class="error-field"></div>
     </div>
 
     <button type="submit" id="submitBtn" class="btn-login" disabled>회원가입 완료</button>

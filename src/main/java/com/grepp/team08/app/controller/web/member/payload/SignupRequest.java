@@ -11,26 +11,29 @@ import lombok.Data;
 public class SignupRequest {
     
     @NotBlank
+    @Pattern(regexp = "^[a-z]{4,10}$")
     private String userId;
 
-    @NotBlank(message = "비밀번호를 입력하세요.")
-    @Size(min = 1, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력하세요.")
+    @NotBlank
+    @Size(min = 8, max = 20)
     private String password;
 
-    @NotBlank(message = "이메일을 입력하세요.")
-    @Email(message = "유효한 이메일 형식으로 입력하세요.")
+    @NotBlank
+    @Email
     private String email;
 
-    @NotBlank(message = "이름을 입력하세요.")
+    @NotBlank
     private String name;
 
-    @NotBlank(message = "닉네임을 입력하세요.")
+    @NotBlank
     private String nickname;
 
-    @NotBlank(message = "생년월일을 입력하세요.")
+    @NotBlank
+    @Pattern(regexp = "^(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$")
     private String birth;
 
-    @NotBlank(message = "전화번호를 입력하세요.")
+    @NotBlank
+    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$")
     private String phone;
 
     public MemberDto toDto(){
