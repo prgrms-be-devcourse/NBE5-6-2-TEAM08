@@ -36,12 +36,17 @@ public class CourseController {
         return "course_composition";
     }
 
-    @GetMapping("/editor-recommand-courses")
+    // 에디터픽 코스 목록 페이지 (일반 사용자용)
+    // html 이름 직관적으로 수정 필요 > editor_courses
+    @GetMapping("/editor-recommend-courses")
     public String editorCourse(){ return "course_list";}
 
+    // 추천(사용자픽) 코스 목록 페이지 > html 이름 직관적으로 수정 (recommend_courses ?)
     @GetMapping("/recommend-courses")
     public String usercourse(){return "course_list_user";}
 
+    // 추천 코스 상세정보 페이지
+    // html 이름 직관적, 통일성 있게 수정 > recommend_course_detail ?
     @GetMapping("/recommend-courses/{recommend_id}")
     public String detailUserCourse(@PathVariable Long recommend_id, Principal principal, Model model) {
         model.addAttribute("recommendId", recommend_id);
@@ -56,7 +61,10 @@ public class CourseController {
         return "course_detail";
     }
 
-    @GetMapping("/editor-recommand-courses/{recommendId}")
+    // 에디터픽 코스 상세정보 페이지
+    // html 이름 통일성을 위해 editor_course_detail 로 수정
+    // 엔드포인트도 너무 길어 그냥 editor-courses/ 로 ㄱㄱ
+    @GetMapping("/editor-recommend-courses/{recommendId}")
     public String detailEditorCourse(@PathVariable Long recommendId,Principal principal, Model model){
         model.addAttribute("recommendId",recommendId);
         boolean isLiked = false;
@@ -69,19 +77,17 @@ public class CourseController {
         return"editor_pick_detail";
     }
 
-
-    // 나의 데이트 코스 저장 페이지 이동
-    @GetMapping("/make-mycourses")
-    public String makeMyCourses() {
-        return "make_mycourses";
-    }
-
-    // 내 데이트 코스에 저장 post 요청
-    @PostMapping("/make-mycourses")
-    public String regist(Course course) {
-//        courseService.registCourses(course.getTitle());
-        return null;
-    }
-
-
+// 이거 뭐냐? 지워도 되는거 아녀?
+//    // 나의 데이트 코스 저장 페이지 이동
+//    @GetMapping("/make-mycourses")
+//    public String makeMyCourses() {
+//        return "make_mycourses";
+//    }
+//
+//    // 내 데이트 코스에 저장 post 요청
+//    @PostMapping("/make-mycourses")
+//    public String regist(Course course) {
+////        courseService.registCourses(course.getTitle());
+//        return null;
+//    }
 }

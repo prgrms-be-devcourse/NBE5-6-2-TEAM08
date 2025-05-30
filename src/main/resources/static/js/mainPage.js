@@ -17,7 +17,7 @@ function renderCards(cardData, containerId, type) {
     cardDiv.style.cursor = 'pointer';
     cardDiv.addEventListener('click', () => {
       const url = type === 'admin'
-          ? `/editor-recommand-courses/${courseId}`
+          ? `/editor-recommend-courses/${courseId}`
           : `/recommend-courses/${courseId}`;
       window.location.href = url;
     });
@@ -51,7 +51,7 @@ function renderCarousel(data) {
     const card = document.createElement('div');
     card.className = 'course-card';
     card.onclick = () => {
-      window.location.href = `/editor-recommand-courses/${course.courseId}`;
+      window.location.href = `/editor-recommend-courses/${course.courseId}`;
     };
     card.innerHTML = `
       <img src="${course.imageurl}" alt="${course.title} 썸네일" />
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // 더보기 버튼
   document.getElementById('editor-more')?.addEventListener('click', e => {
     e.preventDefault();
-    window.location.href = '/editor-recommand-courses';
+    window.location.href = '/editor-recommend-courses';
   });
 
   document.getElementById('user-more')?.addEventListener('click', e => {

@@ -3,8 +3,6 @@ package com.grepp.team08.app.controller.api.member;
 import com.grepp.team08.app.model.course.dto.EditorCourseDto;
 import com.grepp.team08.app.model.member.dto.AdminSearchUserDto;
 import com.grepp.team08.app.model.member.service.AdminService;
-import com.grepp.team08.infra.response.ApiResponse;
-import com.grepp.team08.infra.response.ResponseCode;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -16,40 +14,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/admin") // Common Endpoint
 @RequiredArgsConstructor
-public class EditorApiController {
+public class AdminApiController {
 
   private final AdminService adminService;
 
-  @GetMapping("/admin/users") //회원조회 하는거임
+  // 회원 관리 페이지 전체 회원 목록 조회
+  @GetMapping("/users")
   public ResponseEntity<?> userSearchAll(){
-
     List<AdminSearchUserDto> userAll = adminService.userAllSearch();
-
     return ResponseEntity.ok(userAll);
-
   }
 
-  @GetMapping("/admin/recommand-courses")//코스 목록
+  // 에디터픽 코스 목록 조회 (관리자용)
+  @GetMapping("/recommend-courses")
   public ResponseEntity<?> adminCourseAll(){
-
-    List<EditorCourseDto> editorcourses = adminService.adminAllCourse();
-
-    return ResponseEntity.ok(editorcourses);
+    List<EditorCourseDto> editorCourses = adminService.adminAllCourse();
+    return ResponseEntity.ok(editorCourses);
   }
 
-  //코스 삭제
-  //소프트 delete
-  @PostMapping("/admin/recommand-courses/{recommand_id}")
-  public ResponseEntity<?> deleteCourse(@PathVariable Long recommand_id){
-
-    adminService.adminRecommandDelete(recommand_id);
-
+  // 에디터픽 코스 삭제 (Soft Delete) > 그냥 Delete 로 바꿔야 하나?
+  @PostMapping("/recommend-courses/{recommend_id}")
+  public ResponseEntity<?> deleteCourse(@PathVariable Long recommend_id){
+    adminService.adminRecommendDelete(recommend_id);
     return ResponseEntity.ok().body(Map.of("message","성공적으로 처리되었습니다"));
   }
-
-
-
-
 }

@@ -49,7 +49,7 @@
 <script>
   const recommendId = [[${recommendId}]];
 
-  fetch(`/api/editor-recommand-courses/${recommendId}`)
+  fetch(`/api/editor-recommend-courses/${recommendId}`)
   .then(res => res.json())
   .then(data => {
     const imageUrl = data.imageUrl && data.imageUrl.length > 0

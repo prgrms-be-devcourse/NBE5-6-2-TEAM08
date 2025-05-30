@@ -1,7 +1,6 @@
 package com.grepp.team08.app.model.course.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.grepp.team08.app.model.image.dto.ImageDto;
 import com.grepp.team08.app.model.place.dto.PlaceDetailDto;
 
 import java.time.LocalDateTime;

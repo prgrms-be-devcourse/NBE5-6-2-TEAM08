@@ -15,7 +15,7 @@
   <nav class="sidebar">
     <ul>
       <li><a th:href="@{/admin/users}">회원관리</a></li>
-      <li><a th:href="@{/admin/recommand-courses}">에디터픽코스</a></li>
+      <li><a th:href="@{/admin/recommend-courses}">에디터픽코스</a></li>
       <li><a th:href="@{/admin/editor-course}">에디터픽코스추가</a></li>
     </ul>
   </nav>
@@ -34,7 +34,7 @@
 <script>
   const courseList = document.getElementById('courseList');
 
-  fetch('/api/admin/recommand-courses')
+  fetch('/api/admin/recommend-courses')
   .then(response => {
     if (!response.ok) throw new Error("데이터를 불러오지 못했습니다");
     return response.json();
@@ -44,7 +44,7 @@
       const card = document.createElement('div');
       card.className = 'course-card';
       card.onclick = () => {
-        window.location.href = `/editor-recommand-courses/${course.courseId}`;
+        window.location.href = `/editor-recommend-courses/${course.courseId}`;
 
       };
 
@@ -69,7 +69,7 @@
         e.stopPropagation(); // 부모 카드 클릭 이벤트 방지
         const id = this.dataset.id;
         if (confirm('정말 삭제하시겠습니까?')) {
-          fetch(`/api/admin/recommand-courses/${id}`, {
+          fetch(`/api/admin/recommend-courses/${id}`, {
             method: 'POST'
           })
           .then(res => {

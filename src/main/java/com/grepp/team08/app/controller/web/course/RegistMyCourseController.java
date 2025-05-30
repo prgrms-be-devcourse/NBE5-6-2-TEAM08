@@ -21,8 +21,11 @@ public class RegistMyCourseController {
     private final CourseService courseService;
     private final MemberService memberService;
 
-    // 나의 데이트 코스를 추천 코스 등록하는 페이지 이동 매핑
-    // 실제 요청을 보내는 POST 매핑은 api 컨트롤러에 있습니다.
+    // 내가 만든 데이트 코스를 추천 코스로 등록하는 페이지 (마이페이지)
+    // js - html 이름 매칭이 안됨. 같은 이름으로 묶어야 한다. 아니면 script 로 합치던지.
+    // Course Controller 에 합쳐도 될 거 같은데? 나눌 이유가 없음.
+    // view 제외하고 나머지 조회요청은 전부 Api Controller 로 옮겨
+    // ResponseEntity 로 수정
     @GetMapping("/recommend-course-regist")
     public String recommend_course_regist(
             @RequestParam(required = false) Long courseId,
@@ -40,6 +43,7 @@ public class RegistMyCourseController {
             model.addAttribute("courseId", courseId);
             model.addAttribute("course", courseDetail);
             return "recommend_course_register";
+
         } catch (Exception e) {
             log.error("Error rendering template", e);
             return "redirect:/error";
