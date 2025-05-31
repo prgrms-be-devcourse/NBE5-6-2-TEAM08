@@ -54,7 +54,7 @@ public class CourseApiController {
     // 내가 만든 데이트 코스 목록 조회 (마이페이지)
     // 엔드포인트 이름 수정 좀 하자
     // 연결되는 웹페이지가 어디지?
-    @GetMapping("/mycourse")
+    @GetMapping("/my-course")
     public ResponseEntity<ApiResponse<List<MyCourseResponse>>> getMyCourses(
         @AuthenticationPrincipal Principal principal
     ) {
@@ -68,7 +68,7 @@ public class CourseApiController {
 
     // 내가 만든 데이트 코스 상세정보 조회 (마이페이지)
     // 너도 엔드포인트 수정 좀 하자
-    @GetMapping("/mycourse/{id}")
+    @GetMapping("/my-course/{id}")
     public CourseDetailDto getCourseDetail(@PathVariable("id") Long courseId) {
         return courseService.getCourseDetail(courseId);
     }

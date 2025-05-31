@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const courseId = document.getElementById('courseId').value;
 
     // 코스 상세 정보 불러오기
-    fetch(`/api/course/mycourse/${courseId}`, {
+    fetch(`/api/course/my-course/${courseId}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'

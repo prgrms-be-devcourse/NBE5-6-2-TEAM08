@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const mycourseList = document.getElementById("mycourse-list");
 
-    fetch("/api/course/mycourse", {
+    fetch("/api/course/my-course", {
         credentials: "include"
     })
     .then((res) => res.json())
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             card.className = "course-card";
             card.innerHTML = `<h3>${course.title}</h3>`;
             card.addEventListener("click", () => {
-                fetch(`/api/course/mycourse/${course.coursesId}`, {
+                fetch(`/api/course/my-course/${course.coursesId}`, {
                     credentials: "include"
                 })
                 .then(res => res.json())
