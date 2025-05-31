@@ -36,7 +36,7 @@ public class PlaceApiController {
   private final CourseService courseService;
 
   // 메인페이지에서 에디터픽과 추천 코스의 최근 4개 코스 조회
-  // 엔드포인트가 너무 건방짐. 메인페이지인지 어떻게 알아. > /main 이런식으로 해야지
+  // 엔드포인트가 너무 건방짐. 메인페이지인지 어떻/게 알아. > main 이런식으로 해야지
   @GetMapping
   public ResponseEntity<?> mainPageList(){
     AdminUserTopListDto mainList = placeMainPageService.mainPagelist();
@@ -45,7 +45,7 @@ public class PlaceApiController {
 
   // 에디터픽 코스 목록 조회 (일반 사용자용) : 메서드명 수정 필요 > editorCourseList
   @GetMapping("/editor-recommend-courses")
-  public ResponseEntity<?> adminPageList(){
+  public ResponseEntity<?> editorCourseList(){
     List<EditorCourseDto> adminList = placeMainPageService.adminPageList();
     return ResponseEntity.ok(adminList);
   }
@@ -53,8 +53,8 @@ public class PlaceApiController {
   // 추천 (사용자 픽) 코스 목록 조회 : 메서드명 수정 필요 > userPage? 뭔소리여
   // recommendCourseList 같은 걸로 바꾸자
   @GetMapping("/recommend-courses")
-  public ResponseEntity<?> userPageList(){
-    List<CourseDto> adminList = placeMainPageService.userPageList();
+  public ResponseEntity<?> recommendCourseList(){
+    List<CourseDto> adminList = placeMainPageService.recommendCourseService();
     return ResponseEntity.ok(adminList);
   }
 
@@ -62,7 +62,7 @@ public class PlaceApiController {
   // 메서드명 직관적으로 수정 > recommendCourseDetail
   // 기존 메서드명은 상세정보 요청인지 목록인지 모호함
   @GetMapping("/recommend-courses/{recommend_id}")
-  public ResponseEntity<?> recommendCourse(@PathVariable Long recommend_id){
+  public ResponseEntity<?> recommendCourseDetail(@PathVariable Long recommend_id){
     CourseDetailDto  course = placeMainPageService.userDetailPlace(recommend_id);
     return ResponseEntity.ok(course);
   }
@@ -70,7 +70,7 @@ public class PlaceApiController {
   // 에디터픽 코스 상세정보 조회
   // 메서드명 일관성 있게 수정 > editorCourseDetail
   @GetMapping("/editor-recommend-courses/{recommend_id}")
-  public ResponseEntity<?> editorDetailCourse(@PathVariable Long recommend_id){
+  public ResponseEntity<?> editorCourseDetail(@PathVariable Long recommend_id){
     EditorDetailCourseDto course = placeMainPageService.editorDetailPlace(recommend_id);
     return ResponseEntity.ok(course);
   }
