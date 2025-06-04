@@ -121,4 +121,14 @@ public class MemberApiController {
         request.logout();
         return ResponseEntity.ok().build();
     }
+
+    // 회원 정보 수정 페이지 데이터 전달 + 마이페이지 사이드바
+    @GetMapping("/info")
+    public ResponseEntity<MemberDto> getMemberInfo(@AuthenticationPrincipal Principal principal) {
+        String userId = principal.getUsername();
+        Member member = memberService.findByUserId(userId);
+        MemberDto dto = MemberDto.from(member);
+
+        return ResponseEntity.ok(dto);
+    }
 }

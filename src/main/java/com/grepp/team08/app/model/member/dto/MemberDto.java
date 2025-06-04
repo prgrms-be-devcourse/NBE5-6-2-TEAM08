@@ -18,4 +18,18 @@ public class MemberDto {
   private String birth;
   private Role role;
   private LocalDateTime leavedAt;
+
+  public static MemberDto from(Member member) {
+    MemberDto dto = new MemberDto();
+    dto.setUserId(member.getUserId());
+    dto.setPassword(member.getPassword());
+    dto.setEmail(member.getEmail());
+    dto.setName(member.getName());
+    dto.setNickname(member.getNickname());
+    dto.setPhone(member.getPhone());
+    dto.setBirth(member.getBirth());
+    dto.setRole(member.getRole());
+    dto.setLeavedAt(member.getLeavedAt());
+    return dto;
+  }
 }
