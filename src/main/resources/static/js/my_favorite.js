@@ -36,7 +36,7 @@ function renderFavoriteCourses(courseList) {
         : course.editorCourseId;
     const url = isRecommend
         ? `/recommend-courses/${courseId}`
-        : `/editor-recommand-courses/${courseId}`;
+        : `/editor-recommend-courses/${courseId}`;
 
     card.innerHTML = `
       <h3>${course.title}</h3>

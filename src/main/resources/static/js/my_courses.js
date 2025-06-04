@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const mycourseList = document.getElementById("mycourse-list");
 
-    fetch("/api/course/mycourse", {
+    fetch("/api/course/my-course", {
         credentials: "include"
     })
     .then((res) => res.json())
@@ -18,15 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             card.className = "course-card";
             card.innerHTML = `<h3>${course.title}</h3>`;
             card.addEventListener("click", () => {
-                fetch(`/api/course/mycourse/${course.coursesId}`, {
-                    credentials: "include"
-                })
-                .then(res => res.json())
-                .then(courseDetail => {
-                    showSection("mycourse-detail");
-                    window.renderCourseDetail(courseDetail);
-                })
-                .catch(err => console.error("상세 조회 실패", err));
+                window.location.href = `/my-courses-detail?courseId=${course.coursesId}`;
             });
             mycourseList.appendChild(card);
         });

@@ -103,7 +103,7 @@ public class PlaceMainPageService {
 
   }
   @Transactional
-  public List<CourseDto> userPageList() {
+  public List<CourseDto> recommendCourseService() {
     List<RecommendCourse> userPlace = courseRepository.findAllWithCourseAndMember();
     List<CourseDto> courseDto = userPlace.stream()
         .map(course -> {

@@ -28,6 +28,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    // 전체적으로 view 를 제외하고 모두 API Contoller 로 ㄱㄱ
     @GetMapping("/signin")
     public String signin(Model model){
         model.addAttribute("signinRequest", new SigninRequest());

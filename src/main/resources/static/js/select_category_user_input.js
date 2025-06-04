@@ -67,10 +67,34 @@ document.addEventListener('DOMContentLoaded', () => {
       return descs.slice(0, -1).join(", ") + " 그리고 " + descs.at(-1);
     })();
 
-    // 날짜를 세션에 저장
-    sessionStorage.setItem("selectedDate", date);
+    // 👉 오버레이 표시
+    const overlay = document.getElementById('loadingOverlay');
+    const aiBtn = document.querySelector('.ai-btn');
+    aiBtn.disabled = true;
+    overlay.style.display = 'block';
 
-    // 👉 코스 편집 페이지로 이동하면서 분위기 전달
-    window.location.href = `/course-composition?mood=${encodeURIComponent(moodText)}`;
+    fetch('/api/recommend/course', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ mood: moodText })
+    })
+    .then(res => res.text())
+    .then(result => {
+      const clean = result.trim().startsWith('```json')
+          ? result.replace(/^```json\s*/, '').replace(/```$/, '').trim()
+          : result;
+      const places = JSON.parse(clean);
+
+      sessionStorage.setItem('recommendedPlaces', JSON.stringify(places));
+      sessionStorage.setItem('selectedDate', date);
+
+      window.location.href = `/course-composition`;
+    })
+    .catch(err => {
+      console.error('추천 실패:', err);
+      alert('추천 코스를 받아오지 못했습니다.');
+      overlay.style.display = 'none';
+      aiBtn.disabled = false;
+    });
   });
 });

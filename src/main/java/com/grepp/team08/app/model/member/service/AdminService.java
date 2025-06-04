@@ -58,9 +58,9 @@ public class AdminService {
     }
 
     @Transactional
-    public void adminRecommandDelete(Long recommandId) {
+    public void adminRecommendDelete(Long recommendId) {
 
-        EditorCourse editorCourse = adminCourseRepository.findById(recommandId)
+        EditorCourse editorCourse = adminCourseRepository.findById(recommendId)
             .orElseThrow(()->new EntityNotFoundException("해당 코스를 찾을수 없습니다"));
         editorCourse.setActivated(false);
 

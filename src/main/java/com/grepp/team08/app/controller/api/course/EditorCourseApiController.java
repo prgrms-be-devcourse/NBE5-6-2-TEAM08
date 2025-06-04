@@ -7,15 +7,18 @@ import com.grepp.team08.app.model.image.service.ImageService;
 import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.member.service.MemberService;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/editor-course")
 @RequiredArgsConstructor
 @Slf4j
-public class EditorCourseController {
+public class EditorCourseApiController {
 
     private final EditorCourseService editorCourseService;
     private final MemberService memberService;
