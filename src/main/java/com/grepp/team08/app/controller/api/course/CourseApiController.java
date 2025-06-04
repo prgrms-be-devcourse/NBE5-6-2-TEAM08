@@ -11,9 +11,12 @@ import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.member.service.MemberService;
 import com.grepp.team08.infra.response.ApiResponse;
 import com.grepp.team08.infra.response.ResponseCode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -52,8 +55,6 @@ public class CourseApiController {
     }
 
     // 내가 만든 데이트 코스 목록 조회 (마이페이지)
-    // 엔드포인트 이름 수정 좀 하자
-    // 연결되는 웹페이지가 어디지?
     @GetMapping("/my-course")
     public ResponseEntity<ApiResponse<List<MyCourseResponse>>> getMyCourses(
         @AuthenticationPrincipal Principal principal
@@ -107,8 +108,8 @@ public class CourseApiController {
 
     // 내가 만든 데이트 코스 추천 코스로 등록 (사진 제외)
     // 예외처리 굿
-    @PostMapping("/recommend-course-regist")
-    public ResponseEntity<?> recommendCourseRegist(
+    @PostMapping("/recommend-course-register")
+    public ResponseEntity<?> recommendCourseRegister(
         @RequestBody RecommendCourseRegistRequestDto request,
         @AuthenticationPrincipal Member member
     ) {
@@ -129,6 +130,31 @@ public class CourseApiController {
             return ResponseEntity.badRequest()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ApiResponse.error(ResponseCode.BAD_REQUEST, e.getMessage()));
+        }
+    }
+
+    // 나의 데이트 코스 상세 정보 조회
+    @GetMapping("/recommend-course-register")
+    public ResponseEntity<?> recommendCourseRegister(
+        @RequestParam(required = false) Long courseId,
+        @AuthenticationPrincipal Principal principal) {
+
+        try {
+            CourseDetailDto courseDetail = courseService.getCourseDetail(courseId);
+            String userId = principal.getUsername();
+            Member member = memberService.findByUserId(userId);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("member", member);
+            response.put("courseId", courseId);
+            response.put("course", courseDetail);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            log.error("Error getting course detail", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Internal server error");
         }
     }
 }

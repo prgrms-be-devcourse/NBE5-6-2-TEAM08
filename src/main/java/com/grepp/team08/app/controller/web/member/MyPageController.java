@@ -11,21 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/mypage")
+@RequestMapping
 @RequiredArgsConstructor
 public class MyPageController {
-    private final MemberService memberService;
-
-    private void setMemberInfo(Model model, Principal principal) {
-        String userId = principal.getUsername();
-        Member member = memberService.findByUserId(userId);
-        model.addAttribute("member", member);
-    }
-
-    @GetMapping
-    public String mypageMain(Model model, @AuthenticationPrincipal Principal principal) {
-        setMemberInfo(model, principal);
-        return "mypage";
+    @GetMapping("/my-page")
+    public String myPageMain(Model model, @AuthenticationPrincipal Principal principal) {
+        model.addAttribute("userId", principal.getUsername());
+        return "my_page";
     }
 
 }

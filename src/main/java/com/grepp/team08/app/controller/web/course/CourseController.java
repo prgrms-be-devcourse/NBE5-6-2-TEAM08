@@ -1,12 +1,8 @@
 package com.grepp.team08.app.controller.web.course;
 
-import com.grepp.team08.app.model.like.entity.FavoriteCourse;
 import com.grepp.team08.app.model.like.service.FavoriteService;
 import com.grepp.team08.app.model.member.service.MemberService;
 import java.security.Principal;
-import org.bouncycastle.math.raw.Mod;
-import com.grepp.team08.app.model.course.entity.Course;
-import com.grepp.team08.app.model.course.repository.CourseRepository;
 
 import com.grepp.team08.app.model.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -74,20 +69,34 @@ public class CourseController {
         }
 
         model.addAttribute("isLiked",isLiked);
-        return"editor_pick_detail";
+        return "editor_pick_detail";
     }
 
-// 이거 뭐냐? 지워도 되는거 아녀?
-//    // 나의 데이트 코스 저장 페이지 이동
-//    @GetMapping("/make-mycourses")
-//    public String makeMyCourses() {
-//        return "make_mycourses";
-//    }
-//
-//    // 내 데이트 코스에 저장 post 요청
-//    @PostMapping("/make-mycourses")
-//    public String regist(Course course) {
-////        courseService.registCourses(course.getTitle());
-//        return null;
-//    }
+    // 내가 찜한 코스 페이지
+    @GetMapping("/my-favorites")
+    public String myFavorites() {
+        return "my_favorites";
+    }
+
+    // 내가 만든 데이트 코스 페이지
+    @GetMapping("/my-courses")
+    public String myCourses() {
+        return "my_courses";
+    }
+
+    // 내가 만든 데이트 코스 상세 정보 페이지
+    @GetMapping("/my-courses-detail")
+    public String myCoursesDetail(@RequestParam Long courseId, Model model) {
+        model.addAttribute("courseId", courseId);
+        return "my_courses_detail";
+    }
+
+    // 내가 만든 데이트 코스를 추천 코스로 등록하는 페이지 (마이페이지)
+    @GetMapping("/recommend-course/register/{courseId}")
+    public String recommendCourseRegister(@PathVariable Long courseId, Model model) {
+        model.addAttribute("courseId", courseId);
+        return "recommend_course_register";
+    }
+
+
 }
