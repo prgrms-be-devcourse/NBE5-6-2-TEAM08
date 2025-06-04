@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (response.ok) {
         alert("회원정보가 수정되었습니다.");
-        window.location.href = "/mypage";
+        window.location.href = "/my-page";
       } else {
         const res = await response.json();
         errorMsg.textContent = res.message || "수정에 실패했습니다.";
