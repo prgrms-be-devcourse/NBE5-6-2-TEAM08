@@ -31,23 +31,25 @@ public class EditorCourseService {
 
         // 2. 장소 저장
         for (PlaceSaveDto placeDto : dto.places()) {
-            Place place = new Place();
-            place.setEditorCourseId(course);
-            place.setPlaceName(placeDto.placeName());
-            place.setAddress(placeDto.address());
-            place.setLatitude(placeDto.latitude());
-            place.setLongitude(placeDto.longitude());
+            Place place = Place.builder()
+                .editorCourseId(course)
+                .placeName(placeDto.placeName())
+                .address(placeDto.address())
+                .latitude(placeDto.latitude())
+                .longitude(placeDto.longitude())
+                .build();
             placeRepository.save(place);
         }
 
         // 3. 이미지 정보 저장 (이미 업로드된 경로를 이용함)
         for (String imagePath : dto.imageUrls()) {
-            Image image = new Image();
-            image.setEditorCourseId(course);
-            image.setOriginFileName(extractFileName(imagePath));
-            image.setRenameFileName(extractFileName(imagePath));
-            image.setSavePath(imagePath);
-            image.setType("image"); // 필요 시 MIME 타입 저장 가능
+            Image image = Image.builder()
+                .editorCourseId(course)
+                .originFileName(extractFileName(imagePath))
+                .renameFileName(extractFileName(imagePath))
+                .savePath(imagePath)
+                .type("image")
+                .build();
             imageRepository.save(image);
         }
     }
