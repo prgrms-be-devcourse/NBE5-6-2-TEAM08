@@ -35,24 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('recommend-button').addEventListener('click', () => {
-        fetch('/api/course/recommend-course-regist', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ courseId })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error('추천 등록 실패');
-            return res.json();
-        })
-        .then(() => {
-            alert('추천 코스로 등록되었습니다.');
-            location.href = '/recommend-courses';
-        })
-        .catch(err => {
-            console.error(err);
-            alert('추천 등록에 실패했습니다.');
-        });
+        const courseId = new URLSearchParams(window.location.search).get('courseId');
+        if (!courseId) {
+            alert('코스 ID가 없습니다.');
+            return;
+        }
+
+        // ✅ PathVariable 형식으로 전달
+        window.location.href = `/recommend-course/register/${courseId}`;
     });
 });
