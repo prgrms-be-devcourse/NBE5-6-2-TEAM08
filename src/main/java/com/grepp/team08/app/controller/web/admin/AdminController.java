@@ -24,14 +24,9 @@ public class AdminController {
     // 그냥 추천 코스인지 구분 불가
   }
 
-  // 에디터 픽 코스 만들기 페이지 + 카카오맵 API key
-  // Api Controller 에 json 으로 보내는 건 위험하다고 해서 일단 보류
-  @Value("${kakao.api.key}")
-  private String kakaoApiKey;
-
+  // 에디터 픽 코스 만들기 페이지
   @GetMapping("/editor-course")
-  public String editorCourse(Model model){
-    model.addAttribute("kakaoApiKey", kakaoApiKey);
+  public String editorCourse(){
     return "editor_course";
   }
 }

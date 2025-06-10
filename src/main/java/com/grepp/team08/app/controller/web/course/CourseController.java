@@ -21,13 +21,9 @@ public class CourseController {
     private final FavoriteService favoriteService;
     private final MemberService memberService;
 
-    @Value("${kakao.api.key}")
-    private String kakaoApiKey;
-
-    // 코스 구성 페이지 이동 + 카카오 api key 전달
+    // 코스 구성 페이지 이동
     @GetMapping("/course-composition")
-    public String courseComposition(@RequestParam(required = false) String mood, Model model) {
-        model.addAttribute("kakaoApiKey", kakaoApiKey);
+    public String courseComposition() {
         return "course_composition";
     }
 
