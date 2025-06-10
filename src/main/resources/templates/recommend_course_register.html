@@ -18,7 +18,7 @@
     <!-- 추천코스 등록 영역 -->
     <section id="register-section" style="display: block;">
       <header class="header">
-        <h1 class="title">여기 진짜 재밌어요</h1>
+        <h1 class="title">추천 코스로 등록하기</h1>
       </header>
       <main class="main">
         <section class="course-section">
@@ -64,8 +64,9 @@
     const submitButton = document.querySelector('.button-submit');
     const cancelButton = document.querySelector('.button-cancel');
     const maxImages = 10;
-    let currentImages = [];
-    let uploadedImageUrls = [];
+    // currentImages는 파일 객체 자체를 관리하고, uploadedImageUrls는 서버에서 받은 URL 문자열을 관리합니다.
+    let currentImages = []; // 업로드할 파일 객체 리스트
+    let uploadedImageUrls = []; // 서버에서 반환받은 URL 문자열 리스트
     let isProcessing = false;
     const courseId = document.getElementById('courseId').value;
 
@@ -76,14 +77,22 @@
       credentials: 'include'
     })
     .then(response => response.json())
-    .then(course => {
-      const placeContainer = document.getElementById('place-list');
-      if (placeContainer && course.places && course.places.length > 0) {
-        placeContainer.innerHTML = '';
-        course.places.forEach(place => {
-          const card = document.createElement('div');
-          card.className = 'place-card';
-          card.innerHTML = `
+    .then(apiResponse => {
+      if (apiResponse.code === "0000") {
+        const course = apiResponse.data;
+
+        const sectionSubtitle = document.querySelector('.section-subtitle');
+        if (sectionSubtitle && course.title) {
+          sectionSubtitle.textContent = course.title;
+        }
+
+        const placeContainer = document.getElementById('place-list');
+        if (placeContainer && course.places && course.places.length > 0) {
+          placeContainer.innerHTML = '';
+          course.places.forEach(place => {
+            const card = document.createElement('div');
+            card.className = 'place-card';
+            card.innerHTML = `
                     <div class="place-image-container">
                         <input type="file" class="place-image-input" accept="image/*" hidden>
                         <div class="place-image-placeholder">
@@ -94,18 +103,17 @@
                         </div>
                         <p class="place-address">${place.address}</p>
                     </div>`;
-          placeContainer.appendChild(card);
-        });
-      }
-
-      const sectionSubtitle = document.querySelector('.section-subtitle');
-      if (sectionSubtitle && course.title) {
-        sectionSubtitle.textContent = course.title;
+            placeContainer.appendChild(card);
+          });
+        }
+      } else {
+        alert('코스 정보를 불러오는 데 실패했습니다: ' + (apiResponse.message || '알 수 없는 오류'));
+        console.error('API Error:', apiResponse);
       }
     })
     .catch(error => {
-      console.error('코스 정보 로딩 실패:', error);
-      alert('코스 정보를 불러오는데 실패했습니다. 페이지를 새로고침 해주세요.');
+      console.error('Fetch Error:', error);
+      alert('코스 정보를 불러오는데 실패했습니다. 네트워크 연결을 확인해주세요.');
     });
 
     uploadBox.addEventListener('click', () => { if (!isProcessing) imageInput.click(); });
@@ -121,6 +129,7 @@
         return;
       }
 
+      // 클라이언트 측에서 10MB 제한을 설정해도 서버 측에서도 필수로 검사해야 합니다.
       const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024);
       if (oversizedFiles.length > 0) {
         alert('각 이미지의 크기는 10MB를 초과할 수 없습니다.');
@@ -131,49 +140,77 @@
       try {
         const formData = new FormData();
         files.forEach(file => formData.append('images', file));
+
         const response = await fetch('/api/course/images', {
           method: 'POST',
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
 
-        if (!response.ok) throw new Error('이미지 업로드에 실패했습니다.');
-        const urls = await response.json();
-        uploadedImageUrls = uploadedImageUrls.concat(urls);
+        // 🔴 응답 객체 전체를 먼저 받아옵니다.
+        const apiResponse = await response.json();
 
-        files.forEach(file => {
+        if (!response.ok) {
+          // 서버에서 ApiResponse.fail 형식으로 에러를 반환할 때
+          throw new Error(apiResponse.message || '이미지 업로드에 실패했습니다.');
+        }
+
+        // 🔴 apiResponse.data에 실제 URL 배열이 있습니다.
+        const newUploadedUrls = apiResponse.data;
+
+        // currentImages 배열과 newUploadedUrls 배열의 길이를 맞춰 관리합니다.
+        // 각 파일에 해당하는 URL을 매핑하여 저장합니다.
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const uploadedUrl = newUploadedUrls[i]; // 해당 파일의 URL
+
           const reader = new FileReader();
           reader.onload = e => {
             const previewDiv = document.createElement('div');
             previewDiv.className = 'image-preview';
+            previewDiv.dataset.uploadedUrl = uploadedUrl; // URL을 data 속성에 저장
+
             const img = document.createElement('img');
-            img.src = e.target.result;
+            img.src = e.target.result; // 미리보기용 base64 URL
             img.className = 'preview-image';
+
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = '×';
             deleteBtn.className = 'remove-image';
             deleteBtn.onclick = ev => {
               ev.stopPropagation();
-              previewDiv.remove();
-              const index = currentImages.indexOf(file);
-              if (index > -1) {
-                currentImages.splice(index, 1);
-                uploadedImageUrls.splice(index, 1);
+              previewDiv.remove(); // DOM에서 미리보기 제거
+
+              // currentImages 배열에서 파일 제거
+              const fileIndex = currentImages.indexOf(file);
+              if (fileIndex > -1) {
+                currentImages.splice(fileIndex, 1);
+              }
+
+              // uploadedImageUrls 배열에서 해당 URL 제거
+              const urlToRemove = previewDiv.dataset.uploadedUrl;
+              const urlIndex = uploadedImageUrls.indexOf(urlToRemove);
+              if (urlIndex > -1) {
+                uploadedImageUrls.splice(urlIndex, 1);
               }
             };
+
             previewDiv.appendChild(img);
             previewDiv.appendChild(deleteBtn);
             previewContainer.appendChild(previewDiv);
-            currentImages.push(file);
+
+            currentImages.push(file); // 파일 객체는 currentImages에
+            uploadedImageUrls.push(uploadedUrl); // 업로드된 URL은 uploadedImageUrls에
           };
           reader.readAsDataURL(file);
-        });
+        }
+
       } catch (err) {
         console.error('Error:', err);
         alert(err.message);
       } finally {
         isProcessing = false;
-        imageInput.value = '';
+        imageInput.value = ''; // 동일 파일 재선택 시 change 이벤트 발생시키기 위함
       }
     });
 
@@ -187,18 +224,22 @@
           isProcessing = false;
           return;
         }
+
+        // 🔴 여기는 이미 올바른 형식으로 전달되고 있었습니다.
         const response = await fetch('/api/course/recommend-course-register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ imageUrls: uploadedImageUrls, courseId })
+          body: JSON.stringify({ imageUrls: uploadedImageUrls, courseId }) // imageUrls는 이미 순수 URL 문자열 배열
         });
 
-        const result = await response.json();
+        const apiResult = await response.json(); // 응답 객체 전체를 받아옵니다.
+
         if (response.ok) {
           alert('코스가 성공적으로 등록되었습니다.');
           window.location.href = '/recommend-courses';
         } else {
-          throw new Error(result.message || '코스 등록에 실패했습니다.');
+          // 서버에서 ApiResponse.fail 형식으로 에러를 반환할 때
+          throw new Error(apiResult.message || '코스 등록에 실패했습니다.');
         }
       } catch (err) {
         console.error('Error:', err);

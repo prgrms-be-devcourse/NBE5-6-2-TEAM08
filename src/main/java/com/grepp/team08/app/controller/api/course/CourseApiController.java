@@ -40,9 +40,8 @@ public class CourseApiController {
     private final ImageService imageService;
 
     // 내가 만든 데이트 코스 등록
-    // 메서드명 > saveMyCourse 정도로 해도 충분
     @PostMapping("/save")
-    public ResponseEntity<String> saveCourseWithPlaces(
+    public ResponseEntity<ApiResponse<?>> saveMyCourse(
         @RequestBody MyDateCourseDto dto,
         @AuthenticationPrincipal Principal principal
     ) {
@@ -50,8 +49,8 @@ public class CourseApiController {
         Member member = memberService.findByUserId(userId);
 
         courseService.saveCourse(dto, member);
-
-        return ResponseEntity.ok("코스 저장 성공");
+        // 응답을 어떻게 처리할까.. 딱히 응답 없어도 되지 않나?
+        return ResponseEntity.ok(ApiResponse.noContent());
     }
 
     // 내가 만든 데이트 코스 목록 조회 (마이페이지)
@@ -68,74 +67,43 @@ public class CourseApiController {
     }
 
     // 내가 만든 데이트 코스 상세정보 조회 (마이페이지)
-    // 너도 엔드포인트 수정 좀 하자
     @GetMapping("/my-course/{id}")
-    public CourseDetailDto getCourseDetail(@PathVariable("id") Long courseId) {
-        return courseService.getCourseDetail(courseId);
+    public ResponseEntity<ApiResponse<CourseDetailDto>> getCourseDetail(
+        @PathVariable("id") Long courseId) {
+        CourseDetailDto courseDetailDto = courseService.getCourseDetail(courseId);
+        return ResponseEntity.ok(ApiResponse.success(courseDetailDto));
     }
 
     // 내가 만든 데이트 코스 추천 코스 등록 시 사진 업로드
     @PostMapping("/images")
-    public ResponseEntity<List<String>> uploadImages(
+    public ResponseEntity<ApiResponse<?>> uploadImages(
         @RequestParam("images") List<MultipartFile> images) {
-        try {
-            if (images == null || images.isEmpty()) {
-                return ResponseEntity.badRequest().build();
-            }
+        // Service 에서 모든 유효성 검사 및 예외 처리를 담당
+        // 여기서 예외가 발생하면 GlobalExceptionHandler 가 처리
+        List<String> urls = imageService.upload(images);
 
-            // 파일 타입 및 크기 로깅
-            for (MultipartFile file : images) {
-
-                if (file.isEmpty()) {
-                    return ResponseEntity.badRequest().build();
-                }
-
-                String contentType = file.getContentType();
-                if (contentType == null || !contentType.startsWith("image/")) {
-                    return ResponseEntity.badRequest().build();
-                }
-            }
-
-            List<String> urls = imageService.upload(images);
-            return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(urls);
-        } catch (Exception e) {
-            log.error("이미지 업로드 실패", e);
-            return ResponseEntity.badRequest().build();
-        }
+        // 성공 응답은 ApiResponse 포맷으로 반환
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(ApiResponse.success(urls));
+//        .body(ApiResponse.success(urls, Map.of("message", "이미지 업로드가 완료되었습니다.")));
     }
 
     // 내가 만든 데이트 코스 추천 코스로 등록 (사진 제외)
-    // 예외처리 굿
     @PostMapping("/recommend-course-register")
     public ResponseEntity<?> recommendCourseRegister(
-        @RequestBody RecommendCourseRegistRequestDto request,
-        @AuthenticationPrincipal Member member
+        @RequestBody RecommendCourseRegistRequestDto request
     ) {
-        try {
-            log.info("추천 코스 등록 시작 - courseId: {}, 이미지 개수: {}", request.getCourseId(), request.getImageUrls().size());
+        courseService.registerToRecommendCourse(request.getCourseId(), request.getImageUrls());
 
-            if (request.getImageUrls() == null || request.getImageUrls().isEmpty()) {
-                return ResponseEntity.badRequest()
-                    .body(ApiResponse.error(ResponseCode.BAD_REQUEST, "최소 1장의 이미지가 필요합니다."));
-            }
-
-            courseService.registToRecommendCourse(request.getCourseId(), request.getImageUrls());
-
-            return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(ApiResponse.success("코스가 성공적으로 등록되었습니다."));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(ApiResponse.error(ResponseCode.BAD_REQUEST, e.getMessage()));
-        }
+        return ResponseEntity.ok()
+         .contentType(MediaType.APPLICATION_JSON)
+         .body(ApiResponse.noContent());
     }
 
     // 나의 데이트 코스 상세 정보 조회
     @GetMapping("/recommend-course-register")
-    public ResponseEntity<?> recommendCourseRegister(
+    public ResponseEntity<?> getMyCourseDetail(
         @RequestParam(required = false) Long courseId,
         @AuthenticationPrincipal Principal principal) {
 

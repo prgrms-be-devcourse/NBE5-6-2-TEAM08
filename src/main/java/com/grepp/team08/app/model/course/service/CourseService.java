@@ -15,11 +15,7 @@ import com.grepp.team08.app.model.member.entity.Member;
 import com.grepp.team08.app.model.place.dto.PlaceDetailDto;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.NoSuchElementException;
 import org.springframework.transaction.annotation.Transactional;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import com.grepp.team08.app.model.course.repository.MyCourseRepository;
@@ -28,7 +24,6 @@ import com.grepp.team08.app.model.place.entity.Place;
 import com.grepp.team08.app.model.place.repository.PlaceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -100,19 +95,22 @@ public class CourseService {
     }
 
     @Transactional
-    public void registToRecommendCourse(Long courseId, List<String> imageUrls) {
+    public void registerToRecommendCourse(Long courseId, List<String> imageUrls) {
         Course course = getCourseById(courseId);
 
+        if (imageUrls == null || imageUrls.isEmpty()) {
+            throw new IllegalArgumentException("추천 코스 등록을 위해서는 최소 1장의 이미지가 필요합니다.");
+        }
 
-        // Check if course is already registered as a recommend course
         if (recommendCourseRepository.existsByCourseId(course)) {
             throw new IllegalStateException("이미 추천 코스로 등록된 코스입니다.");
         }
 
 
         // 추천 코스 생성 및 저장
-        RecommendCourse recommendCourse = new RecommendCourse();
-        recommendCourse.setCourseId(course);
+        RecommendCourse recommendCourse = RecommendCourse.builder()
+            .courseId(course)
+            .build();
         recommendCourseRepository.save(recommendCourse);
 
         // 이미지 처리
