@@ -67,22 +67,23 @@ public class CourseService {
 
     public void saveCourse(MyDateCourseDto dto, Member member) {
         // Course 저장
-        Course course = new Course();
-        course.setTitle(dto.title());
-        course.setDescription(dto.description());
-        course.setId(member);
+        Course course = Course.builder()
+            .id(member)
+            .title(dto.title())
+            .description(dto.description())
+            .build();
         myCourseRepository.save(course);
 
         // Place 저장
         for (PlaceSaveDto placeDto : dto.places()) {
-            Place place = new Place();
-            place.setCourseId(course);
-            place.setPlaceName(placeDto.placeName());
-            place.setAddress(placeDto.address());
-            place.setPlaceUrl("");
-            place.setLatitude(0);
-            place.setLongitude(0);
-
+            Place place = Place.builder()
+                .courseId(course)
+                .placeName(placeDto.placeName())
+                .address(placeDto.address())
+                .placeUrl("")
+                .latitude(0)
+                .longitude(0)
+                .build();
             placeRepository.save(place);
         }
     }
@@ -96,10 +97,6 @@ public class CourseService {
             });
         log.info("Found course: {}", course);
         return course;
-    }
-
-    public List<Course> getCoursesByMember(Member member) {
-        return courseRepository.findAllByIdOrderByCreatedAtDesc(member);
     }
 
     @Transactional
@@ -120,12 +117,13 @@ public class CourseService {
 
         // 이미지 처리
         for (String imagePath : imageUrls) {
-            Image image = new Image();
-            image.setRecommendCourseId(recommendCourse); // EditorCourseId 대신 RecommendCourseId 설정
-            image.setOriginFileName(extractFileName(imagePath));
-            image.setRenameFileName(extractFileName(imagePath));
-            image.setSavePath(imagePath);
-            image.setType("image");
+            Image image = Image.builder()
+                .recommendCourseId(recommendCourse)
+                .originFileName(extractFileName(imagePath))
+                .renameFileName(extractFileName(imagePath))
+                .savePath(imagePath)
+                .type("image")
+                .build();
             imageRepository.save(image);
         }
     }
